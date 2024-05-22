@@ -1,42 +1,68 @@
 package Model;
 
-public  class Init_Plateau {
+public class Init_Plateau {
 
+    private final Case[][] grille;
+    private final int taille;
 
-    private final Joueur[] joueurs = new Joueur[4];
-    private final Barque[] barques = new Barque[12];
-    private final Requin[] requins = new Requin[6];
-    private final Baleine[] baleines = new Baleine[5];
-    private final SerpentDeMer[] serpentDeMer = new SerpentDeMer[5];
-    private final Tuile[] tuiles = new Tuile[40];
+    public Init_Plateau(int taille) {
+        this.taille = taille;
+        this.grille = new Case[taille][taille];
 
+        initialiserGrille();
+    }
 
-
-    public Init_Plateau() {
-
-        for (int i = 0; i < joueurs.length; i++) {
-            joueurs[i] = new Joueur();
+    private void initialiserGrille() {
+        for (int x = 0; x < taille; x++) {
+            for (int y = 0; y < taille; y++) {
+                grille[x][y] = new Case(new Position(x, y), "vide");
+            }
         }
+    }
 
-        for (int i = 0; i < barques.length; i++) {
-            barques[i] = new Barque();
-        }
+    public void setCaseContent(Position position, String content) {
+        int x = position.getX();
+        int y = position.getY();
 
-        for (int i = 0; i < requins.length; i++) {
-            requins[i] = new Requin();
-        }
+        grille[x][y].setContent(content);
 
-        for (int i = 0; i < baleines.length; i++) {
-            baleines[i] = new Baleine();
-        }
+    }
 
-        for (int i = 0; i < serpentDeMer.length; i++) {
-            serpentDeMer[i] = new SerpentDeMer();
-        }
+    public String getCaseContent(Position position) {
+        int x = position.getX();
+        int y = position.getY();
 
+        return grille[x][y].getContent();
 
     }
 
 
+
+    private static class Case {
+        private Position position;
+        private String content;
+
+        public Case(Position position, String content) {
+            this.position = position;
+            this.content = content;
+        }
+
+        public Position getPosition() {
+            return position;
+        }
+
+        public void setPosition(Position position) {
+            this.position = position;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+
+    }
 
 }
