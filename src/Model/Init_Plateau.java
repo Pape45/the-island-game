@@ -30,7 +30,9 @@ public class Init_Plateau {
     private void initialiserGrille() {
         for (int x = 0; x < taille; x++) {
             for (int y = 0; y < taille; y++) {
+
                 grille[x][y] = new Case(new Position(x, y), plateau_initial[x][y], null, null);
+
             }
         }
     }

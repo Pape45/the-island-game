@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Piece {
     private Position position;
+
     private boolean alreadyMovedThisRound;
 
     public Position getPosition() {
@@ -23,16 +24,12 @@ public class Piece {
     }
 
     public String getStatus() {
-
-        return "statut_de_piece"; // Placeholder
+        return "statut_de_piece";
     }
 
     public static List<String> getCaseWherePieceCanGo(String pieceType) {
-
-        return List.of("type_de_case"); // Placeholder
+        return List.of("type_de_case");
     }
-
-
 }
 
 class Barque extends Piece {
@@ -47,11 +44,10 @@ class Barque extends Piece {
     }
 }
 
-class Pions extends Piece {
-    private int statut; // 0: explorateur sur terre, 1: nageur, 2: sur barque, 3: arrivé, 4: mort
+class Explorateur extends Piece {
+    private int statut; // 0: sur terre, 1: nageur, 2: sur barque, 3: arrivé, 4: mort
     private int deplacement; // Nombre de déplacements
     private int tresor; // Points pour gagner
-    private Position positions;
 
     public int getStatut() {
         return statut;
@@ -77,11 +73,4 @@ class Pions extends Piece {
         this.tresor = tresor;
     }
 
-    public Position getPositions() {
-        return positions;
-    }
-
-    public void setPositions(Position positions) {
-        this.positions = positions;
-    }
 }
