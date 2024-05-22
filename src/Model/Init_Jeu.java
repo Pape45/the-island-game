@@ -2,6 +2,7 @@ package Model;
 
 public  class Init_Jeu {
 
+    int taille=13;
 
     private final Joueur[] joueurs = new Joueur[4];
     private final Barque[] barques = new Barque[12];
@@ -33,6 +34,8 @@ public  class Init_Jeu {
         for (int i = 0; i < serpentDeMer.length; i++) {
             serpentDeMer[i] = new SerpentDeMer();
         }
+
+        new Init_Plateau(taille);
 
 
     }

@@ -1,15 +1,40 @@
 package Model;
 
-public class Piece {
+import java.util.List;
 
-    public void deplacer() {
+public class Piece {
+    private Position position;
+    private boolean alreadyMovedThisRound;
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public boolean getAlreadyMovedThisRound() {
+        return alreadyMovedThisRound;
+    }
+
+    public void setAlreadyMovedThisRound(boolean alreadyMovedThisRound) {
+        this.alreadyMovedThisRound = alreadyMovedThisRound;
+    }
+
+    public String getStatus() {
+
+        return "statut_de_piece"; // Placeholder
+    }
+
+    public static List<String> getCaseWherePieceCanGo(String pieceType) {
+
+        return List.of("type_de_case"); // Placeholder
     }
 }
 
-
 class Barque extends Piece {
-    private Explorateur[] explorateurs = new Explorateur[3]; // null pas d'explorateur
-
+    private Explorateur[] explorateurs = new Explorateur[3]; // null si pas d'explorateur
 
     public Explorateur[] getExplorateurs() {
         return explorateurs;
@@ -20,14 +45,11 @@ class Barque extends Piece {
     }
 }
 
-
-
 class Pions extends Piece {
-    private int statut; // 0 explorateur sur terre, 1 nageur, 2 sur barque, 3 arrivé, 4 mort
-    private int deplacement; // Nombre de déplacement
-    private int tresor; // Point pour gagner
+    private int statut; // 0: explorateur sur terre, 1: nageur, 2: sur barque, 3: arrivé, 4: mort
+    private int deplacement; // Nombre de déplacements
+    private int tresor; // Points pour gagner
     private Position positions;
-
 
     public int getStatut() {
         return statut;
@@ -61,5 +83,3 @@ class Pions extends Piece {
         this.positions = positions;
     }
 }
-
-

@@ -8,14 +8,16 @@ public class Init_Plateau {
     public Init_Plateau(int taille) {
         this.taille = taille;
         this.grille = new Case[taille][taille];
-
         initialiserGrille();
+
     }
 
     private void initialiserGrille() {
         for (int x = 0; x < taille; x++) {
             for (int y = 0; y < taille; y++) {
+
                 grille[x][y] = new Case(new Position(x, y), "vide");
+
             }
         }
     }
@@ -23,22 +25,16 @@ public class Init_Plateau {
     public void setCaseContent(Position position, String content) {
         int x = position.getX();
         int y = position.getY();
-
         grille[x][y].setContent(content);
-
     }
 
     public String getCaseContent(Position position) {
         int x = position.getX();
         int y = position.getY();
-
         return grille[x][y].getContent();
-
     }
 
-
-
-    private static class Case {
+    public static class Case {
         private Position position;
         private String content;
 
@@ -55,7 +51,7 @@ public class Init_Plateau {
             this.position = position;
         }
 
-        public String getContent() {
+        public static String getContent() {
             return content;
         }
 
@@ -63,6 +59,6 @@ public class Init_Plateau {
             this.content = content;
         }
 
-    }
 
+    }
 }
