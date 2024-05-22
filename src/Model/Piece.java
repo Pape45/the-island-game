@@ -31,6 +31,8 @@ public class Piece {
 
         return List.of("type_de_case"); // Placeholder
     }
+
+
 }
 
 class Barque extends Piece {
