@@ -123,6 +123,19 @@ public class DeplacerPiece{
 
     public void CreatureAction(plateau_de_jeu ){
 
+        for(int i=0; i<plateau_de_jeu.baleine.length ; i++){  //pour chaque baleine sur le terrain
+
+            Position pos_baleine = plateau_de_jeu.baleine[i].getPosition();   //position du baleine
+            List<Position> voisins = Position.getNeighbors(pos_baleine);     //liste de position des cases voisines
+
+            for(int j=0; j< plateau_de_jeu.barque.length; j++){         // pour chaque barque
+
+                if( voisins.contains( plateau_de_jeu.barque[j].getPosition()  )){    //si la liste de position des cases voisines contient la position d'une barque
+                    plateau_de_jeu.barque.remove(j);                                     // la barque est supprimée (retournée)
+                }
+            }
+        }
+
         for(int i=0; i<plateau_de_jeu.requin.length ; i++){  //pour chaque requin sur le terrain
 
             Position pos_requin = plateau_de_jeu.requin[i].getPosition();   //position du requin
@@ -134,6 +147,30 @@ public class DeplacerPiece{
 
                     if( voisins.contains( plateau_de_jeu.joueur[j].explorateur[k].getPosition() ) ){    //si la liste de position des cases voisines contient la position d'un explorateur
 
+                        plateau_de_jeu.joueur[j].explorateur.remove(k);   // le plateau_de_jeu.joueur[j].explorateur[k] est supprimé (mort)
+                    }
+                }
+            }
+        }
+
+        for(int i=0; i<plateau_de_jeu.serpent_de_mer ; i++){  //pour chaque serpent de mer sur le terrain
+
+            Position pos_serpent_de_mer = plateau_de_jeu.serpent_de_mer[i].getPosition();   //position du requin
+            List<Position> voisins = Position.getNeighbors(pos_serpent_de_mer);             //liste de position des cases voisines
+
+
+            for(int j=0; j< plateau_de_jeu.barque.length; j++){         // pour chaque barque
+
+                if( voisins.contains( plateau_de_jeu.barque[j].getPosition()  )){    //si la liste de position des cases voisines contient la position d'une barque
+                    plateau_de_jeu.barque.remove(j);                                     // la barque est supprimée (retournée)
+                }
+            }
+
+            for(int j=0; j< plateau_de_jeu.joueur.length; j++){         // pour chaque joueur
+
+                for(int k=0; k< plateau_de_jeu.joueur[j].explorateur.length; j++){      //pour chaque explorateur
+
+                    if( voisins.contains( plateau_de_jeu.joueur[j].explorateur[k].getPosition() ) ){    //si la liste de position des cases voisines contient la position d'un explorateur
                         plateau_de_jeu.joueur[j].explorateur.remove(k);   // le plateau_de_jeu.joueur[j].explorateur[k] est supprimé (mort)
                     }
                 }
