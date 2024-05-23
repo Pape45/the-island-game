@@ -1,4 +1,3 @@
-
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -10,26 +9,31 @@ import java.util.ArrayList;
 
 public class HexagonalGrid extends JFrame {
     private BufferedImage image;
+    private BufferedImage resizedImage;
     private JPanel imagePanel;
     private ArrayList<Hexagon> hexagons;
     private static final int HEX_SIZE = 30;
     private Hexagon hoveredHexagon = null;
+    private static final int NEW_IMAGE_WIDTH = 720; // Nouvelle largeur de l'image
+    private static final int NEW_IMAGE_HEIGHT = 620; // Nouvelle hauteur de l'image
+    private static final int[] indiceMaxLigne = {6, 9, 10, 9, 10, 11, 10, 11, 10, 9, 10, 9, 6};
 
     public HexagonalGrid() {
         setTitle("Hexagonal Grid on Image");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 800);
+        setSize(750, 650);
 
         hexagons = new ArrayList<>();
         imagePanel = new ImagePanel();
 
         try {
-            image = ImageIO.read(new File("theisland.jpg"));
+            image = ImageIO.read(new File("theisland.png"));
+            resizedImage = resizeImage(image, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        imagePanel.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
+        imagePanel.setPreferredSize(new Dimension(NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT));
         imagePanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -48,17 +52,28 @@ public class HexagonalGrid extends JFrame {
         createHexagonalGrid();
     }
 
+    private BufferedImage resizeImage(BufferedImage originalImage, int width, int height) {
+        BufferedImage resizedImage = new BufferedImage(width, height, originalImage.getType());
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(originalImage, 0, 0, width, height, null);
+        g.dispose();
+        return resizedImage;
+    }
+
     private void createHexagonalGrid() {
+        hexagons.clear(); // Clear any existing hexagons
         int radius = HEX_SIZE;
         int horiz = (int) (Math.sqrt(3) * radius);
         int vert = 2 * radius;
-        int[] indiceMaxLigne= {6,9,10,9,10,11,10,11,10,9,10,9,6};
+        int yOffset = 40;
 
-
-        for (int y = 0; y < 600; y += vert * 3 / 4) {
-            for (int x = 0; x < 532; x += horiz) {
-                int offsetX = (y / (vert * 3 / 4)) % 2 == 0 ? horiz / 2 : 0;
-                hexagons.add(new Hexagon(new Point(x + offsetX, y), radius));
+        for (int row = 0; row < indiceMaxLigne.length; row++) {
+            int numHexagons = indiceMaxLigne[row]+1;
+            int xOffset = (NEW_IMAGE_WIDTH - (numHexagons-1) * horiz) / 2;
+            for (int col = 0; col < numHexagons; col++) {
+                int x = xOffset + col * horiz;
+                int y = yOffset + row * vert * 3 / 4;
+                hexagons.add(new Hexagon(new Point(x, y), radius));
             }
         }
     }
@@ -104,7 +119,7 @@ public class HexagonalGrid extends JFrame {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            g.drawImage(image, 0, 0, null);
+            g.drawImage(resizedImage, 0, 0, null);
             drawHexagons(g);
         }
     }
@@ -118,4 +133,3 @@ public class HexagonalGrid extends JFrame {
         });
     }
 }
-
