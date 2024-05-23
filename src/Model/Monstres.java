@@ -2,15 +2,7 @@ package Model;
 
 
 public class Monstres extends Piece {
-    private Position positions;
 
-    public Position getPositions() {
-        return positions;
-    }
-
-    public void setPositions(Position positions) {
-        this.positions = positions;
-    }
 }
 
 

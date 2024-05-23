@@ -1,9 +1,14 @@
 package Controller;
 import Model.*;
 public class Tour {
+<<<<<<< HEAD
     
 }
 
+=======
+
+}
+>>>>>>> origin/Controller_Allan
 
 public class DeplacerCreature{
 
@@ -25,16 +30,28 @@ public class DeplacerCreature{
                 }
             }while(numero_creature==-1);
             Position position_arriver;
+<<<<<<< HEAD
             do 
+=======
+            do
+>>>>>>> origin/Controller_Allan
             {
                 position_arriver=choix_case_arriver();
 
             } while("position_arriver   est un choix non valable");
+<<<<<<< HEAD
             
             
             plateau_de_jeu.serpent_de_mer[numero_creature].setPosition(position_arriver);
         }else if (de==1){
             
+=======
+
+
+            plateau_de_jeu.serpent_de_mer[numero_creature].setPosition(position_arriver);
+        }else if (de==1){
+
+>>>>>>> origin/Controller_Allan
             while (numero_creature==-1)
             {
                 Position position_depart=choix_case_depart();
@@ -47,13 +64,22 @@ public class DeplacerCreature{
                 }
             }
             Position position_arriver;
+<<<<<<< HEAD
             do 
+=======
+            do
+>>>>>>> origin/Controller_Allan
             {
                 position_arriver=choix_case_arriver();
 
             }   while("position_arriver   est un choix non valable")
+<<<<<<< HEAD
             
             
+=======
+
+
+>>>>>>> origin/Controller_Allan
             plateau_de_jeu.requin[numero_creature].setPosition(position_arriver);
         }else {
             Position position_depart;
@@ -69,7 +95,11 @@ public class DeplacerCreature{
                 }
             }
             Position position_arriver;
+<<<<<<< HEAD
             do 
+=======
+            do
+>>>>>>> origin/Controller_Allan
             {
                 position_arriver=choix_case_arriver();
 
@@ -79,6 +109,7 @@ public class DeplacerCreature{
     }
 }
 
+<<<<<<< HEAD
 deplacer_piece 
 {
    for(int i=0;i<3;i++)
@@ -88,6 +119,17 @@ deplacer_piece
       numero_explorateur=get_explorateur(position_depart);
       plateau_de_jeu.joueur[tour%4].explorateur[numero_explorateur].deplacer(position_arriver)
    }
+=======
+deplacer_piece
+{
+    for(int i=0;i<3;i++)
+    {
+        position_depart=choix_case_depart();
+        position_arriver=choix_case_arriver();
+        numero_explorateur=get_explorateur(position_depart);
+        plateau_de_jeu.joueur[tour%4].explorateur[numero_explorateur].deplacer(position_arriver)
+    }
+>>>>>>> origin/Controller_Allan
 }
 
 
