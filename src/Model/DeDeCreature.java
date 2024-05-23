@@ -1,26 +1,20 @@
 package Model;
 
 public class DeDeCreature {
-    private final String[] faces;
+    private final int[] faces;
 
     public DeDeCreature() {
-        faces = new String[6];
-
-        faces[0] = "Requin";
-        faces[1] = "Requin";
-        faces[2] = "Baleine";
-        faces[3] = "Baleine";
-        faces[4] = "SerpentDeMer";
-        faces[5] = "SerpentDeMer";
-    }
-
-    public String lancerDe() {
-        int index = (int) (Math.random() * 6);
-        return faces[index];
-    }
-
-    public void deplacerUneCreature() {
-        String creature = lancerDe();
+        faces = new int[6];
+        faces[0] = 1;
+        faces[1] = 2;
+        faces[2] = 3;
 
     }
+
+    public int lancerDe() {
+        int valeur = (int) (Math.random() * 3);
+        return faces[valeur];
+    }
+
+
 }

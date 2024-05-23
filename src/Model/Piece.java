@@ -33,16 +33,46 @@ public class Piece {
 }
 
 class Barque extends Piece {
-    private Explorateur[] explorateurs = new Explorateur[3]; // null si pas d'explorateur
-    //il faut rajouer la methode ajouter un explorateur et enlever un explorateur 
-    public Explorateur[] getExplorateurs() {
+
+    private final Explorateur[][] explorateurs;
+
+    public Barque() {
+        explorateurs = new Explorateur[4][10];
+    }
+
+    public Explorateur[][] getExplorateurs() {
         return explorateurs;
     }
 
-    public void setExplorateurs(Explorateur[] explorateurs) {
-        this.explorateurs = explorateurs;
+    public void addExplorateur(Explorateur explorateur, int joueur, int numero) {
+        if (joueur >= 0 && joueur < 4 && numero >= 0 && numero < 10) {
+            explorateurs[joueur][numero] = explorateur;
+            explorateur.setStatut(2);
+        }
     }
+
+    public void afficherExplorateurs() {
+        for (int joueur = 0; joueur < explorateurs.length; joueur++) {
+            for (int numero = 0; numero < explorateurs[joueur].length; numero++) {
+                if (explorateurs[joueur][numero] != null) {
+                    System.out.println("Joueur " + joueur + ", Explorateur " + numero + ": statut = " + explorateurs[joueur][numero].getStatut());
+                }
+            }
+        }
+    }
+
+    private int numeroBarque;
+
+    public int getNumeroBarque() {
+        return numeroBarque;
+    }
+
+    public void setNumeroBarque(int numeroBarque) {
+        this.numeroBarque = numeroBarque;
+    }
+
 }
+
 
 class Explorateur extends Piece {
     private int statut; // 0: sur terre, 1: nageur, 2: sur barque, 3: arrivé, 4: mort

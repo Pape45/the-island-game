@@ -1,4 +1,4 @@
-package Controller;
+/*package Controller;
 import Model.*;
 public class Tour {
 <<<<<<< HEAD
@@ -143,3 +143,4 @@ get_explorateur(position_depart)
         }
     }
 }
+*/
