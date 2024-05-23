@@ -16,9 +16,6 @@ public class Main {
         System.out.println("Nombre de baleines : " + jeu.getBaleines().length);
         System.out.println("Nombre de serpents de mer : " + jeu.getSerpentDeMer().length);
 
-
-
-
         Explorateur explorateur = new Explorateur();
         jeu.getBarques()[0].addExplorateur(explorateur, 1, 3);
 

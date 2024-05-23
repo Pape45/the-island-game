@@ -1,4 +1,4 @@
-package Controller;
+/*package Controller;
 import Model.*;
 public class Tour {
 
@@ -72,4 +72,4 @@ public class DeplacerCreature{
         }
         return -1;
     }
-}
+}*/
