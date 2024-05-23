@@ -1,4 +1,4 @@
-/*package Controller;
+package Controller;
 
 import Model.Piece;
 import Model.Position;
@@ -39,4 +39,4 @@ public class Deplacements {
         }
         return true;
     }
-}*/
+}
