@@ -34,10 +34,6 @@ public  class Init_Jeu {
         for (int i = 0; i < serpentDeMer.length; i++) {
             serpentDeMer[i] = new SerpentDeMer();
         }
-
-        new Init_Plateau(taille);
-
-
     }
 
 

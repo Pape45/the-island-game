@@ -34,7 +34,7 @@ public class Piece {
 
 class Barque extends Piece {
     private Explorateur[] explorateurs = new Explorateur[3]; // null si pas d'explorateur
-
+    //il faut rajouer la methode ajouter un explorateur et enlever un explorateur 
     public Explorateur[] getExplorateurs() {
         return explorateurs;
     }
