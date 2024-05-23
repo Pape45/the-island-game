@@ -2,6 +2,22 @@ package Model;
 
 public class Init_Plateau {
 
+    private final String[][] plateau_initial = {
+            {"vide", "vide", "vide", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "vide", "vide", "vide"},
+            {"vide", "vide", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "vide"},
+            {"vide", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "vide"},
+            {"vide", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "vide"},
+            {"vide", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "vide"},
+            {"vide", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer"},
+            {"vide", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "vide"},
+            {"vide", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer"},
+            {"vide", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "vide"},
+            {"vide", "vide", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "vide"},
+            {"vide", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "vide"},
+            {"vide", "vide", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "vide"},
+            {"vide", "vide", "vide", "mer", "mer", "mer", "mer", "mer", "mer", "mer", "vide", "vide", "vide"}
+    };
+
     private final Case[][] grille;
     private final int taille;
 
@@ -9,38 +25,33 @@ public class Init_Plateau {
         this.taille = taille;
         this.grille = new Case[taille][taille];
         initialiserGrille();
-
     }
 
     private void initialiserGrille() {
         for (int x = 0; x < taille; x++) {
             for (int y = 0; y < taille; y++) {
 
-                grille[x][y] = new Case(new Position(x, y), "vide");
+                grille[x][y] = new Case(new Position(x, y), plateau_initial[x][y], null, null);
 
             }
         }
     }
 
-    public void setCaseContent(Position position, String content) {
-        int x = position.getX();
-        int y = position.getY();
-        grille[x][y].setContent(content);
-    }
-
-    public String getCaseContent(Position position) {
-        int x = position.getX();
-        int y = position.getY();
-        return grille[x][y].getContent();
+    public Case getCase(Position position) {
+        return grille[position.getX()][position.getY()];
     }
 
     public static class Case {
         private Position position;
         private String content;
+        private Tuile tuile;
+        private Piece piece;
 
-        public Case(Position position, String content) {
+        public Case(Position position, String content, Tuile tuile, Piece piece) {
             this.position = position;
             this.content = content;
+            this.tuile = tuile;
+            this.piece = piece;
         }
 
         public Position getPosition() {
@@ -51,7 +62,7 @@ public class Init_Plateau {
             this.position = position;
         }
 
-        public static String getContent() {
+        public String getContent() {
             return content;
         }
 
@@ -59,6 +70,37 @@ public class Init_Plateau {
             this.content = content;
         }
 
+        public Tuile getTuile() {
+            return tuile;
+        }
 
+        public void setTuile(Tuile tuile) {
+            this.tuile = tuile;
+        }
+
+        public Piece getPiece() {
+            return piece;
+        }
+
+        public void setPiece(Piece piece) {
+            this.piece = piece;
+        }
+
+        public boolean existTuile() {
+
+            if (tuile == null) {
+                return false;
+            }
+
+            return true;
+        }
+
+        public boolean existPiece() {
+
+            if (piece == null) {
+                return false;
+            }
+            return true;
+        }
     }
 }
