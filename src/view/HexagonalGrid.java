@@ -27,7 +27,7 @@ public class HexagonalGrid extends JFrame {
         imagePanel = new ImagePanel();
 
         try {
-            image = ImageIO.read(new File("theisland.png"));
+            image = ImageIO.read(new File("C:\\Users\\Todoroki\\Pictures\\The_Island_Game\\the-island-game\\src\\view\\theisland.png"));
             resizedImage = resizeImage(image, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
         } catch (IOException e) {
             e.printStackTrace();
@@ -66,18 +66,22 @@ public class HexagonalGrid extends JFrame {
         int horiz = (int) (Math.sqrt(3) * radius);
         int vert = 2 * radius;
         int yOffset = 40;
-
+    
         for (int row = 0; row < indiceMaxLigne.length; row++) {
-            int numHexagons = indiceMaxLigne[row]+1;
-            int xOffset = (NEW_IMAGE_WIDTH - (numHexagons-1) * horiz) / 2;
+            int numHexagons = indiceMaxLigne[row] + 1;
+            int xOffset = (NEW_IMAGE_WIDTH - (numHexagons - 1) * horiz) / 2;
+            int startValue;
+            startValue = -numHexagons + 1 ;            
+            int increment = 2;
+            
             for (int col = 0; col < numHexagons; col++) {
                 int x = xOffset + col * horiz;
                 int y = yOffset + row * vert * 3 / 4;
-                hexagons.add(new Hexagon(new Point(x, y), radius));
+                int value = startValue + col * increment;
+                hexagons.add(new Hexagon(new Point(x, y), radius, value));
             }
         }
     }
-
     private void drawHexagons(Graphics g) {
         for (Hexagon hex : hexagons) {
             if (hex == hoveredHexagon) {
@@ -93,7 +97,7 @@ public class HexagonalGrid extends JFrame {
         Point clickedPoint = e.getPoint();
         for (Hexagon hex : hexagons) {
             if (hex.getHexagon().contains(clickedPoint)) {
-                System.out.println("Clicked on hexagon at: " + hex.getPosition());
+                System.out.println("Clicked on hexagon at: " + hex.getPosition() + " with value: " + hex.getValue());
                 break;
             }
         }

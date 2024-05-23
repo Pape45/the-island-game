@@ -1,13 +1,14 @@
-
 import java.awt.Polygon;
 import java.awt.Point;
 
 public class Hexagon {
     private Polygon hexagon;
     private Point position;
+    private int value;
 
-    public Hexagon(Point position, int radius) {
+    public Hexagon(Point position, int radius, int value) {
         this.position = position;
+        this.value = value;
         hexagon = createHexagon(position, radius);
     }
 
@@ -29,6 +30,9 @@ public class Hexagon {
 
     public Point getPosition() {
         return position;
+    }
+    public int getValue() {
+        return value;
     }
 }
 
