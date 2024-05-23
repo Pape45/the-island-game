@@ -1,19 +1,24 @@
-/*package Controller;
+package Controller;
 import Model.*;
+
+import java.util.List;
+
 public class Tour {
 
 }
 
-public class DeplacerCreature{
+public class DeplacerPiece{
 
     public void deplacerCreature() {
         int de = de.lancer();//de.lancer doit retourner un chiffre 0=serpent de mer   1=requin   2=baleine
         int numero_creature=-1;
         int tuile;
         if (de==0){
+            Position position_depart;
+            Position position_arrivee;
             do{
-                Position position_depart = choix_case();
-                for(int i=0;i<6 ;i++) {
+                position_depart = choix_case();
+                for(int i=0;i<plateau_de_jeu.serpent_de_mer.length ;i++) {
                     if (plateau_de_jeu.serpent_de_mer[i].getPosition().equals(position_depart)) {
                         numero_creature=i;
                     }
@@ -21,22 +26,24 @@ public class DeplacerCreature{
             }while(numero_creature==-1);
 
             do{
-                Position position_arrivee=choix_case();
+                position_arrivee=choix_case();
                 tuile=1;
-                for (int i = 0; i < 40; i++) {
+                for (int i = 0; i < plateau_de_jeu.tuile.length; i++) {
                     if (plateau_de_jeu.tuile[i].getPosition().equals(position_arrivee)){
                         tuile=-1;
                     }
                 }
             }while(tuile==-1);
 
-            plateau_de_jeu.serpent_de_mer[numero_creature].setPosition(position_arriver);
+            plateau_de_jeu.serpent_de_mer[numero_creature].setPosition(position_arrivee);
         }
 
         else if (de==1){
+            Position position_depart;
+            Position position_arrivee;
             do {
-                Position position_depart=choix_case();
-                for(int i=0;i<7 ;i++) {
+                position_depart=choix_case();
+                for(int i=0;i<plateau_de_jeu.requin.length ;i++) {
                     if (plateau_de_jeu.requin[i].getPosition().equals(position_depart)) {
                         numero_creature=i;
                     }
@@ -44,21 +51,23 @@ public class DeplacerCreature{
             }while (numero_creature==-1);
 
             do{
-                Position position_arrivee=choix_case();
+                position_arrivee=choix_case();
                 tuile=1;
-                for (int i = 0; i < 40; i++) {
+                for (int i = 0; i < plateau_de_jeu.tuile.length; i++) {
                     if (plateau_de_jeu.tuile[i].getPosition().equals(position_arrivee)){
                         tuile=-1;
                     }
                 }
             }while(tuile==-1);
 
-            plateau_de_jeu.requin[numero_creature].setPosition(position_arriver);
+            plateau_de_jeu.requin[numero_creature].setPosition(position_arrivee);
 
         }else {
+            Position position_depart;
+            Position position_arrivee;
             do{
-                Position position_depart=choix_case();
-                for(int i=0;i<7 ;i++) {
+                position_depart=choix_case();
+                for(int i=0;i<plateau_de_jeu.baleine.length ;i++) {
                     if (plateau_de_jeu.baleine[i].getPosition().equals(position_depart)) {
                         numero_creature=i;
                     }
@@ -66,34 +75,49 @@ public class DeplacerCreature{
             }while (numero_creature==-1);
 
             do{
-                Position position_arrivee=choix_case();
+                position_arrivee=choix_case();
                 tuile=1;
-                for (int i = 0; i < 40; i++) {
-                    if (plateau_de_jeu.tuile[i].getPosition().equals(position_arrivee)){
+                List<Position> voisins=Position.getNeighbors(position_depart);
+                for (int i = 0; i < plateau_de_jeu.tuile.length; i++) {
+                    if (plateau_de_jeu.tuile[i].getPosition().equals(position_arrivee) || !voisins.contains(position_arrivee)){
                         tuile=-1;
                     }
                 }
             }while(tuile==-1);
 
-            plateau_de_jeu.baleine[numero_creature].setPosition(position_arriver);
+            plateau_de_jeu.baleine[numero_creature].setPosition(position_arrivee);
         }
     }
 
-    public void deplacer_piece() {
+    public void deplacer_explorateur(int tour) {
         for (int i = 0; i < 3; i++) {
-            position_depart = choix_case_depart();
-            position_arriver = choix_case_arriver();
-            numero_explorateur = get_explorateur(position_depart);
-            plateau_de_jeu.joueur[tour % 4].explorateur[numero_explorateur].deplacer(position_arriver);
+
+            int numero_explorateur;
+            Position position_depart;
+            Position position_arrivee;
+            List<Position> voisins;
+
+            do {
+                position_depart = choix_case();
+                numero_explorateur = get_explorateur(tour,position_depart);
+            } while (numero_explorateur == -1);
+
+            do {
+                position_arrivee = choix_case();
+                voisins = Position.getNeighbors(position_depart);
+            } while(!voisins.contains(position_arrivee));
+
+            plateau_de_jeu.joueur[tour % 4].explorateur[numero_explorateur].deplacer(position_arrivee);
+            plateau_de_jeu.joueur[tour % 4].explorateur[numero_explorateur].setAlreadyMovedThisRound(true);
         }
     }
 
-    public int get_explorateur (Position position_depart) {
-        for (int i = 0; i < 3; i++) {
-            if (plateau_de_jeu.joueur[tour % 4].explorateur[i].Positions == position_depart) {
+    public int get_explorateur (int tour, Position position_depart) {
+        for (int i = 0; i < plateau_de_jeu.joueur[tour % 4].explorateur.length; i++) {
+            if (plateau_de_jeu.joueur[tour % 4].explorateur[i].getPosition().equals(position_depart)) {
                 return i;
             }
         }
         return -1;
     }
-}*/
+}
