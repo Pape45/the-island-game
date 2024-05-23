@@ -1,6 +1,5 @@
 package Controller;
 
-import Model.Init_Plateau;
 import Model.Piece;
 import Model.Position;
 import java.util.List;
