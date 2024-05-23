@@ -2,27 +2,29 @@ package Model;
 
 public class Tuile {
 
-    private String faceCachee;
-    private String faceVisible;
+    private int faceCachee;
+    private int faceVisible;
 
-    public Tuile(String faceCachee, String faceVisible) {
-        this.faceCachee = faceCachee;
-        this.faceVisible = faceVisible;
+    public Tuile(int faceCachee, int faceVisible) {
+        this.faceCachee=faceCachee;
+        this.faceVisible=faceVisible;
+
     }
 
-    public String getFaceCachee() {
+    public int getFaceCachee() {
         return faceCachee;
     }
 
-    public void setFaceCachee(String faceCachee) {
+    public void setFaceCachee(int faceCachee) {
         this.faceCachee = faceCachee;
     }
 
-    public String getFaceVisible() {
+    public int getFaceVisible() {
+
         return faceVisible;
     }
 
-    public void setFaceVisible(String faceVisible) {
+    public void setFaceVisible(int faceVisible) {
         this.faceVisible = faceVisible;
     }
 
@@ -31,7 +33,7 @@ public class Tuile {
 
 class TuilePlage extends Tuile {
 
-    public TuilePlage(String faceCachee, String faceVisible) {
+    public TuilePlage(int faceCachee, int faceVisible) {
         super(faceCachee, faceVisible);
 
     }
@@ -40,7 +42,7 @@ class TuilePlage extends Tuile {
 
 class TuileForet extends Tuile {
 
-    public TuileForet(String faceCachee, String faceVisible) {
+    public TuileForet(int faceCachee, int faceVisible) {
         super(faceCachee, faceVisible);
 
     }
@@ -49,7 +51,7 @@ class TuileForet extends Tuile {
 
 class TuileMontagne extends Tuile {
 
-    public TuileMontagne(String faceCachee, String faceVisible) {
+    public TuileMontagne(int faceCachee, int faceVisible) {
         super(faceCachee, faceVisible);
 
     }

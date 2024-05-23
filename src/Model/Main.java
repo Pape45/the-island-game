@@ -10,6 +10,7 @@ public class Main {
 
         System.out.println("Jeu initialisé avec succès !");
 
+
         System.out.println("Nombre de joueurs : " + jeu.getJoueurs().length);
         System.out.println("Nombre de barques : " + jeu.getBarques().length);
         System.out.println("Nombre de requins : " + jeu.getRequins().length);
@@ -18,7 +19,6 @@ public class Main {
 
         Explorateur explorateur = new Explorateur();
         jeu.getBarques()[0].addExplorateur(explorateur, 1, 3);
-
         jeu.getBarques()[0].afficherExplorateurs();
 
 

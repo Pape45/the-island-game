@@ -38,6 +38,10 @@ public class Init_Jeu {
         }
 
 
+        for (int i = 0; i < tuiles.length; i++) {
+            tuiles[i]=new Tuile(1,0);
+        }
+
     }
 
 
@@ -61,7 +65,9 @@ public class Init_Jeu {
         return serpentDeMer;
     }
 
-
+    public Tuile[] getTuiles() {
+        return tuiles;
+    }
 
 
 }
