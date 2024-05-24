@@ -29,4 +29,5 @@ public class Explorateur extends Piece {
         this.tresor = tresor;
     }
 
+
 }

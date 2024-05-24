@@ -7,13 +7,10 @@ import java.util.List;
 
 
 public class Joueur {
-    public final Explorateur[] explorateur= new Explorateur[10];
+    public final List<Explorateur> explorateurs = new ArrayList<>();
     public final List<Tuile> tuilesEnMain = new ArrayList<>();
 
     public int numeroJoueur;
-
-    public Joueur() {
-    }
 
     public void setNumeroJoueur(int numeroJoueur) {
         this.numeroJoueur = numeroJoueur;
@@ -31,5 +28,8 @@ public class Joueur {
         return tuilesEnMain;
     }
 
+    public static void CreatureMangeExplorateur(Init_Jeu Plateau_de_jeu, int numeroJoueur, int numeroExplorateur){
+        Plateau_de_jeu.joueurs[numeroJoueur].explorateurs.remove(numeroExplorateur);
+    }
 
 }

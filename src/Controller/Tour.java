@@ -19,8 +19,8 @@ public class Tour {
             Position position_arrivee;
             do{
                 position_depart = choix_case();
-                for(int i=0;i<Plateau_de_jeu.serpentDeMer.length ;i++) {
-                    if (Plateau_de_jeu.serpentDeMer[i].getPosition().equals(position_depart)) {
+                for(int i=0;i<Plateau_de_jeu.serpentDeMer.size() ;i++) {
+                    if (Plateau_de_jeu.serpentDeMer.get(i).getPosition().equals(position_depart)) {
                         numero_creature=i;
                     }
                 }
@@ -37,7 +37,7 @@ public class Tour {
                 }
             }while(good==-1);
 
-            Plateau_de_jeu.serpentDeMer[numero_creature].setPosition(position_arrivee);
+            Plateau_de_jeu.serpentDeMer.get(numero_creature).setPosition(position_arrivee);
         }
 
         else if (resultat_de==1){
@@ -45,8 +45,8 @@ public class Tour {
             Position position_arrivee;
             do {
                 position_depart=choix_case();
-                for(int i=0;i<Plateau_de_jeu.requins.length ;i++) {
-                    if (Plateau_de_jeu.requins[i].getPosition().equals(position_depart)) {
+                for(int i=0;i<Plateau_de_jeu.requins.size() ;i++) {
+                    if (Plateau_de_jeu.requins.get(i).getPosition().equals(position_depart)) {
                         numero_creature=i;
                     }
                 }
@@ -63,15 +63,15 @@ public class Tour {
                 }
             }while(good==-1);
 
-            Plateau_de_jeu.requins[numero_creature].setPosition(position_arrivee);
+            Plateau_de_jeu.requins.get(numero_creature).setPosition(position_arrivee);
 
         }else {
             Position position_depart;
             Position position_arrivee;
             do{
                 position_depart=choix_case();
-                for(int i=0;i<Plateau_de_jeu.baleines.length ;i++) {
-                    if (Plateau_de_jeu.baleines[i].getPosition().equals(position_depart)) {
+                for(int i=0;i<Plateau_de_jeu.baleines.size() ;i++) {
+                    if (Plateau_de_jeu.baleines.get(i).getPosition().equals(position_depart)) {
                         numero_creature=i;
                     }
                 }
@@ -88,7 +88,7 @@ public class Tour {
                 }
             }while(good==-1);
 
-            Plateau_de_jeu.baleines[numero_creature].setPosition(position_arrivee);
+            Plateau_de_jeu.baleines.get(numero_creature).setPosition(position_arrivee);
         }
     }
 
@@ -110,14 +110,15 @@ public class Tour {
                 voisins = Position.getNeighbors(position_depart);
             } while(!voisins.contains(position_arrivee));
 
-            Plateau_de_jeu.joueurs[tour % 4].explorateur[numero_explorateur].deplacer(position_arrivee);
-            Plateau_de_jeu.joueurs[tour % 4].explorateur[numero_explorateur].setAlreadyMovedThisRound(true);
+            Plateau_de_jeu.joueurs[tour % 4].explorateurs.get(numero_explorateur).deplacer(position_arrivee);
+            Plateau_de_jeu.joueurs[tour % 4].explorateurs.get(numero_explorateur).setAlreadyMovedThisRound(true);
+
         }
     }
 
     public int get_explorateur (int tour, Position position_depart, Init_Jeu Plateau_de_jeu) {
-        for (int i = 0; i < Plateau_de_jeu.joueurs[tour % 4].explorateur.length; i++) {
-            if (Plateau_de_jeu.joueurs[tour % 4].explorateur[i].getPosition().equals(position_depart)) {
+        for (int i = 0; i < Plateau_de_jeu.joueurs[tour % 4].explorateurs.size(); i++) {
+            if (Plateau_de_jeu.joueurs[tour % 4].explorateurs.get(i).getPosition().equals(position_depart)) {
                 return i;
             }
         }
@@ -129,9 +130,9 @@ public class Tour {
 
     public void CreatureAction(Init_Jeu Plateau_de_jeu) {
 
-        for (int i = 0; i < Plateau_de_jeu.baleines.length; i++) {  //pour chaque baleine sur le terrain
+        for (int i = 0; i < Plateau_de_jeu.baleines.size(); i++) {  //pour chaque baleine sur le terrain
 
-            Position pos_baleine = Plateau_de_jeu.baleines[i].getPosition();   //position du baleine
+            Position pos_baleine = Plateau_de_jeu.baleines.get(i).getPosition();   //position du baleine
             List<Position> voisins = Position.getNeighbors(pos_baleine);     //liste de position des cases voisines
 
             for (int j = 0; j < Plateau_de_jeu.barques.length; j++) {         // pour chaque barque
@@ -142,16 +143,16 @@ public class Tour {
             }
         }
 
-        for (int i = 0; i < Plateau_de_jeu.requins.length; i++) {  //pour chaque requin sur le terrain
+        for (int i = 0; i < Plateau_de_jeu.requins.size(); i++) {  //pour chaque requin sur le terrain
 
-            Position pos_requin = Plateau_de_jeu.requins[i].getPosition();   //position du requin
+            Position pos_requin = Plateau_de_jeu.requins.get(i).getPosition();   //position du requin
             List<Position> voisins = Position.getNeighbors(pos_requin);     //liste de position des cases voisines
 
             for (int j = 0; j < Plateau_de_jeu.joueurs.length; j++) {         // pour chaque joueur
 
-                for (int k = 0; k < Plateau_de_jeu.joueurs[j].explorateur.length; j++) {      //pour chaque explorateur
+                for (int k = 0; k < Plateau_de_jeu.joueurs[j].explorateurs.size(); j++) {      //pour chaque explorateur
 
-                    if (voisins.contains(Plateau_de_jeu.joueurs[j].explorateur[k].getPosition())) {    //si la liste de position des cases voisines contient la position d'un explorateur
+                    if (voisins.contains(Plateau_de_jeu.joueurs[j].explorateurs.get(k).getPosition())) {    //si la liste de position des cases voisines contient la position d'un explorateur
 
                         //Plateau_de_jeu.joueurs[j].explorateur.remove(k);   // le plateau_de_jeu.joueur[j].explorateur[k] est supprimé (mort)
                     }
@@ -159,9 +160,9 @@ public class Tour {
             }
         }
 
-        for (int i = 0; i < Plateau_de_jeu.serpentDeMer.length; i++) {  //pour chaque serpent de mer sur le terrain
+        for (int i = 0; i < Plateau_de_jeu.serpentDeMer.size(); i++) {  //pour chaque serpent de mer sur le terrain
 
-            Position pos_serpent_de_mer = Plateau_de_jeu.serpentDeMer[i].getPosition();   //position du requin
+            Position pos_serpent_de_mer = Plateau_de_jeu.serpentDeMer.get(i).getPosition();   //position du requin
             List<Position> voisins = Position.getNeighbors(pos_serpent_de_mer);             //liste de position des cases voisines
 
             for (int j = 0; j < Plateau_de_jeu.barques.length; j++) {         // pour chaque barque
@@ -173,10 +174,10 @@ public class Tour {
 
             for (int j = 0; j < Plateau_de_jeu.joueurs.length; j++) {         // pour chaque joueur
 
-                for (int k = 0; k < Plateau_de_jeu.joueurs[j].explorateur.length; j++) {      //pour chaque explorateur
+                for (int k = 0; k < Plateau_de_jeu.joueurs[j].explorateurs.size(); j++) {      //pour chaque explorateur
 
-                    if (voisins.contains(Plateau_de_jeu.joueurs[j].explorateur[k].getPosition())) {    //si la liste de position des cases voisines contient la position d'un explorateur
-                        Piece.CreatureMangeExplorateur(Plateau_de_jeu, j, k);   // le plateau_de_jeu.joueur[j].explorateur[k] est supprimé (mort)
+                    if (voisins.contains(Plateau_de_jeu.joueurs[j].explorateurs.get(k).getPosition())) {    //si la liste de position des cases voisines contient la position d'un explorateur
+                        Joueur.CreatureMangeExplorateur(Plateau_de_jeu, j, k);   // le plateau_de_jeu.joueur[j].explorateur[k] est supprimé (mort)
                     }
                 }
             }
