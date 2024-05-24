@@ -30,6 +30,10 @@ public class Piece {
     public static List<String> getCaseWherePieceCanGo(String pieceType) {
         return List.of("type_de_case");
     }
+
+    public static void CreatureMangeExplorateur(Init_Jeu Plateau_de_jeu, int numeroJoueur, int numeroExplorateur){
+        Plateau_de_jeu.joueurs[numeroJoueur].explorateur.remove(numeroExplorateur);
+    }
 }
 
 

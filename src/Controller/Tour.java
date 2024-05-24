@@ -13,7 +13,7 @@ public class Tour {
     public void deplacerCreature(Init_Jeu Plateau_de_jeu) {
         int resultat_de = Plateau_de_jeu.de.lancer();//de.lancer doit retourner un chiffre 0=serpent de mer   1=requin   2=baleine
         int numero_creature=-1;
-        int tuile;
+        int good;
         if (resultat_de==0){
             Position position_depart;
             Position position_arrivee;
@@ -28,13 +28,14 @@ public class Tour {
 
             do{
                 position_arrivee=choix_case();
-                tuile=1;
+                good=1;
+                List<Position> voisins=Position.getNeighbors(position_depart);
                 for (int i = 0; i < Plateau_de_jeu.tuiles.length; i++) {
-                    if (Plateau_de_jeu.tuiles[i].getPosition().equals(position_arrivee)){
-                        tuile=-1;
+                    if (Plateau_de_jeu.tuiles[i].getPosition().equals(position_arrivee) || !voisins.contains(position_arrivee)){
+                        good=-1;
                     }
                 }
-            }while(tuile==-1);
+            }while(good==-1);
 
             Plateau_de_jeu.serpentDeMer[numero_creature].setPosition(position_arrivee);
         }
@@ -53,13 +54,14 @@ public class Tour {
 
             do{
                 position_arrivee=choix_case();
-                tuile=1;
+                good=1;
+                List<Position> voisins=Position.getNeighbors(position_depart);
                 for (int i = 0; i < Plateau_de_jeu.tuiles.length; i++) {
-                    if (Plateau_de_jeu.tuiles[i].getPosition().equals(position_arrivee)){
-                        tuile=-1;
+                    if (Plateau_de_jeu.tuiles[i].getPosition().equals(position_arrivee) || !voisins.contains(position_arrivee)){
+                        good=-1;
                     }
                 }
-            }while(tuile==-1);
+            }while(good==-1);
 
             Plateau_de_jeu.requins[numero_creature].setPosition(position_arrivee);
 
@@ -77,14 +79,14 @@ public class Tour {
 
             do{
                 position_arrivee=choix_case();
-                tuile=1;
+                good=1;
                 List<Position> voisins=Position.getNeighbors(position_depart);
                 for (int i = 0; i < Plateau_de_jeu.tuiles.length; i++) {
                     if (Plateau_de_jeu.tuiles[i].getPosition().equals(position_arrivee) || !voisins.contains(position_arrivee)){
-                        tuile=-1;
+                        good=-1;
                     }
                 }
-            }while(tuile==-1);
+            }while(good==-1);
 
             Plateau_de_jeu.baleines[numero_creature].setPosition(position_arrivee);
         }
@@ -174,7 +176,7 @@ public class Tour {
                 for (int k = 0; k < Plateau_de_jeu.joueurs[j].explorateur.length; j++) {      //pour chaque explorateur
 
                     if (voisins.contains(Plateau_de_jeu.joueurs[j].explorateur[k].getPosition())) {    //si la liste de position des cases voisines contient la position d'un explorateur
-                        //Plateau_de_jeu.joueurs[j].explorateur.remove(k);   // le plateau_de_jeu.joueur[j].explorateur[k] est supprimé (mort)
+                        Piece.CreatureMangeExplorateur(Plateau_de_jeu, j, k);   // le plateau_de_jeu.joueur[j].explorateur[k] est supprimé (mort)
                     }
                 }
             }

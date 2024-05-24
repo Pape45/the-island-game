@@ -7,13 +7,12 @@ import java.util.List;
 
 
 public class Joueur {
-    public final Explorateur[] explorateur;
+    public final Explorateur[] explorateur= new Explorateur[10];
     public final List<Tuile> tuilesEnMain = new ArrayList<>();
 
     public int numeroJoueur;
 
     public Joueur() {
-        explorateur= new Explorateur[10];
     }
 
     public void setNumeroJoueur(int numeroJoueur) {

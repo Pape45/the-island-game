@@ -28,4 +28,5 @@ public class Explorateur extends Piece {
     public void setTresor(int tresor) {
         this.tresor = tresor;
     }
+
 }
