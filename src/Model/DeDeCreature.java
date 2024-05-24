@@ -11,7 +11,7 @@ public class DeDeCreature {
 
     }
 
-    public int lancerDe() {
+    public int lancer() {
         int valeur = (int) (Math.random() * 3);
         return faces[valeur];
     }

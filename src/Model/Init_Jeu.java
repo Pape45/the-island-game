@@ -4,12 +4,13 @@ public class Init_Jeu {
 
     private static final int TAILLE = 13;
 
-    private final Joueur[] joueurs = new Joueur[4];
-    private final Barque[] barques = new Barque[12];
-    private final Requin[] requins = new Requin[6];
-    private final Baleine[] baleines = new Baleine[5];
-    private final SerpentDeMer[] serpentDeMer = new SerpentDeMer[5];
-    private final Tuile[] tuiles = new Tuile[40];
+    public final Joueur[] joueurs = new Joueur[4];
+    public final Barque[] barques = new Barque[12];
+    public final Requin[] requins = new Requin[6];
+    public final Baleine[] baleines = new Baleine[5];
+    public final SerpentDeMer[] serpentDeMer = new SerpentDeMer[5];
+    public final Tuile[] tuiles = new Tuile[40];
+    public final DeDeCreature de= new DeDeCreature();
 
     public Init_Jeu() {
 

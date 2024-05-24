@@ -2,14 +2,21 @@ package Model;
 
 public class Tuile {
 
-    private int faceCachee;
-    private int faceVisible;
-    private int numeroTuile;
-    private String nom;
+    public int faceCachee;
+    public int faceVisible;
+    public int numeroTuile;
+    public Position position;
+    public String nom;
+
     public Tuile(int faceCachee, int faceVisible) {
         this.faceCachee=faceCachee;
         this.faceVisible=faceVisible;
 
+    }
+
+    public Position getPosition() {
+
+        return position;
     }
 
     public int getFaceCachee() {
