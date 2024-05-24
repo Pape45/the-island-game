@@ -7,12 +7,22 @@ import java.util.List;
 
 
 public class Joueur {
-    private  Explorateur[] explorateur = new Explorateur[10];
-
-
+    private final Explorateur[] explorateur = new Explorateur[10];
     private final List<Tuile> tuilesEnMain = new ArrayList<>();
 
+    public int numeroJoueur;
 
+    public Joueur() {
+
+    }
+
+    public void setNumeroJoueur(int numeroJoueur) {
+        this.numeroJoueur = numeroJoueur;
+    }
+
+    public String toString() {
+        return "Joueur:"+ numeroJoueur ;
+    }
 
     public void ajouterTuile(Tuile tuile) {
         tuilesEnMain.add(tuile);

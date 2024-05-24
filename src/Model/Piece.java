@@ -71,6 +71,11 @@ class Barque extends Piece {
         this.numeroBarque = numeroBarque;
     }
 
+    public String toString() {
+        return "Barque= "+ numeroBarque;
+    }
+
+
 }
 
 

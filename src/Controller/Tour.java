@@ -1,4 +1,4 @@
-package Controller;
+/*package Controller;
 import Model.*;
 
 import java.util.List;
@@ -120,4 +120,4 @@ public class DeplacerPiece{
         }
         return -1;
     }
-}
+}*/

@@ -4,7 +4,8 @@ public class Tuile {
 
     private int faceCachee;
     private int faceVisible;
-
+    private int numeroTuile;
+    private String nom;
     public Tuile(int faceCachee, int faceVisible) {
         this.faceCachee=faceCachee;
         this.faceVisible=faceVisible;
@@ -28,6 +29,13 @@ public class Tuile {
         this.faceVisible = faceVisible;
     }
 
+    public void setNumeroTuile(int numeroTuile){
+        this.numeroTuile=numeroTuile;
+    }
+
+    public String toString() {
+        return "Tuile= "+ numeroTuile;
+    }
 }
 
 
@@ -50,10 +58,18 @@ class TuileForet extends Tuile {
 }
 
 class TuileMontagne extends Tuile {
-
+    private String nom;
     public TuileMontagne(int faceCachee, int faceVisible) {
         super(faceCachee, faceVisible);
 
+    }
+
+    public void setTypeTuile(){
+        this.nom="Montagne";
+    }
+
+    public String getNom(){
+        return nom;
     }
 
 }
