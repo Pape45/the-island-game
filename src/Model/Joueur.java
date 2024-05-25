@@ -7,11 +7,26 @@ import java.util.List;
 
 
 public class Joueur {
-    private  Explorateur[] explorateur = new Explorateur[10];
+    public final List<Explorateur> explorateurs = new ArrayList<>();
+    public final List<Tuile> tuilesEnMain = new ArrayList<>();
+  
 
+    public Joueur() {
+        initialiserExplorateurs();
+    }
 
-    private final List<Tuile> tuilesEnMain = new ArrayList<>();
-
+    public void initialiserExplorateurs() {
+        explorateurs.add(new Explorateur(0, 0, 1));
+        explorateurs.add(new Explorateur(0, 0, 1));
+        explorateurs.add(new Explorateur(0, 0, 1));
+        explorateurs.add(new Explorateur(0, 0, 2));
+        explorateurs.add(new Explorateur(0, 0, 2));
+        explorateurs.add(new Explorateur(0, 0, 3));
+        explorateurs.add(new Explorateur(0, 0, 3));
+        explorateurs.add(new Explorateur(0, 0, 4));
+        explorateurs.add(new Explorateur(0, 0, 5));
+        explorateurs.add(new Explorateur(0, 0, 6));
+    }
 
 
     public void ajouterTuile(Tuile tuile) {
@@ -21,6 +36,10 @@ public class Joueur {
     public List<Tuile> getTuilesEnMain() {
         return tuilesEnMain;
     }
+    
 
+    public static void CreatureMangeExplorateur(Init_Jeu Plateau_de_jeu, int numeroJoueur, int numeroExplorateur){
+        Plateau_de_jeu.joueurs[numeroJoueur].explorateurs.remove(numeroExplorateur);
+    }
 
 }

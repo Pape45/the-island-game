@@ -30,7 +30,7 @@ public class Position {
         this.y = y;
     }
 
-    public List<Position> getNeighbors(Position position) {
+    public static List<Position> getNeighbors(Position position) {
         List<Position> neighbors = new ArrayList<Position>();
         int pos_x = position.getX();
         int pos_y = position.getY();
