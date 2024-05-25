@@ -33,15 +33,15 @@ public class Tour {
                 position_arrivee = choix_case();
                 good = 1;
                 List<Position> voisins = Position.getNeighbors(position_depart);
-                for (int i = 0; i < Plateau_de_jeu.tuiles.length; i++) {
-                    if (Plateau_de_jeu.tuiles[i].getPosition().equals(position_arrivee) || !voisins.contains(position_arrivee)) {
+                for (int i = 0; i < Plateau_de_jeu.tuiles.size(); i++) {
+                    if (Plateau_de_jeu.tuiles.get(i).getPosition().equals(position_arrivee) || !voisins.contains(position_arrivee)) {
                         good = -1;
                     }
                 }
             } while (good == -1);
 
             Plateau_de_jeu.serpentDeMer.get(numero_creature).setPosition(position_arrivee);
-            SerpentDeMerAction(Plateau_de_jeu, numero_creature);
+            SerpentDeMer.RetournerBarqueMangerNageur(Plateau_de_jeu, numero_creature);
         }
 
         //REQUIN//
@@ -64,8 +64,8 @@ public class Tour {
                     position_arrivee = choix_case();
                     good = 1;
                     List<Position> voisins = Position.getNeighbors(position_depart);
-                    for (int i = 0; i < Plateau_de_jeu.tuiles.length; i++) {
-                        if (Plateau_de_jeu.tuiles[i].getPosition().equals(position_arrivee) || !voisins.contains(position_arrivee)) {
+                    for (int i = 0; i < Plateau_de_jeu.tuiles.size(); i++) {
+                        if (Plateau_de_jeu.tuiles.get(i).getPosition().equals(position_arrivee) || !voisins.contains(position_arrivee)) {
                             good = -1;
                         }
                     }
@@ -73,7 +73,7 @@ public class Tour {
 
                 deplacement++;
                 Plateau_de_jeu.requins.get(numero_creature).setPosition(position_arrivee);
-                explorateur_mange = RequinAction(Plateau_de_jeu, numero_creature);
+                explorateur_mange = Requin.MangerNageur(Plateau_de_jeu, numero_creature);
             }while(deplacement<2 && explorateur_mange==0);
         }
 
@@ -97,8 +97,8 @@ public class Tour {
                     position_arrivee = choix_case();
                     good = 1;
                     List<Position> voisins = Position.getNeighbors(position_depart);
-                    for (int i = 0; i < Plateau_de_jeu.tuiles.length; i++) {
-                        if (Plateau_de_jeu.tuiles[i].getPosition().equals(position_arrivee) || !voisins.contains(position_arrivee)) {
+                    for (int i = 0; i < Plateau_de_jeu.tuiles.size(); i++) {
+                        if (Plateau_de_jeu.tuiles.get(i).getPosition().equals(position_arrivee) || !voisins.contains(position_arrivee)) {
                             good = -1;
                         }
                     }
@@ -106,7 +106,7 @@ public class Tour {
 
                 deplacement++;
                 Plateau_de_jeu.baleines.get(numero_creature).setPosition(position_arrivee);
-                barque_retournee = BaleineAction(Plateau_de_jeu, numero_creature);
+                barque_retournee = Baleine.RetournerBarque(Plateau_de_jeu, numero_creature);
 
             }while(deplacement<3 && barque_retournee==-1);
         }
@@ -122,7 +122,7 @@ public class Tour {
 
             do {
                 position_depart = choix_case();
-                numero_explorateur = get_explorateur(Plateau_de_jeu.tour,position_depart,Plateau_de_jeu);
+                numero_explorateur = Explorateur.get_explorateur(Plateau_de_jeu.tour,position_depart,Plateau_de_jeu);
             } while (numero_explorateur == -1);
 
             do {
@@ -136,61 +136,4 @@ public class Tour {
         }
     }
 
-    public int get_explorateur (int tour, Position position_depart, Init_Jeu Plateau_de_jeu) {
-        for (int i = 0; i < Plateau_de_jeu.joueurs[tour % 4].explorateurs.size(); i++) {
-            if (Plateau_de_jeu.joueurs[tour % 4].explorateurs.get(i).getPosition().equals(position_depart)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-    
-    public int BaleineAction(Init_Jeu Plateau_de_jeu, int indice_baleine) {
-
-        Position pos_baleine = Plateau_de_jeu.baleines.get(indice_baleine).getPosition();
-
-        for (int j = 0; j < Plateau_de_jeu.barques.size(); j++) {
-            Position pos_barque = Plateau_de_jeu.barques.get(j).getPosition();
-            if (pos_baleine.equals(pos_barque)) {
-                Plateau_de_jeu.barques.remove(j);
-                return 1;
-            }
-        }
-        return -1;
-    }
-
-    public int RequinAction(Init_Jeu Plateau_de_jeu, int indice_requin){
-        int explorateur_mange=0;
-        Position pos_requin = Plateau_de_jeu.requins.get(indice_requin).getPosition();
-        for (int j = 0; j < Plateau_de_jeu.joueurs.length; j++) {
-            for (int k = 0; k < Plateau_de_jeu.joueurs[j].explorateurs.size(); j++) {
-                Position pos_explorateur = Plateau_de_jeu.joueurs[j].explorateurs.get(k).getPosition();
-                if(pos_requin.equals(pos_explorateur)){
-                    Joueur.CreatureMangeExplorateur(Plateau_de_jeu, j, k);
-                    explorateur_mange++;
-                }
-            }
-        }
-        return explorateur_mange;
-    }
-
-    public void SerpentDeMerAction(Init_Jeu Plateau_de_jeu, int indice_serpent_de_mer) {
-        Position pos_serpent_de_mer = Plateau_de_jeu.serpentDeMer.get(indice_serpent_de_mer).getPosition();
-
-        for (int j = 0; j < Plateau_de_jeu.barques.size(); j++) {
-            Position pos_barque = Plateau_de_jeu.barques.get(j).getPosition();
-            if (pos_serpent_de_mer.equals(pos_barque)) {
-                Plateau_de_jeu.barques.remove(j);
-            }
-        }
-
-        for (int j = 0; j < Plateau_de_jeu.joueurs.length; j++) {
-            for (int k = 0; k < Plateau_de_jeu.joueurs[j].explorateurs.size(); j++) {
-               Position pos_explorateur = Plateau_de_jeu.joueurs[j].explorateurs.get(k).getPosition();
-               if(pos_serpent_de_mer.equals(pos_explorateur)) {
-                   Joueur.CreatureMangeExplorateur(Plateau_de_jeu, j, k);
-               }
-            }
-        }
-    }
 }
