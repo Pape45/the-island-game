@@ -7,11 +7,13 @@ import java.util.List;
 public class Tour {
 
 
-    public void tour(PlateauJeu Plateau_de_jeu, int tour){
-
+    public static void tour(PlateauJeu Plateau_de_jeu){
+        deplacerCreature(Plateau_de_jeu);
+        deplacer_explorateur(Plateau_de_jeu);
+        Plateau_de_jeu.tour=Plateau_de_jeu.tour+1;
     }
 
-    public void deplacerCreature(PlateauJeu Plateau_de_jeu) {
+    public static void deplacerCreature(PlateauJeu Plateau_de_jeu) {
         int resultat_de = Plateau_de_jeu.de.lancer();//de.lancer doit retourner un chiffre 0=serpent de mer   1=requin   2=baleine
         int numero_creature=-1;
         int good;
@@ -113,7 +115,7 @@ public class Tour {
         }
     }
 
-    public void deplacer_explorateur(PlateauJeu Plateau_de_jeu) {
+    public static void deplacer_explorateur(PlateauJeu Plateau_de_jeu) {
         for (int i = 0; i < 3; i++) {
 
             int numero_explorateur;
@@ -141,7 +143,7 @@ public class Tour {
 
     public Position choix_case(){
         Scanner scanner = new Scanner(System.in);
-        
+
         System.out.print("Entrez une valeur de x: ");
         int x = Integer.parseInt(scanner.nextLine());
 

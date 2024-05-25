@@ -6,14 +6,14 @@ import java.util.List;
 public class PlateauJeu {
 
     public final int state_of_game=0;//0 partie en cours ,1 partie finie
-    public final int tour=0;
-    public final Joueur[] joueurs = new Joueur[4];
-    public final List<Barque> barques = new ArrayList<>();
-    public final List<Requin> requins = new ArrayList<>();
-    public final List<Baleine> baleines = new ArrayList<>();
-    public final List<SerpentDeMer> serpentDeMer = new ArrayList<>();
-    public final List<Tuile> tuiles=  new ArrayList<>();
-    public final DeDeCreature de= new DeDeCreature();
+    public int tour=0;
+    public Joueur[] joueurs = new Joueur[4];
+    public List<Barque> barques = new ArrayList<>();
+    public List<Requin> requins = new ArrayList<>();
+    public List<Baleine> baleines = new ArrayList<>();
+    public List<SerpentDeMer> serpentDeMer = new ArrayList<>();
+    public List<Tuile> tuiles=  new ArrayList<>();
+    public DeDeCreature de= new DeDeCreature();
 
     public PlateauJeu() {
         for (int i = 0; i < joueurs.length; i++) 
