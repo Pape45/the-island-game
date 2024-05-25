@@ -23,6 +23,7 @@ public class Explorateur extends Piece {
     public void setdepacement(int deplacement) {
         this.deplacement = deplacement;
     }
+    
     public int getDeplacement() {
         return deplacement;
     }
