@@ -5,8 +5,6 @@ import java.util.List;
 public class Piece {
     public Position position;
 
-    public boolean alreadyMovedThisRound;
-
     public Position getPosition() {
         return position;
     }
@@ -15,13 +13,6 @@ public class Piece {
         this.position = position;
     }
 
-    public boolean getAlreadyMovedThisRound() {
-        return alreadyMovedThisRound;
-    }
-
-    public void setAlreadyMovedThisRound(boolean alreadyMovedThisRound) {
-        this.alreadyMovedThisRound = alreadyMovedThisRound;
-    }
 
     public String getStatus() {
         return "statut_de_piece";
