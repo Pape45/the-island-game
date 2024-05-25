@@ -7,6 +7,7 @@ public class Init_Jeu {
 
     private static final int TAILLE = 13;
 
+    public final int tour=0;
     public final Joueur[] joueurs = new Joueur[4];
     public final Barque[] barques = new Barque[12];
     public final List<Requin> requins = new ArrayList<>();
@@ -16,8 +17,6 @@ public class Init_Jeu {
     public final DeDeCreature de= new DeDeCreature();
 
     public Init_Jeu() {
-
-
         for (int i = 0; i < joueurs.length; i++) {
             joueurs[i] = new Joueur();
             joueurs[i].setNumeroJoueur(i);

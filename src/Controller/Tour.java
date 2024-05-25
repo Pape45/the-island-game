@@ -92,7 +92,7 @@ public class Tour {
         }
     }
 
-    public void deplacer_explorateur(int tour, Init_Jeu Plateau_de_jeu) {
+    public void deplacer_explorateur(Init_Jeu Plateau_de_jeu) {
         for (int i = 0; i < 3; i++) {
 
             int numero_explorateur;
@@ -102,7 +102,7 @@ public class Tour {
 
             do {
                 position_depart = choix_case();
-                numero_explorateur = get_explorateur(tour,position_depart,Plateau_de_jeu);
+                numero_explorateur = get_explorateur(Plateau_de_jeu.tour,position_depart,Plateau_de_jeu);
             } while (numero_explorateur == -1);
 
             do {
@@ -110,8 +110,8 @@ public class Tour {
                 voisins = Position.getNeighbors(position_depart);
             } while(!voisins.contains(position_arrivee));
 
-            Plateau_de_jeu.joueurs[tour % 4].explorateurs.get(numero_explorateur).deplacer(position_arrivee);
-            Plateau_de_jeu.joueurs[tour % 4].explorateurs.get(numero_explorateur).setAlreadyMovedThisRound(true);
+            Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).deplacer(position_arrivee);
+            Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).setAlreadyMovedThisRound(true);
 
         }
     }
@@ -124,10 +124,7 @@ public class Tour {
         }
         return -1;
     }
-
-
-
-
+    
     public void CreatureAction(Init_Jeu Plateau_de_jeu) {
 
         for (int i = 0; i < Plateau_de_jeu.baleines.size(); i++) {  //pour chaque baleine sur le terrain
