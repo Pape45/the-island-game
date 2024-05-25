@@ -2,7 +2,7 @@ package Model;
 
 public class SerpentDeMer extends Piece {
 
-    public static void RetournerBarqueMangerNageur(Init_Jeu Plateau_de_jeu, int indice_serpent_de_mer) {
+    public static void RetournerBarqueMangerNageur(PlateauJeu Plateau_de_jeu, int indice_serpent_de_mer) {
         Position pos_serpent_de_mer = Plateau_de_jeu.serpentDeMer.get(indice_serpent_de_mer).getPosition();
 
         for (int j = 0; j < Plateau_de_jeu.barques.size(); j++) {
@@ -16,7 +16,7 @@ public class SerpentDeMer extends Piece {
             for (int k = 0; k < Plateau_de_jeu.joueurs[j].explorateurs.size(); j++) {
                 Position pos_explorateur = Plateau_de_jeu.joueurs[j].explorateurs.get(k).getPosition();
                 if(pos_serpent_de_mer.equals(pos_explorateur)) {
-                    Plateau_de_jeu.joueurs[numeroJoueur].explorateurs.remove(numeroExplorateur);
+                    Plateau_de_jeu.joueurs[j].explorateurs.remove(k);
                 }
             }
         }

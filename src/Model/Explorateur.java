@@ -42,7 +42,7 @@ public class Explorateur extends Piece {
         this.tresor = tresor;
     }
 
-    public static int get_explorateur(int tour, Position position_depart, Init_Jeu Plateau_de_jeu) {
+    public static int get_explorateur(int tour, Position position_depart, PlateauJeu Plateau_de_jeu) {
         for (int i = 0; i < Plateau_de_jeu.joueurs[tour % 4].explorateurs.size(); i++) {
             if (Plateau_de_jeu.joueurs[tour % 4].explorateurs.get(i).getPosition().equals(position_depart)) {
                 return i;

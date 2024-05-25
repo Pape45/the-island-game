@@ -2,7 +2,7 @@ package Model;
 
 public class Baleine extends Piece {
 
-    public static int RetournerBarque(Init_Jeu Plateau_de_jeu, int indice_baleine) {
+    public static int RetournerBarque(PlateauJeu Plateau_de_jeu, int indice_baleine) {
 
         Position pos_baleine = Plateau_de_jeu.baleines.get(indice_baleine).getPosition();
 
