@@ -130,9 +130,11 @@ public class Tour {
                 voisins = Position.getNeighbors(position_depart);
             } while(!voisins.contains(position_arrivee));
 
-            Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).deplacer(position_arrivee);
-            Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).setAlreadyMovedThisRound(true);
-
+            int type_explorateur = Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getStatut();
+            Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).setPosition(position_arrivee);
+            if( type_explorateur==1){
+                break;
+            }
         }
     }
 
