@@ -1,3 +1,5 @@
+package view;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -5,6 +7,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class HexagonalGrid extends JFrame {
@@ -29,7 +32,6 @@ public class HexagonalGrid extends JFrame {
         }
     }
 
-
     public HexagonalGrid() {
         setTitle("Hexagonal Grid on Image");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,8 +41,16 @@ public class HexagonalGrid extends JFrame {
         imagePanel = new ImagePanel();
 
         try {
-            image = ImageIO.read(new File("theisland.png"));
-            resizedImage = resizeImage(image, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
+            // Key change: Construct the path relative to the class location
+            String imagePath = "theisland.jpg"; 
+            URL imageUrl = HexagonalGrid.class.getResource(imagePath);
+
+            if (imageUrl != null) {
+                image = ImageIO.read(imageUrl);
+                resizedImage = resizeImage(image, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
+            } else {
+                System.err.println("Image not found at: " + imagePath);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -114,7 +124,6 @@ public class HexagonalGrid extends JFrame {
         }
     }
 
-
     private void drawHexagons(Graphics g) {
         for (Hexagon hex : hexagons) {
             if (hex == hoveredHexagon) {
@@ -144,7 +153,6 @@ public class HexagonalGrid extends JFrame {
             g.drawLine(polygon.xpoints[i1], polygon.ypoints[i1], polygon.xpoints[i2], polygon.ypoints[i2]);
         }
     }
-    
 
     private void handleMouseClick(MouseEvent e) {
         Point clickedPoint = e.getPoint();
@@ -179,14 +187,5 @@ public class HexagonalGrid extends JFrame {
             g.drawImage(resizedImage, 0, 0, null);
             drawHexagons(g);
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new HexagonalGrid().setVisible(true);
-            }
-        });
     }
 }
