@@ -17,6 +17,18 @@ public class HexagonalGrid extends JFrame {
     private static final int NEW_IMAGE_WIDTH = 720; // Nouvelle largeur de l'image
     private static final int NEW_IMAGE_HEIGHT = 620; // Nouvelle hauteur de l'image
     private static final int[] indiceMaxLigne = {6, 9, 10, 9, 10, 11, 10, 11, 10, 9, 10, 9, 6};
+    private ArrayList<ThickBorderInfo> thickBorders = new ArrayList<>();
+
+    class ThickBorderInfo {
+        Point position;
+        int[] faces;
+
+        public ThickBorderInfo(int x, int y, int... faces) {
+            this.position = new Point(x, y);
+            this.faces = faces;
+        }
+    }
+
 
     public HexagonalGrid() {
         setTitle("Hexagonal Grid on Image");
@@ -49,6 +61,30 @@ public class HexagonalGrid extends JFrame {
         });
 
         add(new JScrollPane(imagePanel));
+        
+        thickBorders.add(new ThickBorderInfo(283, 175, 1, 5, 6));
+        thickBorders.add(new ThickBorderInfo(334, 175, 1, 6));
+        thickBorders.add(new ThickBorderInfo(385, 175, 1, 6));
+        thickBorders.add(new ThickBorderInfo(436, 175, 1, 2, 6));
+        thickBorders.add(new ThickBorderInfo(258, 220, 5, 6));
+        thickBorders.add(new ThickBorderInfo(462, 220, 1, 2));
+        thickBorders.add(new ThickBorderInfo(181, 265, 1, 4, 5, 6));
+        thickBorders.add(new ThickBorderInfo(232, 265, 6));
+        thickBorders.add(new ThickBorderInfo(487, 265, 1));
+        thickBorders.add(new ThickBorderInfo(538, 265, 1, 2, 3, 6));
+        thickBorders.add(new ThickBorderInfo(207, 310, 5));
+        thickBorders.add(new ThickBorderInfo(513, 310, 2));
+        thickBorders.add(new ThickBorderInfo(181, 355, 3, 4, 5, 6));
+        thickBorders.add(new ThickBorderInfo(232, 355, 4));
+        thickBorders.add(new ThickBorderInfo(487, 355, 3));
+        thickBorders.add(new ThickBorderInfo(538, 355, 1, 2, 3, 4));
+        thickBorders.add(new ThickBorderInfo(258, 400, 4, 5));
+        thickBorders.add(new ThickBorderInfo(462, 400, 2, 3));
+        thickBorders.add(new ThickBorderInfo(283, 445, 3, 4, 5));
+        thickBorders.add(new ThickBorderInfo(334, 445, 3, 4));
+        thickBorders.add(new ThickBorderInfo(385, 445, 3, 4));
+        thickBorders.add(new ThickBorderInfo(436, 445, 2, 3, 4));
+
         createHexagonalGrid();
     }
 
@@ -61,15 +97,15 @@ public class HexagonalGrid extends JFrame {
     }
 
     private void createHexagonalGrid() {
-        hexagons.clear(); // Clear any existing hexagons
+        hexagons.clear();
         int radius = HEX_SIZE;
         int horiz = (int) (Math.sqrt(3) * radius);
         int vert = 2 * radius;
         int yOffset = 40;
 
         for (int row = 0; row < indiceMaxLigne.length; row++) {
-            int numHexagons = indiceMaxLigne[row]+1;
-            int xOffset = (NEW_IMAGE_WIDTH - (numHexagons-1) * horiz) / 2;
+            int numHexagons = indiceMaxLigne[row] + 1;
+            int xOffset = (NEW_IMAGE_WIDTH - (numHexagons - 1) * horiz) / 2;
             for (int col = 0; col < numHexagons; col++) {
                 int x = xOffset + col * horiz;
                 int y = yOffset + row * vert * 3 / 4;
@@ -78,16 +114,37 @@ public class HexagonalGrid extends JFrame {
         }
     }
 
+
     private void drawHexagons(Graphics g) {
         for (Hexagon hex : hexagons) {
             if (hex == hoveredHexagon) {
-                g.setColor(Color.RED);  // Couleur de survol
+                g.setColor(Color.RED);
             } else {
-                g.setColor(Color.BLACK);  // Couleur par défaut
+                g.setColor(Color.BLACK);
             }
+    
+            ((Graphics2D) g).setStroke(new BasicStroke(1)); 
             g.drawPolygon(hex.getHexagon());
+    
+            for (ThickBorderInfo info : thickBorders) {
+                if (hex.getPosition().equals(info.position)) {
+                    drawThickBorder(g, hex, info.faces); 
+                    break;
+                }
+            }
         }
     }
+
+    private void drawThickBorder(Graphics g, Hexagon hex, int[] faces) {
+        Polygon polygon = hex.getHexagon();
+        ((Graphics2D) g).setStroke(new BasicStroke(3));
+        for (int face : faces) {
+            int i1 = (face + 4) % 6;
+            int i2 = (face + 5) % 6;
+            g.drawLine(polygon.xpoints[i1], polygon.ypoints[i1], polygon.xpoints[i2], polygon.ypoints[i2]);
+        }
+    }
+    
 
     private void handleMouseClick(MouseEvent e) {
         Point clickedPoint = e.getPoint();
