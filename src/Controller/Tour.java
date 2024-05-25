@@ -194,6 +194,3 @@ public class Tour {
         }
     }
 }
-
-
-

@@ -13,7 +13,7 @@ public class Init_Jeu {
     public final List<Requin> requins = new ArrayList<>();
     public final List<Baleine> baleines = new ArrayList<>();
     public final List<SerpentDeMer> serpentDeMer = new ArrayList<>();
-    public final Tuile[] tuiles = new Tuile[40];
+    public final List<Tuile> tuiles=  new ArrayList<>();
     public final DeDeCreature de= new DeDeCreature();
 
     public Init_Jeu() {
@@ -58,7 +58,6 @@ public class Init_Jeu {
         for (int i = 0; i < tuiles.length; i++) {
             tuiles[i] = new Tuile(1, 0);
             tuiles[i].setNumeroTuile(i);
-
             System.out.println(tuiles[i]);
         }
 

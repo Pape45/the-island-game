@@ -6,15 +6,9 @@ import view.*;
 
 public class Main {
     public static void main(String[] args) {
-        Init_Jeu Plateau_de_jeu = new Init_Jeu();
 
-        System.out.println("Jeu initialisé avec succès !");
+            Init_Jeu jeu = new Init_Jeu();
 
-
-
-        Explorateur explorateur = new Explorateur();
-        Plateau_de_jeu.getBarques()[0].addExplorateur(explorateur, 1, 3);
-        Plateau_de_jeu.getBarques()[0].afficherExplorateurs();
 
 
     }

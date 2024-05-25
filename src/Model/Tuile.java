@@ -1,21 +1,22 @@
 package Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Tuile {
-
-    public int faceCachee;
-    public int faceVisible;
-    public int numeroTuile;
+    public int faceCachee;//0
+    public int faceVisible; //1
+    public int typeTuile; // 0 pour forêt, 1 pour montagne, 2 pour plage
     public Position position;
-    public String nom;
+    public final List<Tuile> tuiles = new ArrayList<>();
 
-    public Tuile(int faceCachee, int faceVisible) {
-        this.faceCachee=faceCachee;
-        this.faceVisible=faceVisible;
-
+    public Tuile(int faceCachee, int faceVisible, int typeTuile) {
+        this.faceCachee = faceCachee;
+        this.faceVisible = faceVisible;
+        this.typeTuile = typeTuile;
     }
 
     public Position getPosition() {
-
         return position;
     }
 
@@ -28,7 +29,6 @@ public class Tuile {
     }
 
     public int getFaceVisible() {
-
         return faceVisible;
     }
 
@@ -36,47 +36,47 @@ public class Tuile {
         this.faceVisible = faceVisible;
     }
 
-    public void setNumeroTuile(int numeroTuile){
-        this.numeroTuile=numeroTuile;
+    public void setTypeTuile(int typeTuile) {
+        this.typeTuile = typeTuile;
     }
 
-    public String toString() {
-        return "Tuile= "+ numeroTuile;
+    public int getTypeTuile() {
+        return typeTuile;
+    }
+
+    public void initialiserTuile() {
+        for (int i = 0; i < 16; i++) {
+            tuiles.add(new TuilePlage(0, 1,2));
+        }
+
+        for (int i = 0; i < 16; i++) {
+            tuiles.add(new TuileForet(0, 1,0));
+        }
+
+        for (int i = 0; i < 8; i++) {
+            tuiles.add(new TuileMontagne(0, 1,1));
+        }
     }
 }
 
-
 class TuilePlage extends Tuile {
-
-    public TuilePlage(int faceCachee, int faceVisible) {
-        super(faceCachee, faceVisible);
-
+    public TuilePlage(int faceCachee, int faceVisible,int typeTuile) {
+        super(faceCachee, faceVisible, 2);
     }
-
 }
 
 class TuileForet extends Tuile {
-
-    public TuileForet(int faceCachee, int faceVisible) {
-        super(faceCachee, faceVisible);
+    public TuileForet(int faceCachee, int faceVisible, int typeTuile) {
+        super(faceCachee, faceVisible, 0);
 
     }
-
 }
 
 class TuileMontagne extends Tuile {
-    private String nom;
-    public TuileMontagne(int faceCachee, int faceVisible) {
-        super(faceCachee, faceVisible);
 
-    }
+    public TuileMontagne(int faceCachee, int faceVisible,int typeTuile) {
+        super(faceCachee, faceVisible, 1);
 
-    public void setTypeTuile(){
-        this.nom="Montagne";
-    }
-
-    public String getNom(){
-        return nom;
     }
 
 }
