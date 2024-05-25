@@ -27,7 +27,7 @@ public class HexagonalGrid extends JFrame {
         imagePanel = new ImagePanel();
 
         try {
-            image = ImageIO.read(new File("C:\\Users\\Todoroki\\Pictures\\The_Island_Game\\the-island-game\\src\\view\\theisland.png"));
+            image = ImageIO.read(new File("theisland.png"));
             resizedImage = resizeImage(image, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
         } catch (IOException e) {
             e.printStackTrace();
