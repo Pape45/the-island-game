@@ -9,7 +9,7 @@ public class Init_Jeu {
 
     public final int tour=0;
     public final Joueur[] joueurs = new Joueur[4];
-    public final Barque[] barques = new Barque[12];
+    public final List<Barque> barques = new ArrayList<>();
     public final List<Requin> requins = new ArrayList<>();
     public final List<Baleine> baleines = new ArrayList<>();
     public final List<SerpentDeMer> serpentDeMer = new ArrayList<>();
@@ -27,10 +27,11 @@ public class Init_Jeu {
             }
         }
 
-        for (int i = 0; i < barques.length; i++) {
-            barques[i] = new Barque();
-            barques[i].setNumeroBarque(i);
-            System.out.println(barques[i]);
+        int nombreBarque = 12;
+        for (int i = 0; i < nombreBarque; i++) {
+            barques.add(new Barque());
+            barques.get(i).setNumeroBarque(i);
+            System.out.println(barques.get(i));
         }
 
         int nombreRequin = 6;
@@ -67,11 +68,11 @@ public class Init_Jeu {
         return joueurs;
     }
 
-    public Barque[] getBarques() {
+    /*public Barque[] getBarques() {
         return barques;
     }
 
-    /*public Requin[] getRequins() {
+    public Requin[] getRequins() {
         return requins;
     }
 
