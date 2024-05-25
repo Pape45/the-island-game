@@ -27,9 +27,4 @@ public class PlateauJeu {
         serpentDeMer.add(new SerpentDeMer(new Position(9, 11)));
         serpentDeMer.add(new SerpentDeMer(new Position(0, 6)));
     }
-
-
-    
-
-
 }

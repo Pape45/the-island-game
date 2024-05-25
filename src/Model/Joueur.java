@@ -36,10 +36,5 @@ public class Joueur {
     public List<Tuile> getTuilesEnMain() {
         return tuilesEnMain;
     }
-    
-
-    public static void CreatureMangeExplorateur(Init_Jeu Plateau_de_jeu, int numeroJoueur, int numeroExplorateur){
-        Plateau_de_jeu.joueurs[numeroJoueur].explorateurs.remove(numeroExplorateur);
-    }
 
 }

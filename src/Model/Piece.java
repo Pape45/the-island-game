@@ -14,14 +14,6 @@ public class Piece {
     }
 
 
-    public String getStatus() {
-        return "statut_de_piece";
-    }
-
-    public static List<String> getCaseWherePieceCanGo(String pieceType) {
-        return List.of("type_de_case");
-    }
-
 }
 
 
