@@ -7,6 +7,6 @@ public class Partie {
     PlateauJeu Plateau_de_jeu= new PlateauJeu();
     while(Plateau_de_jeu.state_of_game==0)
     {
-        //tour
+        Tour.tour(Plateau_de_jeu);
     }
 }
