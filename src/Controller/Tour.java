@@ -141,7 +141,7 @@ public class Tour {
         }
     }
 
-    public Position choix_case(){
+    public static Position choix_case(){
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Entrez une valeur de x: ");
