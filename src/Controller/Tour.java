@@ -18,7 +18,6 @@ public class Tour {
         int resultat_de = Plateau_de_jeu.de.lancer();//de.lancer doit retourner un chiffre 0=serpent de mer   1=requin   2=baleine
         int numero_creature=-1;
         int good;
-
         //SERPENT DE MER//
         if (resultat_de==0){
 

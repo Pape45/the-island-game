@@ -21,6 +21,17 @@ public class PlateauJeu {
             joueurs[i] = new Joueur();
         }
 
+        for (int i = 0; i < 16; i++) {
+            tuiles.add(new Tuile.TuilePlage(0, 0));
+        }
+
+        for (int i = 0; i < 16; i++) {
+            tuiles.add(new Tuile.TuileForet(0, 1));
+        }
+
+        for (int i = 0; i < 8; i++) {
+            tuiles.add(new Tuile.TuileMontagne(0, 2));
+        }
 
         serpentDeMer.add(new SerpentDeMer(new Position(-9, 1)));
         serpentDeMer.add(new SerpentDeMer(new Position(10, 2)));

@@ -28,7 +28,6 @@ public class Joueur {
         explorateurs.add(new Explorateur(0, 0, 6));
     }
 
-
     public void ajouterTuile(Tuile tuile) {
         tuilesEnMain.add(tuile);
     }
