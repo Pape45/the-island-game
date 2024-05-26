@@ -151,11 +151,28 @@ public class HexagonalGrid extends JFrame {
         Point clickedPoint = e.getPoint();
         for (Hexagon hex : hexagons) {
             if (hex.getHexagon().contains(clickedPoint)) {
-                System.out.println("Clicked on hexagon at: " + hex.getPosition() + " with value: " + hex.getValue());
+                int x = (int) clickedPoint.getX();
+                int y = (int) clickedPoint.getY();
+    
+                // Convertir les coordonnées x et y en indices
+                int xIndex = convertCoordinateToIndexx(x);
+                int yIndex = convertCoordinateToIndexy(y);
+                
+                System.out.println("Clicked on hexagon at: " + hex.getPosition() + " with value: " + hex.getValue() +
+                                   ", xIndex: " + xIndex + ", yIndex: " + yIndex);
                 break;
             }
         }
     }
+     private int convertCoordinateToIndexx(int coordinatex) {
+        // Convertir la coordonnée en index basé sur un segment de taille 45
+        return coordinatex / 51;
+    }
+    private int convertCoordinateToIndexy(int coordinatey) {
+        // Convertir la coordonnée en index basé sur un segment de taille 45
+        return (coordinatey -40 ) / 45;
+    }
+
 
     private void handleMouseMove(MouseEvent e) {
         Point movedPoint = e.getPoint();
