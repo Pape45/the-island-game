@@ -5,7 +5,6 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import java.util.ArrayList;
 public class HexagonalGrid extends JFrame {
     private BufferedImage image;
     private BufferedImage resizedImage;
+    private BufferedImage settingsIcon;
     private JPanel imagePanel;
     private ArrayList<Hexagon> hexagons;
     private static final int HEX_SIZE = 30;
@@ -21,6 +21,8 @@ public class HexagonalGrid extends JFrame {
     private static final int NEW_IMAGE_HEIGHT = 620; // Nouvelle hauteur de l'image
     private static final int[] indiceMaxLigne = {6, 9, 10, 9, 10, 11, 10, 11, 10, 9, 10, 9, 6};
     private ArrayList<ThickBorderInfo> thickBorders = new ArrayList<>();
+    private int numeroTour;
+    private String nomJoueur;
 
     class ThickBorderInfo {
         Point position;
@@ -42,7 +44,7 @@ public class HexagonalGrid extends JFrame {
 
         try {
             // Key change: Construct the path relative to the class location
-            String imagePath = "theisland.jpg"; 
+            String imagePath = "theisland.jpg";
             URL imageUrl = HexagonalGrid.class.getResource(imagePath);
 
             if (imageUrl != null) {
@@ -50,6 +52,16 @@ public class HexagonalGrid extends JFrame {
                 resizedImage = resizeImage(image, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
             } else {
                 System.err.println("Image not found at: " + imagePath);
+            }
+
+            // Load settings icon
+            String iconPath = "settings.png";
+            URL iconUrl = HexagonalGrid.class.getResource(iconPath);
+
+            if (iconUrl != null) {
+                settingsIcon = ImageIO.read(iconUrl);
+            } else {
+                System.err.println("Settings icon not found at: " + iconPath);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -71,7 +83,7 @@ public class HexagonalGrid extends JFrame {
         });
 
         add(new JScrollPane(imagePanel));
-        
+
         thickBorders.add(new ThickBorderInfo(283, 175, 1, 5, 6));
         thickBorders.add(new ThickBorderInfo(334, 175, 1, 6));
         thickBorders.add(new ThickBorderInfo(385, 175, 1, 6));
@@ -131,13 +143,13 @@ public class HexagonalGrid extends JFrame {
             } else {
                 g.setColor(Color.BLACK);
             }
-    
-            ((Graphics2D) g).setStroke(new BasicStroke(1)); 
+
+            ((Graphics2D) g).setStroke(new BasicStroke(1));
             g.drawPolygon(hex.getHexagon());
-    
+
             for (ThickBorderInfo info : thickBorders) {
                 if (hex.getPosition().equals(info.position)) {
-                    drawThickBorder(g, hex, info.faces); 
+                    drawThickBorder(g, hex, info.faces);
                     break;
                 }
             }
@@ -180,12 +192,73 @@ public class HexagonalGrid extends JFrame {
         imagePanel.repaint();
     }
 
+    public void updateTourAndPlayer(int numeroTour, String nomJoueur) {
+        this.numeroTour = numeroTour;
+        this.nomJoueur = nomJoueur;
+        imagePanel.repaint();
+    }
+
     private class ImagePanel extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             g.drawImage(resizedImage, 0, 0, null);
             drawHexagons(g);
+            drawTourAndPlayerInfo(g);  // Ajouter cette ligne pour dessiner les infos
+            drawSettingsIcon(g); // Ajouter cette ligne pour dessiner l'icône
         }
+
+        private void drawTourAndPlayerInfo(Graphics g) {
+            g.setColor(Color.WHITE);  // Changer la couleur du texte à blanc
+            g.setFont(new Font("Arial", Font.BOLD, 12)); // Taille de police réduite
+
+            // Les informations à afficher
+            String tourText = "Numéro du tour : " + numeroTour;
+            String joueurText = "Nom joueur : " + nomJoueur;
+
+            // Calculer la taille du texte
+            FontMetrics fm = g.getFontMetrics();
+            int tourWidth = fm.stringWidth(tourText);
+            int joueurWidth = fm.stringWidth(joueurText);
+            int height = fm.getHeight();
+
+            // Définir les marges et les dimensions du cadre
+            int padding = 5; // Réduction des marges
+            int width = Math.max(tourWidth, joueurWidth) + 2 * padding;
+            int totalHeight = 2 * height + 3 * padding;
+
+            // Position du cadre
+            int x = 10;
+            int y = 10;
+
+            // Dessiner le cadre
+            g.setColor(Color.BLACK);
+            g.fillRect(x - padding / 2, y - padding / 2, width, totalHeight);
+            g.setColor(Color.WHITE);
+            g.drawRect(x - padding / 2, y - padding / 2, width, totalHeight);
+
+            // Dessiner le texte
+            g.drawString(tourText, x, y + fm.getAscent());
+            g.drawString(joueurText, x, y + height + 2 * padding + fm.getAscent());
+        }
+
+        private void drawSettingsIcon(Graphics g) {
+            if (settingsIcon != null) {
+                int iconWidth = 30; // Largeur souhaitée pour l'icône
+                int iconHeight = 30; // Hauteur souhaitée pour l'icône
+                Image scaledIcon = settingsIcon.getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
+                int x = getWidth() - iconWidth - 20; // 10 pixels de marge par rapport au bord droit
+                int y = 10; // 10 pixels de marge par rapport au bord supérieur
+                g.drawImage(scaledIcon, x, y, this);
+            }
+        }
+
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            HexagonalGrid frame = new HexagonalGrid();
+            frame.setVisible(true);
+        });
     }
 }
