@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
+
 public class HexagonalGrid extends JFrame {
     private BufferedImage image;
     private BufferedImage resizedImage;
@@ -27,7 +29,7 @@ public class HexagonalGrid extends JFrame {
         imagePanel = new ImagePanel();
 
         try {
-            image = ImageIO.read(new File("C:\\Users\\Todoroki\\Documents\\GitHub\\the-island-game\\src\\view\\theisland.png"));
+            image = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\theisland.png"));
             resizedImage = resizeImage(image, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
         } catch (IOException e) {
             e.printStackTrace();
@@ -147,31 +149,26 @@ public class HexagonalGrid extends JFrame {
         }
     }
 
-    private void handleMouseClick(MouseEvent e) {
-        Point clickedPoint = e.getPoint();
-        for (Hexagon hex : hexagons) {
-            if (hex.getHexagon().contains(clickedPoint)) {
-                int x = (int) clickedPoint.getX();
-                int y = (int) clickedPoint.getY();
-    
-                // Convertir les coordonnées x et y en indices
-                int xIndex = convertCoordinateToIndexx(x);
-                int yIndex = convertCoordinateToIndexy(y);
-                
-                System.out.println("Clicked on hexagon at: " + hex.getPosition() + " with value: " + hex.getValue() +
-                                   ", xIndex: " + xIndex + ", yIndex: " + yIndex);
-                break;
-            }
+private void handleMouseClick(MouseEvent e) {
+    Point clickedPoint = e.getPoint();
+    for (Hexagon hex : hexagons) {
+        if (hex.getHexagon().contains(clickedPoint)) {
+            Point position = hex.getPosition();
+            
+            // Modify x and y values as needed
+            int newX = (int) ((position.getX())/25.5)-14;
+            int newY = (int) ((position.getY()-40) / 45);
+            
+            // Create a new Point to avoid modifying the original reference directly
+            Point newPosition = new Point(newX, newY);
+            
+            // Print the new position
+            System.out.println(newPosition);
+            break;
         }
     }
-     private int convertCoordinateToIndexx(int coordinatex) {
-        // Convertir la coordonnée en index basé sur un segment de taille 45
-        return coordinatex / 51;
-    }
-    private int convertCoordinateToIndexy(int coordinatey) {
-        // Convertir la coordonnée en index basé sur un segment de taille 45
-        return (coordinatey -40 ) / 45;
-    }
+}
+
 
 
     private void handleMouseMove(MouseEvent e) {
