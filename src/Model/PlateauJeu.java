@@ -21,16 +21,27 @@ public class PlateauJeu {
             joueurs[i] = new Joueur();
         }
 
+        List<Position> positions_tuiles = Tuile.init_position_tuiles();
+
         for (int i = 0; i < 16; i++) {
+            int randomInt = (int) (Math.random() * positions_tuiles.size());
             tuiles.add(new Tuile.TuilePlage(0, 0));
+            tuiles.get(i).setPosition(new Position(positions_tuiles.get(randomInt).getX(),positions_tuiles.get(randomInt).getY()));
+            positions_tuiles.remove(randomInt);
         }
 
         for (int i = 0; i < 16; i++) {
+            int randomInt = (int) (Math.random() * positions_tuiles.size());
             tuiles.add(new Tuile.TuileForet(0, 1));
+            tuiles.get(i).setPosition(new Position(positions_tuiles.get(randomInt).getX(),positions_tuiles.get(randomInt).getY()));
+            positions_tuiles.remove(randomInt);
         }
 
         for (int i = 0; i < 8; i++) {
+            int randomInt = (int) (Math.random() * positions_tuiles.size());
             tuiles.add(new Tuile.TuileMontagne(0, 2));
+            tuiles.get(i).setPosition(new Position(positions_tuiles.get(randomInt).getX(),positions_tuiles.get(randomInt).getY()));
+            positions_tuiles.remove(randomInt);
         }
 
         serpentDeMer.add(new SerpentDeMer(new Position(-9, 1)));
