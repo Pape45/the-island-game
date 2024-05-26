@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Tour {
 
+    private static final Scanner scanner = new Scanner(System.in);
 
     public static void tour(PlateauJeu Plateau_de_jeu){
         deplacerCreature(Plateau_de_jeu);
@@ -23,27 +24,37 @@ public class Tour {
 
             Position position_depart;
             Position position_arrivee;
+
             do {
+                System.out.println("test");
                 position_depart = choix_case();
+
                 for (int i = 0; i < Plateau_de_jeu.serpentDeMer.size(); i++) {
-                    if (Plateau_de_jeu.serpentDeMer.get(i).getPosition().equals(position_depart)) {
+                    if (Position.isPositionsEquals(Plateau_de_jeu.serpentDeMer.get(i).getPosition(),position_depart)) {
                         numero_creature = i;
+                        break;
                     }
                 }
             } while (numero_creature == -1);
+
+            System.out.println("Monstre sélectionné");
 
             do {
                 position_arrivee = choix_case();
                 good = 1;
                 List<Position> voisins = Position.getNeighbors(position_depart);
                 for (int i = 0; i < Plateau_de_jeu.tuiles.size(); i++) {
-                    if (Plateau_de_jeu.tuiles.get(i).getPosition().equals(position_arrivee) || !voisins.contains(position_arrivee)) {
+                    if (Position.isPositionsEquals(Plateau_de_jeu.tuiles.get(i).getPosition(),position_arrivee)) {
                         good = -1;
                     }
                 }
+                if(!Position.isPositionContains(voisins,position_arrivee)){
+                    good = -1;
+                }
             } while (good == -1);
-
+            System.out.println("Position arrivée sélectionné");
             Plateau_de_jeu.serpentDeMer.get(numero_creature).setPosition(position_arrivee);
+
             SerpentDeMer.RetournerBarqueMangerNageur(Plateau_de_jeu, numero_creature);
         }
 
@@ -55,20 +66,22 @@ public class Tour {
                 Position position_depart;
                 Position position_arrivee;
                 do {
+
                     position_depart = choix_case();
                     for (int i = 0; i < Plateau_de_jeu.requins.size(); i++) {
-                        if (Plateau_de_jeu.requins.get(i).getPosition().equals(position_depart)) {
+                        if (Position.isPositionsEquals(Plateau_de_jeu.requins.get(i).getPosition(),position_depart)) {
                             numero_creature = i;
                         }
                     }
                 } while (numero_creature == -1);
 
                 do {
+
                     position_arrivee = choix_case();
                     good = 1;
                     List<Position> voisins = Position.getNeighbors(position_depart);
                     for (int i = 0; i < Plateau_de_jeu.tuiles.size(); i++) {
-                        if (Plateau_de_jeu.tuiles.get(i).getPosition().equals(position_arrivee) || !voisins.contains(position_arrivee)) {
+                        if (Position.isPositionsEquals(Plateau_de_jeu.tuiles.get(i).getPosition(),position_arrivee) || !voisins.contains(position_arrivee)) {
                             good = -1;
                         }
                     }
@@ -90,18 +103,19 @@ public class Tour {
                 do {
                     position_depart = choix_case();
                     for (int i = 0; i < Plateau_de_jeu.baleines.size(); i++) {
-                        if (Plateau_de_jeu.baleines.get(i).getPosition().equals(position_depart)) {
+                        if (Position.isPositionsEquals(Plateau_de_jeu.baleines.get(i).getPosition(),position_depart)) {
                             numero_creature = i;
                         }
                     }
                 } while (numero_creature == -1);
 
                 do {
+
                     position_arrivee = choix_case();
                     good = 1;
                     List<Position> voisins = Position.getNeighbors(position_depart);
                     for (int i = 0; i < Plateau_de_jeu.tuiles.size(); i++) {
-                        if (Plateau_de_jeu.tuiles.get(i).getPosition().equals(position_arrivee) || !voisins.contains(position_arrivee)) {
+                        if (Position.isPositionsEquals(Plateau_de_jeu.tuiles.get(i).getPosition(),position_arrivee) || !voisins.contains(position_arrivee)) {
                             good = -1;
                         }
                     }
@@ -123,6 +137,7 @@ public class Tour {
             Position position_arrivee;
             List<Position> voisins;
 
+
             do {
                 position_depart = choix_case();
                 numero_explorateur = Explorateur.get_explorateur(Plateau_de_jeu.tour,position_depart,Plateau_de_jeu);
@@ -139,20 +154,18 @@ public class Tour {
                 break;
             }
         }
+
     }
 
     public static Position choix_case(){
-        Scanner scanner = new Scanner(System.in);
 
         System.out.print("Entrez une valeur de x: ");
-        int x = Integer.parseInt(scanner.nextLine());
+        int x = scanner.nextInt();
 
         System.out.print("Entrez une valeur de y: ");
-        int y = Integer.parseInt(scanner.nextLine());
-        Position position = new Position(x,y);
+        int y = scanner.nextInt();
 
-        scanner.close();
-        return position;
+        return new Position(x,y);
     }
 
 }

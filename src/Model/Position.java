@@ -50,12 +50,26 @@ public class Position {
         if(abs(pos_x+1) < indiceMaxLigne[pos_y-1] && pos_y-1>=0)
             neighbors.add(new Position(pos_x+1, pos_y-1));   //voisin en haut à droite
 
-        if(abs(pos_x-1) < indiceMaxLigne[pos_y+1] && pos_y+1>= nbLigne)   //voisin en bas à gauche
+        if(abs(pos_x-1) < indiceMaxLigne[pos_y+1] && pos_y+1<= nbLigne)   //voisin en bas à gauche
             neighbors.add(new Position(pos_x-1, pos_y+1));
 
-        if(abs(pos_x+1) < indiceMaxLigne[pos_y+1] && pos_y+1>= nbLigne)   //voisin en bas à droite
+        if(abs(pos_x+1) < indiceMaxLigne[pos_y+1] && pos_y+1<= nbLigne)   //voisin en bas à droite
             neighbors.add(new Position(pos_x+1, pos_y+1));
 
         return neighbors;
     }
+
+    public static boolean isPositionsEquals(Position position1, Position position2) {
+        return position1.getX() == position2.getX() && position1.getY() == position2.getY();
+    }
+
+    public static boolean isPositionContains(List<Position> voisins, Position position) {
+        for(int i=0; i<voisins.size(); i++){
+            if(voisins.get(i).getX() == position.getX() && voisins.get(i).getY() == position.getY()){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

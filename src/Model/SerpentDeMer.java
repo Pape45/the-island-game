@@ -12,10 +12,10 @@ public class SerpentDeMer extends Piece {
             }
         }
 
-        for (int j = 0; j < Plateau_de_jeu.joueurs.length; j++) {
-            for (int k = 0; k < Plateau_de_jeu.joueurs[j].explorateurs.size(); j++) {
+        for (int j = 0; j < Plateau_de_jeu.joueurs.length-1; j++) {
+            for (int k = 0; k < Plateau_de_jeu.joueurs[j].explorateurs.size(); k++) {
                 Position pos_explorateur = Plateau_de_jeu.joueurs[j].explorateurs.get(k).getPosition();
-                if(pos_serpent_de_mer.equals(pos_explorateur)) {
+                if(Position.isPositionsEquals(pos_serpent_de_mer,pos_explorateur)) {
                     Plateau_de_jeu.joueurs[j].explorateurs.remove(k);
                 }
             }
