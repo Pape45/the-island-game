@@ -31,8 +31,8 @@ public class Hexagon {
     public Point getPosition() {
         return position;
     }
+
     public int getValue() {
         return value;
     }
 }
-

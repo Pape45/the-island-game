@@ -1,8 +1,8 @@
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,15 +19,15 @@ public class HexagonalGrid extends JFrame {
     private static final int[] indiceMaxLigne = {6, 9, 10, 9, 10, 11, 10, 11, 10, 9, 10, 9, 6};
 
     public HexagonalGrid() {
-        setTitle("Hexagonal Grid on Image");
+        setTitle("Hexagonal Grid Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(750, 650);
+        setLayout(new BorderLayout());
 
         hexagons = new ArrayList<>();
         imagePanel = new ImagePanel();
 
         try {
-            image = ImageIO.read(new File("theisland.png"));
+            image = ImageIO.read(new File("C:\\Users\\Todoroki\\Documents\\GitHub\\the-island-game\\src\\view\\theisland.png"));
             resizedImage = resizeImage(image, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,8 +48,15 @@ public class HexagonalGrid extends JFrame {
             }
         });
 
-        add(new JScrollPane(imagePanel));
+        add(createPlayerPanel(), BorderLayout.NORTH);
+        add(new JScrollPane(imagePanel), BorderLayout.CENTER);
+        add(createControlPanel(), BorderLayout.EAST);
+        add(createInfoPanel(), BorderLayout.SOUTH);
+
         createHexagonalGrid();
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 
     private BufferedImage resizeImage(BufferedImage originalImage, int width, int height) {
@@ -60,20 +67,66 @@ public class HexagonalGrid extends JFrame {
         return resizedImage;
     }
 
+    private JPanel createPlayerPanel() {
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(getWidth(), 50));
+        panel.setBackground(Color.LIGHT_GRAY);
+
+        JLabel playerLabel = new JLabel("Joueur : 1", JLabel.CENTER);
+        playerLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        panel.add(playerLabel);
+
+        return panel;
+    }
+
+    private JPanel createControlPanel() {
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(200, getHeight()));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.DARK_GRAY);
+
+        JButton pieceButton = new JButton("Pion");
+        JButton saveButton = new JButton("Sauvegarder");
+
+        pieceButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        saveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        panel.add(Box.createVerticalStrut(20));
+        panel.add(pieceButton);
+        panel.add(Box.createVerticalStrut(20));
+        panel.add(saveButton);
+
+        return panel;
+    }
+
+    private JPanel createInfoPanel() {
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(getWidth(), 100));
+        panel.setLayout(new BorderLayout());
+        panel.setBackground(Color.GRAY);
+
+        JButton listButton = new JButton("Liste tuiles en main");
+        JButton saveQuitButton = new JButton("Sauver et quitter");
+
+        panel.add(listButton, BorderLayout.CENTER);
+        panel.add(saveQuitButton, BorderLayout.EAST);
+
+        return panel;
+    }
+
     private void createHexagonalGrid() {
         hexagons.clear(); // Clear any existing hexagons
         int radius = HEX_SIZE;
         int horiz = (int) (Math.sqrt(3) * radius);
         int vert = 2 * radius;
         int yOffset = 40;
-    
+
         for (int row = 0; row < indiceMaxLigne.length; row++) {
             int numHexagons = indiceMaxLigne[row] + 1;
             int xOffset = (NEW_IMAGE_WIDTH - (numHexagons - 1) * horiz) / 2;
-            int startValue;
-            startValue = -numHexagons + 1 ;            
+            int startValue = -numHexagons + 1;
             int increment = 2;
-            
+
             for (int col = 0; col < numHexagons; col++) {
                 int x = xOffset + col * horiz;
                 int y = yOffset + row * vert * 3 / 4;
@@ -82,12 +135,13 @@ public class HexagonalGrid extends JFrame {
             }
         }
     }
+
     private void drawHexagons(Graphics g) {
         for (Hexagon hex : hexagons) {
             if (hex == hoveredHexagon) {
-                g.setColor(Color.RED);  // Couleur de survol
+                g.setColor(Color.RED); // Couleur de survol
             } else {
-                g.setColor(Color.BLACK);  // Couleur par défaut
+                g.setColor(Color.BLACK); // Couleur par défaut
             }
             g.drawPolygon(hex.getHexagon());
         }
