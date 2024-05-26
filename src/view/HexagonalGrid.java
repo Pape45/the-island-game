@@ -23,6 +23,8 @@ public class HexagonalGrid extends JFrame {
     private ArrayList<ThickBorderInfo> thickBorders = new ArrayList<>();
     private int numeroTour;
     private String nomJoueur;
+    private String temporaryMessage;
+    private Timer messageTimer;
 
     class ThickBorderInfo {
         Point position;
@@ -198,61 +200,95 @@ public class HexagonalGrid extends JFrame {
         imagePanel.repaint();
     }
 
+    public void showTemporaryMessage(String message, int durationMs) {
+        temporaryMessage = message;
+        imagePanel.repaint();
+
+        if (messageTimer != null) {
+            messageTimer.stop();
+        }
+
+        messageTimer = new Timer(durationMs, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                temporaryMessage = null;
+                imagePanel.repaint();
+            }
+        });
+
+        messageTimer.setRepeats(false);
+        messageTimer.start();
+    }
+
     private class ImagePanel extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             g.drawImage(resizedImage, 0, 0, null);
             drawHexagons(g);
-            drawTourAndPlayerInfo(g);  // Ajouter cette ligne pour dessiner les infos
-            drawSettingsIcon(g); // Ajouter cette ligne pour dessiner l'icône
+            drawTourAndPlayerInfo(g);
+            drawSettingsIcon(g);
+            drawTemporaryMessage(g);
         }
 
         private void drawTourAndPlayerInfo(Graphics g) {
-            g.setColor(Color.WHITE);  // Changer la couleur du texte à blanc
-            g.setFont(new Font("Arial", Font.BOLD, 12)); // Taille de police réduite
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.BOLD, 12));
 
             // Les informations à afficher
             String tourText = "Numéro du tour : " + numeroTour;
             String joueurText = "Nom joueur : " + nomJoueur;
 
-            // Calculer la taille du texte
             FontMetrics fm = g.getFontMetrics();
             int tourWidth = fm.stringWidth(tourText);
             int joueurWidth = fm.stringWidth(joueurText);
             int height = fm.getHeight();
 
-            // Définir les marges et les dimensions du cadre
-            int padding = 5; // Réduction des marges
+            int padding = 5;
             int width = Math.max(tourWidth, joueurWidth) + 2 * padding;
             int totalHeight = 2 * height + 3 * padding;
 
-            // Position du cadre
             int x = 10;
             int y = 10;
 
-            // Dessiner le cadre
             g.setColor(Color.BLACK);
             g.fillRect(x - padding / 2, y - padding / 2, width, totalHeight);
             g.setColor(Color.WHITE);
             g.drawRect(x - padding / 2, y - padding / 2, width, totalHeight);
 
-            // Dessiner le texte
             g.drawString(tourText, x, y + fm.getAscent());
             g.drawString(joueurText, x, y + height + 2 * padding + fm.getAscent());
         }
 
         private void drawSettingsIcon(Graphics g) {
             if (settingsIcon != null) {
-                int iconWidth = 30; // Largeur souhaitée pour l'icône
-                int iconHeight = 30; // Hauteur souhaitée pour l'icône
+                int iconWidth = 30;
+                int iconHeight = 30;
                 Image scaledIcon = settingsIcon.getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
-                int x = getWidth() - iconWidth - 20; // 10 pixels de marge par rapport au bord droit
-                int y = 10; // 10 pixels de marge par rapport au bord supérieur
+                int x = getWidth() - iconWidth - 20;
+                int y = 10;
                 g.drawImage(scaledIcon, x, y, this);
             }
         }
 
+        private void drawTemporaryMessage(Graphics g) {
+            if (temporaryMessage != null) {
+                g.setColor(Color.YELLOW);
+                g.setFont(new Font("Arial", Font.BOLD, 20));
+
+                FontMetrics fm = g.getFontMetrics();
+                int messageWidth = fm.stringWidth(temporaryMessage);
+                int messageHeight = fm.getHeight();
+
+                int x = (getWidth() - messageWidth) / 2;
+                int y = (getHeight() - messageHeight) / 2;
+
+                g.setColor(Color.BLACK);
+                g.fillRect(x - 10, y - fm.getAscent() - 10, messageWidth + 20, messageHeight + 20);
+                g.setColor(Color.YELLOW);
+                g.drawString(temporaryMessage, x, y);
+            }
+        }
     }
 
     public static void main(String[] args) {
