@@ -1,3 +1,7 @@
+package view;
+
+import Model.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -6,8 +10,6 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-
-
 
 public class HexagonalGrid extends JFrame {
     private BufferedImage image;
@@ -29,7 +31,7 @@ public class HexagonalGrid extends JFrame {
         imagePanel = new ImagePanel();
 
         try {
-            image = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\theisland.png"));
+            image = ImageIO.read(new File("C:\\Users\\allan\\OneDrive\\Documents\\GitHub\\the-island-game\\src\\view\\theisland.png"));
             resizedImage = resizeImage(image, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
         } catch (IOException e) {
             e.printStackTrace();
@@ -39,7 +41,7 @@ public class HexagonalGrid extends JFrame {
         imagePanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                handleMouseClick(e);
+                choix_case(e);
             }
         });
 
@@ -149,24 +151,20 @@ public class HexagonalGrid extends JFrame {
         }
     }
 
-private void handleMouseClick(MouseEvent e) {
+public void Position choix_case(MouseEvent e) {
     Point clickedPoint = e.getPoint();
     for (Hexagon hex : hexagons) {
         if (hex.getHexagon().contains(clickedPoint)) {
             Point position = hex.getPosition();
-            
-            // Modify x and y values as needed
+
             int newX = (int) ((position.getX())/25.5)-14;
             int newY = (int) ((position.getY()-40) / 45);
-            
-            // Create a new Point to avoid modifying the original reference directly
-            Point newPosition = new Point(newX, newY);
-            
-            // Print the new position
-            System.out.println(newPosition);
-            break;
+
+            Position position_clique = new Position(newX,newY);
+            return position_clique;
         }
     }
+
 }
 
 

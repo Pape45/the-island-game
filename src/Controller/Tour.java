@@ -1,5 +1,7 @@
 package Controller;
 import Model.*;
+import view.HexagonalGrid;
+
 import java.util.Scanner;
 
 import java.util.List;
@@ -81,9 +83,12 @@ public class Tour {
                     good = 1;
                     List<Position> voisins = Position.getNeighbors(position_depart);
                     for (int i = 0; i < Plateau_de_jeu.tuiles.size(); i++) {
-                        if (Position.isPositionsEquals(Plateau_de_jeu.tuiles.get(i).getPosition(),position_arrivee) || !voisins.contains(position_arrivee)) {
+                        if (Position.isPositionsEquals(Plateau_de_jeu.tuiles.get(i).getPosition(),position_arrivee)) {
                             good = -1;
                         }
+                    }
+                    if(!Position.isPositionContains(voisins,position_arrivee)){
+                        good = -1;
                     }
                 } while (good == -1);
 
@@ -115,9 +120,12 @@ public class Tour {
                     good = 1;
                     List<Position> voisins = Position.getNeighbors(position_depart);
                     for (int i = 0; i < Plateau_de_jeu.tuiles.size(); i++) {
-                        if (Position.isPositionsEquals(Plateau_de_jeu.tuiles.get(i).getPosition(),position_arrivee) || !voisins.contains(position_arrivee)) {
+                        if (Position.isPositionsEquals(Plateau_de_jeu.tuiles.get(i).getPosition(),position_arrivee)) {
                             good = -1;
                         }
+                    }
+                    if(!Position.isPositionContains(voisins,position_arrivee)){
+                        good = -1;
                     }
                 } while (good == -1);
 
