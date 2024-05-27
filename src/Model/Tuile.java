@@ -31,7 +31,7 @@ public class Tuile {
         for(int i=0; i<Plateau_de_jeu.tuiles.size(); i++) {
             nombreTuiles[Plateau_de_jeu.tuiles.get(i).typeTuile]++;
         }
-        System.out.println(Plateau_de_jeu.tuiles.get(0).typeTuile);
+        //System.out.println(Plateau_de_jeu.tuiles.get(0).typeTuile);
         return nombreTuiles;
     }
 
@@ -213,7 +213,7 @@ public class Tuile {
         List<Position> voisins_tourbillon= Position.getNeighbors(position_tuile);
         for(int i=0; i<voisins_tourbillon.size(); i++){
             for(int j=0; j<Plateau_de_jeu.tuiles.size(); j++){
-                if(!Position.isPositionsEquals(voisins_tourbillon.get(i),Plateau_de_jeu.tuiles.get(j).getPosition()));{
+                if(!Position.isPositionsEquals(voisins_tourbillon.get(i),Plateau_de_jeu.tuiles.get(j).getPosition())){
                     for (int k = 0; k < Plateau_de_jeu.requins.size(); k++) {
                         if (Position.isPositionsEquals(voisins_tourbillon.get(i),Plateau_de_jeu.requins.get(k).getPosition())) {
                             Plateau_de_jeu.requins.remove(k);
@@ -231,8 +231,9 @@ public class Tuile {
                     }
                     for (int k = 0; k < Plateau_de_jeu.joueurs.length; k++) {
                         for (int l = 0; l < Plateau_de_jeu.joueurs[k].explorateurs.size(); l++) {
-                            if(Position.isPositionsEquals(voisins_tourbillon.get(i),Plateau_de_jeu.joueurs[k].explorateurs.get(l).getPosition()));
+                            if(Position.isPositionsEquals(voisins_tourbillon.get(i),Plateau_de_jeu.joueurs[k].explorateurs.get(l).getPosition())) {
                                 Plateau_de_jeu.joueurs[k].explorateurs.remove(l);
+                            }
                         }
                     }
                     for (int k = 0; k < Plateau_de_jeu.barques.size(); k++) {
@@ -247,7 +248,6 @@ public class Tuile {
 
     public static void deplacerRequinAction(PlateauJeu Plateau_de_jeu) throws InterruptedException {
         int numero_requin = -1;
-        int good;
 
         Position position_depart;
         Position position_arrivee;
@@ -272,7 +272,6 @@ public class Tuile {
 
     public static void deplacerBaleineAction(PlateauJeu Plateau_de_jeu) throws InterruptedException {
         int numero_baleine = -1;
-        int good;
 
         Position position_depart;
         Position position_arrivee;
@@ -296,7 +295,6 @@ public class Tuile {
 
     public static void deplacerSerpentDeMerAction(PlateauJeu Plateau_de_jeu) throws InterruptedException {
         int numero_SerpentDeMer = -1;
-        int good;
 
         Position position_depart;
         Position position_arrivee;
