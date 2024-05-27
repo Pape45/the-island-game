@@ -192,9 +192,9 @@ public class PlateauJeu {
         //System.out.println(tuiles.get(i).getPosition().getX() +" "+  tuiles.get(i).getPosition().getY());
         positions_tuiles.remove(randomInt);
 
-        for(int i = 0; i < 40; i++) {
+        /*for(int i = 0; i < 40; i++) {
             System.out.println(tuiles.get(i).getPosition().getX() +" "+  tuiles.get(i).getPosition().getY() +" "+ tuiles.get(i).getFaceCachee());
-        }
+        }*/
 
         serpentDeMer.add(new SerpentDeMer(new Position(-9, 1)));
         serpentDeMer.add(new SerpentDeMer(new Position(10, 2)));

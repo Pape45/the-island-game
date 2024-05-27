@@ -16,4 +16,8 @@ public class Requin extends Piece {
         }
         return explorateur_mange;
     }
+
+    public Requin(Position position) {
+        this.position = position;
+    }
 }
