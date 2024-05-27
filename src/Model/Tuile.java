@@ -185,10 +185,17 @@ public class Tuile {
         int indice_barque=Plateau_de_jeu.barques.size();
         int row=0,col=0;
         Plateau_de_jeu.barques.add(new Barque(position_tuile));
+        for(int i=0;i<3;i++){
+            for(int k=0;k<2;k++){
+                Plateau_de_jeu.barques.get(indice_barque).setValue(i,k,-1);
+            }
+        }
+
         for (int i= 0; i < Plateau_de_jeu.joueurs.length; i++) {
             for (int k = 0; k < Plateau_de_jeu.joueurs[i].explorateurs.size(); k++) {
                 col=0;
                 if(Position.isPositionsEquals(position_tuile,Plateau_de_jeu.joueurs[i].explorateurs.get(k).getPosition())){
+                    Plateau_de_jeu.joueurs[i].explorateurs.get(k).setStatut(2);
                     Plateau_de_jeu.barques.get(indice_barque).setValue(row,col,i);
                     col++;
                     Plateau_de_jeu.barques.get(indice_barque).setValue(row,col,k);
@@ -363,11 +370,57 @@ public class Tuile {
         for(int i=0;i<3;i++) {
             do {
                 position_arrivee = Tour.choix_case();
-                voisins = Position.getNeighbors(position_depart);
+                voisins = Position.getNeighbors(Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getPosition());
             } while (!voisins.contains(position_arrivee));
 
             Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).setPosition(position_arrivee);
         }
+    }
+
+    public static void deplacementBarqueAction(PlateauJeu Plateau_de_jeu) throws InterruptedException {
+        int numero_barque=-1;
+        Position position_depart;
+        Position position_arrivee;
+        List<Position> voisins;
+
+        do {
+            position_depart = Tour.choix_case();
+            for(int i=0; i<Plateau_de_jeu.barques.size(); i++){
+                if(Position.isPositionsEquals(position_depart,Plateau_de_jeu.barques.get(i).getPosition())){
+                    numero_barque=i;
+                }
+            }
+
+        } while (numero_barque== -1);
+
+        int good;
+        for(int k=0;k<3;k++) {
+            do {
+                position_arrivee = Tour.choix_case();
+                good = 1;
+                voisins = Position.getNeighbors(Plateau_de_jeu.barques.get(numero_barque).getPosition());
+                for (int i = 0; i < Plateau_de_jeu.tuiles.size(); i++) {
+                    if (Position.isPositionsEquals(Plateau_de_jeu.tuiles.get(i).getPosition(), position_arrivee)) {
+                        good = -1;
+                    }
+                }
+                if (!Position.isPositionContains(voisins, position_arrivee)) {
+                    good = -1;
+                }
+            } while (good == -1);
+
+            Plateau_de_jeu.barques.get(numero_barque).setPosition(position_arrivee);
+            int joueur;
+            int explorateur;
+            for(int r=0; r<3; r++){
+                if(Plateau_de_jeu.barques.get(numero_barque).getValue(r,0)==-1){
+                    joueur=Plateau_de_jeu.barques.get(numero_barque).getValue(r,0);
+                    explorateur=Plateau_de_jeu.barques.get(numero_barque).getValue(r,1);
+                    Plateau_de_jeu.joueurs[joueur].explorateurs.get(explorateur).setPosition(position_arrivee);
+                }
+            }
+        }
+
     }
 
 }

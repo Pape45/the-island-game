@@ -15,7 +15,7 @@ public class SerpentDeMer extends Piece {
         for (int j = 0; j < Plateau_de_jeu.joueurs.length-1; j++) {
             for (int k = 0; k < Plateau_de_jeu.joueurs[j].explorateurs.size(); k++) {
                 Position pos_explorateur = Plateau_de_jeu.joueurs[j].explorateurs.get(k).getPosition();
-                if(Position.isPositionsEquals(pos_serpent_de_mer,pos_explorateur)) {
+                if(Position.isPositionsEquals(pos_serpent_de_mer,pos_explorateur)  && Plateau_de_jeu.joueurs[j].explorateurs.get(k).getStatut()==1) {
                     Plateau_de_jeu.joueurs[j].explorateurs.remove(k);
                 }
             }

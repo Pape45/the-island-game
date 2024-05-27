@@ -8,7 +8,7 @@ public class Requin extends Piece {
         for (int j = 0; j < Plateau_de_jeu.joueurs.length; j++) {
             for (int k = 0; k < Plateau_de_jeu.joueurs[j].explorateurs.size(); j++) {
                 Position pos_explorateur = Plateau_de_jeu.joueurs[j].explorateurs.get(k).getPosition();
-                if(pos_requin.equals(pos_explorateur)){
+                if(pos_requin.equals(pos_explorateur) && Plateau_de_jeu.joueurs[j].explorateurs.get(k).getStatut()==1){
                     Plateau_de_jeu.joueurs[j].explorateurs.remove(k);
                     explorateur_mange++;
                 }

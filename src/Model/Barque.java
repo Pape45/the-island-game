@@ -16,7 +16,7 @@ public class Barque extends Piece {
     public void setValue(int row, int col, int value) {
         barque[row][col] = value;
     }
-    public static int getValue(int row, int col) {return barque[row][col];}
+    public int getValue(int row, int col) {return barque[row][col];}
 }
     
 

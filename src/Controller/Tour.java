@@ -82,7 +82,7 @@ public class Tour {
                 do {
                     position_arrivee = choix_case();
                     good = 1;
-                    List<Position> voisins = Position.getNeighbors(position_depart);
+                    List<Position> voisins = Position.getNeighbors(Plateau_de_jeu.requins.get(numero_creature).getPosition());
                     for (int i = 0; i < Plateau_de_jeu.tuiles.size(); i++) {
                         if (Position.isPositionsEquals(Plateau_de_jeu.tuiles.get(i).getPosition(), position_arrivee)) {
                             good = -1;
@@ -120,7 +120,7 @@ public class Tour {
 
                     position_arrivee = choix_case();
                     good = 1;
-                    List<Position> voisins = Position.getNeighbors(position_depart);
+                    List<Position> voisins = Position.getNeighbors(Plateau_de_jeu.baleines.get(numero_creature).getPosition());
                     for (int i = 0; i < Plateau_de_jeu.tuiles.size(); i++) {
                         if (Position.isPositionsEquals(Plateau_de_jeu.tuiles.get(i).getPosition(), position_arrivee)) {
                             good = -1;
@@ -139,13 +139,12 @@ public class Tour {
     }
 
     public void deplacer_explorateur(PlateauJeu Plateau_de_jeu) throws InterruptedException {
-        for (int i = 0; i < 3; i++) {
+        for (int k = 0; k < 3; k++) {
 
             int numero_explorateur;
             Position position_depart;
             Position position_arrivee;
             List<Position> voisins;
-
 
             do {
                 position_depart = choix_case();
@@ -154,13 +153,36 @@ public class Tour {
 
             do {
                 position_arrivee = choix_case();
-                voisins = Position.getNeighbors(position_depart);
+                voisins = Position.getNeighbors(Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getPosition());
             } while (!voisins.contains(position_arrivee));
 
             int type_explorateur = Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getStatut();
             Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).setPosition(position_arrivee);
+
             if (type_explorateur == 1) {
                 break;
+            }
+
+            for(int i=0; i<Plateau_de_jeu.tuiles.size();i++){
+                if(Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getStatut()!=0 && Position.isPositionsEquals( Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getPosition(), Plateau_de_jeu.tuiles.get(i).getPosition())){
+                    Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).setStatut(0);
+                }
+            }
+
+            if(Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).isInWater(Plateau_de_jeu) && Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getStatut()!=1){
+                Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).setStatut(1);
+            }
+
+            for(int i=0; i<Plateau_de_jeu.barques.size();i++){
+                if(Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getStatut()!=2 &&Position.isPositionsEquals( Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getPosition(), Plateau_de_jeu.barques.get(i).getPosition())){
+                    Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).setStatut(2);
+                    for(int r=0; r<3; r++){
+                        if(Plateau_de_jeu.barques.get(i).getValue(r,0)==-1){
+                            Plateau_de_jeu.barques.get(i).setValue(r,0,Plateau_de_jeu.tour % 4);
+                            Plateau_de_jeu.barques.get(i).setValue(r,1,numero_explorateur);
+                        }
+                    }
+                }
             }
         }
 
