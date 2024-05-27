@@ -8,7 +8,6 @@ public class Tuile {
     public int faceCachee;//
     public int typeTuile; // 1 pour forêt, 2 pour montagne, 0 pour plage
     public Position position;
-    public final List<Tuile> tuiles = new ArrayList<>();
 
     public Tuile(int faceCachee, int typeTuile) {
         this.faceCachee = faceCachee;
@@ -21,24 +20,6 @@ public class Tuile {
 
     public void setPosition(Position newPosition) {
         this.position = newPosition;
-    }
-
-    static class TuilePlage extends Tuile {
-        public TuilePlage(int faceCachee, int typeTuile) {
-            super(faceCachee, 2);
-        }
-    }
-
-    static class TuileForet extends Tuile {
-        public TuileForet(int faceCachee, int typeTuile) {
-            super(faceCachee, 0);
-        }
-    }
-
-    static class TuileMontagne extends Tuile {
-        public TuileMontagne(int faceCachee, int typeTuile) {
-            super(faceCachee, 1);
-        }
     }
 
     public static int[] nombreTuile(PlateauJeu Plateau_de_jeu){

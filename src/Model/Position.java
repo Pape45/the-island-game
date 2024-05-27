@@ -38,22 +38,22 @@ public class Position {
         int nbLigne=13;
         int[] indiceMaxLigne= {6,9,10,9,10,11,10,11,10,9,10,9,6};
 
-        if(abs(pos_x-2) < indiceMaxLigne[pos_y])
+        if(abs(pos_x-2) <= indiceMaxLigne[pos_y])
             neighbors.add(new Position(pos_x-2, pos_y));  //voisin de gauche
 
-        if(abs(pos_x+2) < indiceMaxLigne[pos_y])
+        if(abs(pos_x+2) <= indiceMaxLigne[pos_y])
             neighbors.add(new Position(pos_x+2, pos_y));   //voisin de droite
 
-        if(abs(pos_x-1) < indiceMaxLigne[pos_y-1] && pos_y-1>=0)
+        if(abs(pos_x-1) <= indiceMaxLigne[pos_y-1] && pos_y-1>=0)
             neighbors.add(new Position(pos_x-1, pos_y-1));  //voisin en haut à gauche
 
-        if(abs(pos_x+1) < indiceMaxLigne[pos_y-1] && pos_y-1>=0)
+        if(abs(pos_x+1) <= indiceMaxLigne[pos_y-1] && pos_y-1>=0)
             neighbors.add(new Position(pos_x+1, pos_y-1));   //voisin en haut à droite
 
-        if(abs(pos_x-1) < indiceMaxLigne[pos_y+1] && pos_y+1<= nbLigne)   //voisin en bas à gauche
+        if(abs(pos_x-1) <= indiceMaxLigne[pos_y+1] && pos_y+1<= nbLigne)   //voisin en bas à gauche
             neighbors.add(new Position(pos_x-1, pos_y+1));
 
-        if(abs(pos_x+1) < indiceMaxLigne[pos_y+1] && pos_y+1<= nbLigne)   //voisin en bas à droite
+        if(abs(pos_x+1) <= indiceMaxLigne[pos_y+1] && pos_y+1<= nbLigne)   //voisin en bas à droite
             neighbors.add(new Position(pos_x+1, pos_y+1));
 
         return neighbors;
