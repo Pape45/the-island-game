@@ -5,7 +5,7 @@ import java.util.List;
 import Controller.*;
 
 public class Tuile {
-    public int faceCachee;//
+    public int faceCachee;// 1=ajout requin  2=ajout baleine  3=ajout barque  4=tourbillon  5=volcan  6=dauphin  7=déplacer barque  8=déplacer Serpent de mer  9=déplacer requin  10=déplacer baleine  11=tuer requin  12=tuer baleine
     public int typeTuile; // 1 pour forêt, 2 pour montagne, 0 pour plage
     public Position position;
 
@@ -22,11 +22,16 @@ public class Tuile {
         this.position = newPosition;
     }
 
+    public int getFaceCachee() {
+        return faceCachee;
+    }
+
     public static int[] nombreTuile(PlateauJeu Plateau_de_jeu){
         int[] nombreTuiles = new int[3];
         for(int i=0; i<Plateau_de_jeu.tuiles.size(); i++) {
             nombreTuiles[Plateau_de_jeu.tuiles.get(i).typeTuile]++;
         }
+        System.out.println(Plateau_de_jeu.tuiles.get(0).typeTuile);
         return nombreTuiles;
     }
 
