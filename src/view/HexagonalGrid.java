@@ -1,8 +1,12 @@
+package view;
+
+import Model.*;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,17 +21,18 @@ public class HexagonalGrid extends JFrame {
     private static final int NEW_IMAGE_WIDTH = 720; // Nouvelle largeur de l'image
     private static final int NEW_IMAGE_HEIGHT = 620; // Nouvelle hauteur de l'image
     private static final int[] indiceMaxLigne = {6, 9, 10, 9, 10, 11, 10, 11, 10, 9, 10, 9, 6};
+    private Position clickedPosition = null; // Position clicked by the user
 
     public HexagonalGrid() {
-        setTitle("Hexagonal Grid on Image");
+        setTitle("Hexagonal Grid Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(750, 650);
+        setLayout(new BorderLayout());
 
         hexagons = new ArrayList<>();
         imagePanel = new ImagePanel();
 
         try {
-            image = ImageIO.read(new File("theisland.png"));
+            image = ImageIO.read(new File("C:\\Users\\allan\\OneDrive\\Documents\\GitHub\\the-island-game\\src\\view\\theisland.png"));
             resizedImage = resizeImage(image, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
         } catch (IOException e) {
             e.printStackTrace();
@@ -37,7 +42,7 @@ public class HexagonalGrid extends JFrame {
         imagePanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                handleMouseClick(e);
+                choix_case(e);
             }
         });
 
@@ -48,8 +53,15 @@ public class HexagonalGrid extends JFrame {
             }
         });
 
-        add(new JScrollPane(imagePanel));
+        add(createPlayerPanel(), BorderLayout.NORTH);
+        add(new JScrollPane(imagePanel), BorderLayout.CENTER);
+        add(createControlPanel(), BorderLayout.EAST);
+        add(createInfoPanel(), BorderLayout.SOUTH);
+
         createHexagonalGrid();
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
     }
 
     private BufferedImage resizeImage(BufferedImage originalImage, int width, int height) {
@@ -60,6 +72,53 @@ public class HexagonalGrid extends JFrame {
         return resizedImage;
     }
 
+    private JPanel createPlayerPanel() {
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(getWidth(), 50));
+        panel.setBackground(Color.LIGHT_GRAY);
+
+        JLabel playerLabel = new JLabel("Joueur : 1", JLabel.CENTER);
+        playerLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        panel.add(playerLabel);
+
+        return panel;
+    }
+
+    private JPanel createControlPanel() {
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(200, getHeight()));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.DARK_GRAY);
+
+        JButton pieceButton = new JButton("Pion");
+        JButton saveButton = new JButton("Sauvegarder");
+
+        pieceButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        saveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        panel.add(Box.createVerticalStrut(20));
+        panel.add(pieceButton);
+        panel.add(Box.createVerticalStrut(20));
+        panel.add(saveButton);
+
+        return panel;
+    }
+
+    private JPanel createInfoPanel() {
+        JPanel panel = new JPanel();
+        panel.setPreferredSize(new Dimension(getWidth(), 100));
+        panel.setLayout(new BorderLayout());
+        panel.setBackground(Color.GRAY);
+
+        JButton listButton = new JButton("Liste tuiles en main");
+        JButton saveQuitButton = new JButton("Sauver et quitter");
+
+        panel.add(listButton, BorderLayout.CENTER);
+        panel.add(saveQuitButton, BorderLayout.EAST);
+
+        return panel;
+    }
+
     private void createHexagonalGrid() {
         hexagons.clear(); // Clear any existing hexagons
         int radius = HEX_SIZE;
@@ -68,12 +127,16 @@ public class HexagonalGrid extends JFrame {
         int yOffset = 40;
 
         for (int row = 0; row < indiceMaxLigne.length; row++) {
-            int numHexagons = indiceMaxLigne[row]+1;
-            int xOffset = (NEW_IMAGE_WIDTH - (numHexagons-1) * horiz) / 2;
+            int numHexagons = indiceMaxLigne[row] + 1;
+            int xOffset = (NEW_IMAGE_WIDTH - (numHexagons - 1) * horiz) / 2;
+            int startValue = -numHexagons + 1;
+            int increment = 2;
+
             for (int col = 0; col < numHexagons; col++) {
                 int x = xOffset + col * horiz;
                 int y = yOffset + row * vert * 3 / 4;
-                hexagons.add(new Hexagon(new Point(x, y), radius));
+                int value = startValue + col * increment;
+                hexagons.add(new Hexagon(new Point(x, y), radius, value));
             }
         }
     }
@@ -81,22 +144,37 @@ public class HexagonalGrid extends JFrame {
     private void drawHexagons(Graphics g) {
         for (Hexagon hex : hexagons) {
             if (hex == hoveredHexagon) {
-                g.setColor(Color.RED);  // Couleur de survol
+                g.setColor(Color.RED); // Couleur de survol
             } else {
-                g.setColor(Color.BLACK);  // Couleur par défaut
+                g.setColor(Color.BLACK); // Couleur par défaut
             }
             g.drawPolygon(hex.getHexagon());
         }
     }
 
-    private void handleMouseClick(MouseEvent e) {
+    private synchronized void choix_case(MouseEvent e) {
         Point clickedPoint = e.getPoint();
+        Point position;
         for (Hexagon hex : hexagons) {
             if (hex.getHexagon().contains(clickedPoint)) {
-                System.out.println("Clicked on hexagon at: " + hex.getPosition());
+                position = hex.getPosition();
+
+                int newX = (int) ((position.getX()) / 25.5) - 14;
+                int newY = (int) ((position.getY() - 40) / 45);
+
+                clickedPosition = new Position(newX, newY);
+                notify(); // Notify waiting thread
                 break;
             }
         }
+    }
+
+    public synchronized Position waitForClick() throws InterruptedException {
+        clickedPosition = null;
+        while (clickedPosition == null) {
+            wait();
+        }
+        return clickedPosition;
     }
 
     private void handleMouseMove(MouseEvent e) {
