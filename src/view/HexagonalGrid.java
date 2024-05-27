@@ -1,5 +1,7 @@
 package view;
 
+import Model.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -8,22 +10,18 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class HexagonalGrid extends JFrame {
+    private BufferedImage image;
     private BufferedImage resizedImage;
     private JPanel imagePanel;
     private ArrayList<Hexagon> hexagons;
     private static final int HEX_SIZE = 30;
     private Hexagon hoveredHexagon = null;
-    private static final int NEW_IMAGE_WIDTH = 720;
-    private static final int NEW_IMAGE_HEIGHT = 620;
+    private static final int NEW_IMAGE_WIDTH = 720; // Nouvelle largeur de l'image
+    private static final int NEW_IMAGE_HEIGHT = 620; // Nouvelle hauteur de l'image
     private static final int[] indiceMaxLigne = {6, 9, 10, 9, 10, 11, 10, 11, 10, 9, 10, 9, 6};
-    private Position clickedPosition = null;
-
-    // Map pour associer chaque type de tuile à son image
-    private Map<Integer, BufferedImage> tileImages = new HashMap<>();
+    private Position clickedPosition = null; // Position clicked by the user
 
     public HexagonalGrid() {
         setTitle("Hexagonal Grid Game");
@@ -33,12 +31,9 @@ public class HexagonalGrid extends JFrame {
         hexagons = new ArrayList<>();
         imagePanel = new ImagePanel();
 
-        // Charger les images des tuiles
         try {
-            tileImages.put(0, ImageIO.read(new File("forest.png")));
-            tileImages.put(1, ImageIO.read(new File("mountain.png")));
-            tileImages.put(2, ImageIO.read(new File("beach.png")));
-            resizedImage = resizeImage(ImageIO.read(new File("theisland.png")), NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
+            image = ImageIO.read(new File("C:\\Users\\allan\\OneDrive\\Documents\\GitHub\\the-island-game\\src\\view\\theisland.png"));
+            resizedImage = resizeImage(image, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -70,7 +65,11 @@ public class HexagonalGrid extends JFrame {
     }
 
     private BufferedImage resizeImage(BufferedImage originalImage, int width, int height) {
-        return originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        BufferedImage resizedImage = new BufferedImage(width, height, originalImage.getType());
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(originalImage, 0, 0, width, height, null);
+        g.dispose();
+        return resizedImage;
     }
 
     private JPanel createPlayerPanel() {
@@ -121,7 +120,7 @@ public class HexagonalGrid extends JFrame {
     }
 
     private void createHexagonalGrid() {
-        hexagons.clear();
+        hexagons.clear(); // Clear any existing hexagons
         int radius = HEX_SIZE;
         int horiz = (int) (Math.sqrt(3) * radius);
         int vert = 2 * radius;
@@ -145,92 +144,70 @@ public class HexagonalGrid extends JFrame {
     private void drawHexagons(Graphics g) {
         for (Hexagon hex : hexagons) {
             if (hex == hoveredHexagon) {
-                g.setColor(Color.RED);
+                g.setColor(Color.RED); // Couleur de survol
             } else {
-                g.setColor(Color.BLACK);
+                g.setColor(Color.BLACK); // Couleur par défaut
             }
             g.drawPolygon(hex.getHexagon());
+        }
+    }
 
-            // Dessiner l'image de la tuile dans l'hexagone
-            int typeTuile = getTypeTuileAt(hex.getPosition()); // Obtenez le type de tuile à cette position
-            if (typeTuile != -1) { // Vérifiez si la tuile existe
-                BufferedImage tileImage = tileImages.get(typeTuile); // Obtenez l'image correspondante
-                if (tileImage != null)
-                {
-                    // Calculez les coordonnées pour dessiner l'image centrée dans l'hexagone
-                    int imgX = hex.getCenter().x - tileImage.getWidth() / 2;
-                    int imgY = hex.getCenter().y - tileImage.getHeight() / 2;
-                    // Dessinez l'image de la tuile dans l'hexagone
-                    g.drawImage(tileImage, imgX, imgY, null);
-                }
+    private synchronized void choix_case(MouseEvent e) {
+        Point clickedPoint = e.getPoint();
+        Point position;
+        for (Hexagon hex : hexagons) {
+            if (hex.getHexagon().contains(clickedPoint)) {
+                position = hex.getPosition();
+
+                int newX = (int) ((position.getX()) / 25.5) - 14;
+                int newY = (int) ((position.getY() - 40) / 45);
+
+                clickedPosition = new Position(newX, newY);
+                notify(); // Notify waiting thread
+                break;
             }
         }
     }
-}
 
-// Méthode pour obtenir le type de tuile à une position donnée
-private int getTypeTuileAt(Point position) {
-    // Logique pour obtenir le type de tuile à partir de la position
-    // Vous pouvez utiliser les informations de votre modèle pour cela
-    return 0; // Remplacez cela par la vraie logique de votre application
-}
-
-private synchronized void choix_case(MouseEvent e) {
-    Point clickedPoint = e.getPoint();
-    Point position;
-    for (Hexagon hex : hexagons) {
-        if (hex.getHexagon().contains(clickedPoint)) {
-            position = hex.getPosition();
-
-            int newX = (int) ((position.getX()) / 25.5) - 14;
-            int newY = (int) ((position.getY() - 40) / 45);
-
-            clickedPosition = new Position(newX, newY);
-            notify();
-            break;
+    public synchronized Position waitForClick() throws InterruptedException {
+        clickedPosition = null;
+        while (clickedPosition == null) {
+            wait();
         }
+        return clickedPosition;
     }
-}
 
-public synchronized Position waitForClick() throws InterruptedException {
-    clickedPosition = null;
-    while (clickedPosition == null) {
-        wait();
-    }
-    return clickedPosition;
-}
-
-private void handleMouseMove(MouseEvent e) {
-    Point movedPoint = e.getPoint();
-    boolean found = false;
-    for (Hexagon hex : hexagons) {
-        if (hex.getHexagon().contains(movedPoint)) {
-            hoveredHexagon = hex;
-            found = true;
-            break;
+    private void handleMouseMove(MouseEvent e) {
+        Point movedPoint = e.getPoint();
+        boolean found = false;
+        for (Hexagon hex : hexagons) {
+            if (hex.getHexagon().contains(movedPoint)) {
+                hoveredHexagon = hex;
+                found = true;
+                break;
+            }
         }
+        if (!found) {
+            hoveredHexagon = null;
+        }
+        imagePanel.repaint();
     }
-    if (!found) {
-        hoveredHexagon = null;
-    }
-    imagePanel.repaint();
-}
 
-private class ImagePanel extends JPanel {
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        g.drawImage(resizedImage, 0, 0, null);
-        drawHexagons(g);
-    }
-}
-
-public static void main(String[] args) {
-    SwingUtilities.invokeLater(new Runnable() {
+    private class ImagePanel extends JPanel {
         @Override
-        public void run() {
-            new HexagonalGrid().setVisible(true);
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            g.drawImage(resizedImage, 0, 0, null);
+            drawHexagons(g);
         }
-    });
-}
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new HexagonalGrid().setVisible(true);
+            }
+        });
+    }
 }
