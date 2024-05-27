@@ -5,7 +5,7 @@ import view.HexagonalGrid;
 import java.util.List;
 
 public class Tour {
-    private HexagonalGrid hexagonalGrid;
+    private static HexagonalGrid hexagonalGrid;
 
     public Tour(HexagonalGrid hexagonalGrid) {
         this.hexagonalGrid = hexagonalGrid;
@@ -167,7 +167,7 @@ public class Tour {
 
     }
 
-    public Position choix_case() throws InterruptedException {
+    public static Position choix_case() throws InterruptedException {
         return hexagonalGrid.waitForClick();
     }
 

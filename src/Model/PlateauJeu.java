@@ -27,23 +27,25 @@ public class PlateauJeu {
             int randomInt = (int) (Math.random() * positions_tuiles.size());
             tuiles.add(new Tuile(0, 0));
             tuiles.get(i).setPosition(new Position(positions_tuiles.get(randomInt).getX(),positions_tuiles.get(randomInt).getY()));
+            //System.out.println(tuiles.get(i).getPosition().getX() +" "+  tuiles.get(i).getPosition().getY());
             positions_tuiles.remove(randomInt);
         }
 
-        for (int i = 0; i < 16; i++) {
+        for (int i = 16; i < 32; i++) {
             int randomInt = (int) (Math.random() * positions_tuiles.size());
             tuiles.add(new Tuile(0, 1));
             tuiles.get(i).setPosition(new Position(positions_tuiles.get(randomInt).getX(),positions_tuiles.get(randomInt).getY()));
+            //System.out.println(tuiles.get(i).getPosition().getX() +" "+  tuiles.get(i).getPosition().getY());
             positions_tuiles.remove(randomInt);
         }
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 32; i < 40; i++) {
             int randomInt = (int) (Math.random() * positions_tuiles.size());
             tuiles.add(new Tuile(0, 2));
             tuiles.get(i).setPosition(new Position(positions_tuiles.get(randomInt).getX(),positions_tuiles.get(randomInt).getY()));
+            //System.out.println(tuiles.get(i).getPosition().getX() +" "+  tuiles.get(i).getPosition().getY());
             positions_tuiles.remove(randomInt);
         }
-
         serpentDeMer.add(new SerpentDeMer(new Position(-9, 1)));
         serpentDeMer.add(new SerpentDeMer(new Position(10, 2)));
         serpentDeMer.add(new SerpentDeMer(new Position(-10,10)));

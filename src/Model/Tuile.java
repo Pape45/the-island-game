@@ -43,7 +43,7 @@ public class Tuile {
         return tuile_voisines != 6;
     }
 
-    public static void retirerTuile(PlateauJeu Plateau_de_jeu){
+    public static void retirerTuile(PlateauJeu Plateau_de_jeu) throws InterruptedException {
         int tuile=-1;
         do {
             Position position_tuile = Tour.choix_case();
