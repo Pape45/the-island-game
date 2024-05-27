@@ -237,4 +237,113 @@ public class Tuile {
             }
         }
     }
+
+    public static void deplacerRequinAction(PlateauJeu Plateau_de_jeu) throws InterruptedException {
+        int numero_requin = -1;
+        int good;
+
+        Position position_depart;
+        Position position_arrivee;
+        do {
+
+            position_depart = Tour.choix_case();
+            for (int i = 0; i < Plateau_de_jeu.requins.size(); i++) {
+                if (Position.isPositionsEquals(Plateau_de_jeu.requins.get(i).getPosition(), position_depart)) {
+                    numero_requin = i;
+                }
+            }
+        } while (numero_requin == -1);
+
+
+        do {
+            position_arrivee = Tour.choix_case();
+        } while (!caseIsEmpty(Plateau_de_jeu,position_arrivee));
+
+        Plateau_de_jeu.requins.get(numero_requin).setPosition(position_arrivee);
+        Requin.MangerNageur(Plateau_de_jeu, numero_requin);
+    }
+
+    public static void deplacerBaleineAction(PlateauJeu Plateau_de_jeu) throws InterruptedException {
+        int numero_baleine = -1;
+        int good;
+
+        Position position_depart;
+        Position position_arrivee;
+        do {
+
+            position_depart = Tour.choix_case();
+            for (int i = 0; i < Plateau_de_jeu.baleines.size(); i++) {
+                if (Position.isPositionsEquals(Plateau_de_jeu.baleines.get(i).getPosition(), position_depart)) {
+                    numero_baleine = i;
+                }
+            }
+        } while (numero_baleine == -1);
+
+        do {
+            position_arrivee = Tour.choix_case();
+        } while (!caseIsEmpty(Plateau_de_jeu,position_arrivee));
+
+        Plateau_de_jeu.baleines.get(numero_baleine).setPosition(position_arrivee);
+        Baleine.RetournerBarque(Plateau_de_jeu, numero_baleine);
+    }
+
+    public static void deplacerSerpentDeMerAction(PlateauJeu Plateau_de_jeu) throws InterruptedException {
+        int numero_SerpentDeMer = -1;
+        int good;
+
+        Position position_depart;
+        Position position_arrivee;
+        do {
+
+            position_depart = Tour.choix_case();
+            for (int i = 0; i < Plateau_de_jeu.serpentDeMer.size(); i++) {
+                if (Position.isPositionsEquals(Plateau_de_jeu.serpentDeMer.get(i).getPosition(), position_depart)) {
+                    numero_SerpentDeMer = i;
+                }
+            }
+        } while (numero_SerpentDeMer == -1);
+
+        do {
+            position_arrivee = Tour.choix_case();
+        } while (!caseIsEmpty(Plateau_de_jeu,position_arrivee));
+
+        Plateau_de_jeu.serpentDeMer.get(numero_SerpentDeMer).setPosition(position_arrivee);
+        SerpentDeMer.RetournerBarqueMangerNageur(Plateau_de_jeu, numero_SerpentDeMer);
+    }
+
+    public static boolean caseIsEmpty(PlateauJeu Plateau_de_jeu, Position position){
+        for (int i = 0; i < Plateau_de_jeu.tuiles.size(); i++) {
+            if (Position.isPositionsEquals(Plateau_de_jeu.tuiles.get(i).getPosition(), position)) {
+                return false;
+            }
+        }
+        for (int k = 0; k < Plateau_de_jeu.requins.size(); k++) {
+            if (Position.isPositionsEquals(position, Plateau_de_jeu.requins.get(k).getPosition())) {
+                return false;
+            }
+        }
+        for (int k = 0; k < Plateau_de_jeu.baleines.size(); k++) {
+            if (Position.isPositionsEquals(position, Plateau_de_jeu.requins.get(k).getPosition())) {
+                return false;
+            }
+        }
+        for (int k = 0; k < Plateau_de_jeu.serpentDeMer.size(); k++) {
+            if (Position.isPositionsEquals(position, Plateau_de_jeu.serpentDeMer.get(k).getPosition())) {
+                return false;
+            }
+        }
+        for (int k = 0; k < Plateau_de_jeu.joueurs.length; k++) {
+            for (int l = 0; l < Plateau_de_jeu.joueurs[k].explorateurs.size(); l++) {
+                if (Position.isPositionsEquals(position, Plateau_de_jeu.joueurs[k].explorateurs.get(l).getPosition())){
+                    return false;
+                }
+            }
+        }
+        for (int k = 0; k < Plateau_de_jeu.barques.size(); k++) {
+            if (Position.isPositionsEquals(position, Plateau_de_jeu.barques.get(k).getPosition())) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

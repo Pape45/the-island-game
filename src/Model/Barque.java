@@ -6,7 +6,7 @@ public class Barque extends Piece {
     private static final int BARQUE_COLS = 2;
     //numéro joueur
     //numéro explorateur
-    private int[][] barque;
+    private static int[][] barque;
 
     public Barque(Position position) {
         barque = new int[BARQUE_ROWS][BARQUE_COLS];
@@ -16,7 +16,7 @@ public class Barque extends Piece {
     public void setValue(int row, int col, int value) {
         barque[row][col] = value;
     }
-
+    public static int getValue(int row, int col) {return barque[row][col];}
 }
     
 
