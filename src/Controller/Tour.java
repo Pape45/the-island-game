@@ -26,13 +26,11 @@ public class Tour {
         int numero_creature = -1;
         int good;
         //SERPENT DE MER//
-        if (resultat_de==0){
-
+        if (resultat_de==0) {
             Position position_depart;
             Position position_arrivee;
-
             do {
-                position_depart=hexagonalGrid.waitForClick();
+                position_depart = hexagonalGrid.waitForClick();
                 //System.out.println("Position clicked: " + position_depart.getX());
                 for (int i = 0; i < Plateau_de_jeu.serpentDeMer.size(); i++) {
                     if (Position.isPositionsEquals(Plateau_de_jeu.serpentDeMer.get(i).getPosition(), position_depart)) {
@@ -67,21 +65,21 @@ public class Tour {
         else if (resultat_de == 1) {
             int deplacement = 0;
             int explorateur_mange;
+            Position position_depart = null;
             do {
-                Position position_depart;
+
                 Position position_arrivee;
-                do {
-
-                    position_depart = choix_case();
-                    for (int i = 0; i < Plateau_de_jeu.requins.size(); i++) {
-                        if (Position.isPositionsEquals(Plateau_de_jeu.requins.get(i).getPosition(), position_depart)) {
-                            numero_creature = i;
+                if (deplacement==0) {
+                    do {
+                        position_depart = choix_case();
+                        for (int i = 0; i < Plateau_de_jeu.requins.size(); i++) {
+                            if (Position.isPositionsEquals(Plateau_de_jeu.requins.get(i).getPosition(), position_depart)) {
+                                numero_creature = i;
+                            }
                         }
-                    }
-                } while (numero_creature == -1);
-
+                    } while (numero_creature == -1);
+                }
                 do {
-
                     position_arrivee = choix_case();
                     good = 1;
                     List<Position> voisins = Position.getNeighbors(position_depart);
@@ -105,18 +103,19 @@ public class Tour {
         else {
             int deplacement = 0;
             int barque_retournee;
+            Position position_depart=null;
             do {
-                Position position_depart;
                 Position position_arrivee;
-                do {
-                    position_depart = choix_case();
-                    for (int i = 0; i < Plateau_de_jeu.baleines.size(); i++) {
-                        if (Position.isPositionsEquals(Plateau_de_jeu.baleines.get(i).getPosition(), position_depart)) {
-                            numero_creature = i;
+                if(deplacement==0) {
+                    do {
+                        position_depart = choix_case();
+                        for (int i = 0; i < Plateau_de_jeu.baleines.size(); i++) {
+                            if (Position.isPositionsEquals(Plateau_de_jeu.baleines.get(i).getPosition(), position_depart)) {
+                                numero_creature = i;
+                            }
                         }
-                    }
-                } while (numero_creature == -1);
-
+                    } while (numero_creature == -1);
+                }
                 do {
 
                     position_arrivee = choix_case();

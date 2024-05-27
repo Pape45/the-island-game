@@ -346,4 +346,28 @@ public class Tuile {
         }
         return true;
     }
+
+    public static void dauphinAction(PlateauJeu Plateau_de_jeu) throws InterruptedException {
+        int numero_explorateur;
+        Position position_depart;
+        Position position_arrivee;
+        List<Position> voisins;
+
+        int type_explorateur;
+        do {
+            position_depart = Tour.choix_case();
+            numero_explorateur = Explorateur.get_explorateur(Plateau_de_jeu.tour, position_depart, Plateau_de_jeu);
+            type_explorateur = Plateau_de_jeu.joueurs[Plateau_de_jeu.tour%4].explorateurs.get(numero_explorateur).getStatut();
+        } while (type_explorateur != 1);
+
+        for(int i=0;i<3;i++) {
+            do {
+                position_arrivee = Tour.choix_case();
+                voisins = Position.getNeighbors(position_depart);
+            } while (!voisins.contains(position_arrivee));
+
+            Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).setPosition(position_arrivee);
+        }
+    }
+
 }

@@ -6,7 +6,7 @@ public class DeDeCreature {
 
     }
 
-    public int lancer() {
+    public static int lancer() {
         int valeur = 3;
         return (int) (Math.random() * valeur);
     }
