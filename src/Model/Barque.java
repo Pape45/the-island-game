@@ -8,8 +8,9 @@ public class Barque extends Piece {
     //numéro explorateur
     private int[][] barque;
 
-    public Barque() {
+    public Barque(Position position) {
         barque = new int[BARQUE_ROWS][BARQUE_COLS];
+        this.position = position;
     }
 
     public void setValue(int row, int col, int value) {

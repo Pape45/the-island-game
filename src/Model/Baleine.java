@@ -15,4 +15,7 @@ public class Baleine extends Piece {
         }
         return -1;
     }
+    public Baleine(Position position) {
+        this.position = position;
+    }
 }
