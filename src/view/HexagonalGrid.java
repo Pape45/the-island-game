@@ -21,6 +21,7 @@ public class HexagonalGrid extends JFrame {
     private static final int NEW_IMAGE_WIDTH = 720; // Nouvelle largeur de l'image
     private static final int NEW_IMAGE_HEIGHT = 620; // Nouvelle hauteur de l'image
     private static final int[] indiceMaxLigne = {6, 9, 10, 9, 10, 11, 10, 11, 10, 9, 10, 9, 6};
+    private Position clickedPosition = null; // Position clicked by the user
 
     public HexagonalGrid() {
         setTitle("Hexagonal Grid Game");
@@ -31,7 +32,7 @@ public class HexagonalGrid extends JFrame {
         imagePanel = new ImagePanel();
 
         try {
-            image = ImageIO.read(new File("C:\\Users\\allan\\OneDrive\\Documents\\GitHub\\the-island-game\\src\\view\\theisland.png"));
+            image = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\theisland.png"));
             resizedImage = resizeImage(image, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
         } catch (IOException e) {
             e.printStackTrace();
@@ -151,23 +152,30 @@ public class HexagonalGrid extends JFrame {
         }
     }
 
-public void Position choix_case(MouseEvent e) {
-    Point clickedPoint = e.getPoint();
-    for (Hexagon hex : hexagons) {
-        if (hex.getHexagon().contains(clickedPoint)) {
-            Point position = hex.getPosition();
+    private synchronized void choix_case(MouseEvent e) {
+        Point clickedPoint = e.getPoint();
+        Point position;
+        for (Hexagon hex : hexagons) {
+            if (hex.getHexagon().contains(clickedPoint)) {
+                position = hex.getPosition();
 
-            int newX = (int) ((position.getX())/25.5)-14;
-            int newY = (int) ((position.getY()-40) / 45);
+                int newX = (int) ((position.getX()) / 25.5) - 14;
+                int newY = (int) ((position.getY() - 40) / 45);
 
-            Position position_clique = new Position(newX,newY);
-            return position_clique;
+                clickedPosition = new Position(newX, newY);
+                notify(); // Notify waiting thread
+                break;
+            }
         }
     }
 
-}
-
-
+    public synchronized Position waitForClick() throws InterruptedException {
+        clickedPosition = null;
+        while (clickedPosition == null) {
+            wait();
+        }
+        return clickedPosition;
+    }
 
     private void handleMouseMove(MouseEvent e) {
         Point movedPoint = e.getPoint();
