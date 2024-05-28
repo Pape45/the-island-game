@@ -168,7 +168,7 @@ public class Tour {
             do {
                 position_arrivee = choix_case();
                 voisins = Position.getNeighbors(Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getPosition());
-            } while (!voisins.contains(position_arrivee));
+            } while (!voisins.contains(position_arrivee) && Explorateur.nbExplorateurSurLaCase(Plateau_de_jeu,position_arrivee)>2);
 
             int type_explorateur = Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getStatut();
             Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).setPosition(position_arrivee);

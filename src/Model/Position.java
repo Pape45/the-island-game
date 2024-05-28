@@ -63,9 +63,9 @@ public class Position {
         return position1.getX() == position2.getX() && position1.getY() == position2.getY();
     }
 
-    public static boolean isPositionContains(List<Position> voisins, Position position) {
-        for(int i=0; i<voisins.size(); i++){
-            if(voisins.get(i).getX() == position.getX() && voisins.get(i).getY() == position.getY()){
+    public static boolean isPositionContains(List<Position> positions, Position position) {
+        for(int i=0; i<positions.size(); i++){
+            if(positions.get(i).getX() == position.getX() && positions.get(i).getY() == position.getY()){
                 return true;
             }
         }

@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Explorateur;
 import Model.PlateauJeu;
 import view.HexagonalGrid;
 
@@ -7,7 +8,7 @@ public class Partie {
     public Partie() {
         // Constructor logic here, if needed
     }
-    public void start() {
+    public void start() throws InterruptedException {
         // Create and display the hexagonal grid
         HexagonalGrid hexagonalGrid = new HexagonalGrid();
 
@@ -18,6 +19,8 @@ public class Partie {
         
         // Create the Tour controller instance
         Tour tourController = new Tour(hexagonalGrid);
+
+        Explorateur.init_pos_explorateurs(plateauDeJeu);
 
         // Start the game loop
         while (true) {
