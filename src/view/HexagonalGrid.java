@@ -26,33 +26,37 @@ public class HexagonalGrid extends JFrame {
     private String nomJoueur;
     private String temporaryMessage;
     private Timer messageTimer;
-    private BufferedImage[] explorerImages; // Array to store explorer images
-    private JPanel explorerPanel; // New panel for displaying explorer images
-    private static final int EXPLORER_IMAGE_SIZE = 30;
-    private static final int EXTRA_PANEL_WIDTH = 150;
+    private BufferedImage[] explorerImages;
+    private JPanel explorerPanel;
+    private static final int EXPLORER_IMAGE_SIZE = 50;
+    private static final int EXTRA_PANEL_WIDTH = 200;
 
 
     private static class ExplorerImageInfo {
         int number;
         int posX;
         int posY;
+        int treasureNumber; // New field for treasure number
 
-        ExplorerImageInfo(int number, int posX, int posY) {
+        ExplorerImageInfo(int number, int posX, int posY, int treasureNumber) {
             this.number = number;
             this.posX = posX;
             this.posY = posY;
+            this.treasureNumber = treasureNumber;
         }
     }
+
 
     private ArrayList<ExplorerImageInfo> explorerImageInfos = new ArrayList<>();
 
-    public void addExplorerImage(int number, int posX, int posY) {
+    public void addExplorerImage(int number, int posX, int posY, int treasureNumber) {
         if (number < 0 || number >= explorerImages.length) {
             throw new IllegalArgumentException("Invalid explorer number: " + number);
         }
-        explorerImageInfos.add(new ExplorerImageInfo(number, posX, posY));
+        explorerImageInfos.add(new ExplorerImageInfo(number, posX, posY, treasureNumber));
         explorerPanel.repaint();
     }
+
 
 
     class ThickBorderInfo {
@@ -99,10 +103,16 @@ public class HexagonalGrid extends JFrame {
                 for (ExplorerImageInfo info : explorerImageInfos) {
                     if (info != null && explorerImages[info.number] != null) {
                         g.drawImage(explorerImages[info.number], info.posX, info.posY, EXPLORER_IMAGE_SIZE, EXPLORER_IMAGE_SIZE, null);
+                        // Draw the treasure number
+                        g.setColor(Color.WHITE); // Set the color to white
+                        g.setFont(new Font("Arial", Font.BOLD, 14));
+                        g.drawString(String.valueOf(info.treasureNumber), info.posX + EXPLORER_IMAGE_SIZE / 2 - 5, info.posY + EXPLORER_IMAGE_SIZE / 2 + 5);
                     }
                 }
             }
         };
+
+
         explorerPanel.setPreferredSize(new Dimension(EXTRA_PANEL_WIDTH, NEW_IMAGE_HEIGHT));
         explorerPanel.setBackground(new Color(245, 245, 220)); // Set background color to beige
         add(explorerPanel, BorderLayout.EAST);
