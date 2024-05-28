@@ -18,6 +18,7 @@ public class Tour {
 
         deplacerCreature(Plateau_de_jeu);
         deplacer_explorateur(Plateau_de_jeu);
+        retirerTuile(Plateau_de_jeu);
         Plateau_de_jeu.tour = Plateau_de_jeu.tour + 1;
     }
 
@@ -148,6 +149,7 @@ public class Tour {
             int numero_barque=-1;
 
             do {
+                System.out.println("Prenez un explorateur");
                 position_depart = choix_case();
                 numero_explorateur=Explorateur.get_explorateur(Plateau_de_jeu.tour, position_depart, Plateau_de_jeu);
                 if(numero_explorateur!=-1) {
@@ -164,12 +166,12 @@ public class Tour {
                     }
                 }
             } while (numero_explorateur == -1);
-
+            System.out.println("Explorateur sélectionné");
             do {
                 position_arrivee = choix_case();
                 voisins = Position.getNeighbors(Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getPosition());
-            } while (!voisins.contains(position_arrivee) && Explorateur.nbExplorateurSurLaCase(Plateau_de_jeu,position_arrivee)>2);
-
+            } while (!Position.isPositionContains(voisins,position_arrivee) && Explorateur.nbExplorateurSurLaCase(Plateau_de_jeu,position_arrivee)<2);
+            System.out.println("Position arrivée sélectionnée");
             int type_explorateur = Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getStatut();
             Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).setPosition(position_arrivee);
 
@@ -212,6 +214,31 @@ public class Tour {
                 }
             }
         }
+    }
+
+    public static void retirerTuile(PlateauJeu Plateau_de_jeu) throws InterruptedException {
+        int tuile=-1;
+        do {
+            System.out.println("Choisissez une tuile");
+            Position position_tuile = Tour.choix_case();
+            int[] nombreTuiles = Tuile.nombreTuile(Plateau_de_jeu);
+            for(int i=0; i<Plateau_de_jeu.tuiles.size(); i++) {
+                if (Position.isPositionsEquals(Plateau_de_jeu.tuiles.get(i).getPosition(), position_tuile)){
+                    if(nombreTuiles[0]!=0 && Plateau_de_jeu.tuiles.get(i).typeTuile==0 && Tuile.adjacentMer(Plateau_de_jeu,position_tuile)) {
+                        tuile = i;
+                    }
+                    else if(nombreTuiles[0]==0 && Plateau_de_jeu.tuiles.get(i).typeTuile==1 && Tuile.adjacentMer(Plateau_de_jeu,position_tuile)){
+                        tuile = i;
+                    }
+                    else if(nombreTuiles[1]==0 && Plateau_de_jeu.tuiles.get(i).typeTuile==2 && Tuile.adjacentMer(Plateau_de_jeu,position_tuile)){
+                        tuile = i;
+                    }
+                }
+            }
+        }while (tuile==-1);
+        System.out.println("Tuile retirée");
+        Plateau_de_jeu.joueurs[Plateau_de_jeu.tour%4].tuilesEnMain.add(Plateau_de_jeu.tuiles.get(tuile));
+        Plateau_de_jeu.tuiles.remove(tuile);
     }
 
     public static Position choix_case() throws InterruptedException {

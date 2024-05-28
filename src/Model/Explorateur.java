@@ -72,6 +72,7 @@ public class Explorateur extends Piece {
     }
 
     public static void init_pos_explorateurs(PlateauJeu Plateau_de_jeu) throws InterruptedException {
+        System.out.println("Init explorateurs");
         List<Position> listes_tuiles_libres = Tuile.init_position_tuiles();
         Position position;
         int indice_tuile;
@@ -90,8 +91,10 @@ public class Explorateur extends Piece {
                 }while(indice_tuile==-1);
                 listes_tuiles_libres.remove(indice_tuile);
                 Plateau_de_jeu.joueurs[k].explorateurs.get(i).setPosition(position);
+                System.out.println(listes_tuiles_libres.size());
             }
         }
+        System.out.println("Fin Init explorateurs");
     }
 
     public static int nbExplorateurSurLaCase(PlateauJeu Plateau_de_jeu, Position position){

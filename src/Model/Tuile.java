@@ -48,30 +48,6 @@ public class Tuile {
         return tuile_voisines != 6;
     }
 
-    public static void retirerTuile(PlateauJeu Plateau_de_jeu) throws InterruptedException {
-        int tuile=-1;
-        do {
-            Position position_tuile = Tour.choix_case();
-            int[] nombreTuiles = nombreTuile(Plateau_de_jeu);
-            for(int i=0; i<Plateau_de_jeu.tuiles.size(); i++) {
-                if (Position.isPositionsEquals(Plateau_de_jeu.tuiles.get(i).getPosition(), position_tuile)){
-                    if(nombreTuiles[0]!=0 && Plateau_de_jeu.tuiles.get(i).typeTuile==0 && adjacentMer(Plateau_de_jeu,position_tuile)) {
-                        tuile = i;
-                    }
-                    else if(nombreTuiles[0]==0 && Plateau_de_jeu.tuiles.get(i).typeTuile==1 && adjacentMer(Plateau_de_jeu,position_tuile)){
-                        tuile = i;
-                    }
-                    else if(nombreTuiles[1]==0 && Plateau_de_jeu.tuiles.get(i).typeTuile==2 && adjacentMer(Plateau_de_jeu,position_tuile)){
-                        tuile = i;
-                    }
-                }
-            }
-        }while (tuile==-1);
-
-        Plateau_de_jeu.joueurs[Plateau_de_jeu.tour%4].tuilesEnMain.add(Plateau_de_jeu.tuiles.get(tuile));
-        Plateau_de_jeu.tuiles.remove(tuile);
-    }
-
     public static List<Position> init_position_tuiles(){
         List<Position> position_tuiles = new ArrayList<>();
         //LIGNE 1
@@ -91,9 +67,9 @@ public class Tuile {
         position_tuiles.add(position6);
         Position position7= new Position(0,4);
         position_tuiles.add(position7);
-        Position position8= new Position(-2,4);
+        Position position8= new Position(2,4);
         position_tuiles.add(position8);
-        Position position9= new Position(-4,4);
+        Position position9= new Position(4,4);
         position_tuiles.add(position9);
 
         //LIGNE 3
@@ -155,7 +131,7 @@ public class Tuile {
         position_tuiles.add(position34);
         Position position35 = new Position(2,8);
         position_tuiles.add(position35);
-        Position position36 = new Position(7,8);
+        Position position36 = new Position(4,8);
         position_tuiles.add(position36);
 
         //LIGNE 7
