@@ -36,4 +36,16 @@ public class Joueur {
         return tuilesEnMain;
     }
 
+    public static int[] getJoueurTresors(PlateauJeu Plateau_de_jeu){
+        int[] tresors= new int[Plateau_de_jeu.joueurs.length];
+        for(int i=0; i<Plateau_de_jeu.joueurs.length;i++){
+            for(int k=0; k<Plateau_de_jeu.joueurs[i].explorateurs.size(); k++){
+                if(Plateau_de_jeu.joueurs[i].explorateurs.get(i).getStatut()==3){
+                    tresors[i]+=Plateau_de_jeu.joueurs[i].explorateurs.get(i).getTresor();
+                }
+            }
+        }
+        return tresors;
+    }
+
 }
