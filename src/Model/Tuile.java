@@ -48,6 +48,15 @@ public class Tuile {
         return tuile_voisines != 6;
     }
 
+    public static boolean estCaseTuile(PlateauJeu Plateau_de_jeu, Position position) {
+        for (Tuile tuile : Plateau_de_jeu.tuiles) {
+            if (tuile.getPosition().equals(position)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void retirerTuile(PlateauJeu Plateau_de_jeu) throws InterruptedException {
         int tuile=-1;
         do {

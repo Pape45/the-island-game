@@ -146,6 +146,7 @@ public class Tour {
             Position position_arrivee;
             List<Position> voisins;
             int numero_barque=-1;
+            int good;
 
             do {
                 position_depart = choix_case();
@@ -165,10 +166,26 @@ public class Tour {
                 }
             } while (numero_explorateur == -1);
 
+
+            if (Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getStatut() == 1) {
+
+                do {
+                    good = 1;
+                    position_arrivee = choix_case();
+                    voisins = Position.getNeighbors(Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getPosition());
+
+                    if (!Position.isPositionContains(voisins,position_arrivee) || !Tuile.estCaseTuile(Plateau_de_jeu ,position_arrivee)) {
+                        good=-1;
+                    }
+                } while (good ==-1);
+
+            }
+
+
             do {
                 position_arrivee = choix_case();
                 voisins = Position.getNeighbors(Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getPosition());
-            } while (!voisins.contains(position_arrivee) && Explorateur.nbExplorateurSurLaCase(Plateau_de_jeu,position_arrivee)>2);
+            } while (!Position.isPositionContains(voisins,position_arrivee) && Explorateur.nbExplorateurSurLaCase(Plateau_de_jeu,position_arrivee)<2);
 
             int type_explorateur = Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getStatut();
             Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).setPosition(position_arrivee);
@@ -212,6 +229,12 @@ public class Tour {
                 }
             }
         }
+
+
+
+
+
+
     }
 
     public static Position choix_case() throws InterruptedException {
