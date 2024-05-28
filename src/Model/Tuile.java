@@ -388,8 +388,7 @@ public class Tuile {
                     numero_barque=i;
                 }
             }
-
-        } while (numero_barque== -1);
+        } while (!Barque.canMoveBarque(Plateau_de_jeu,numero_barque));
 
         int good;
         for(int k=0;k<3;k++) {
@@ -411,7 +410,7 @@ public class Tuile {
             int joueur;
             int explorateur;
             for(int r=0; r<3; r++){
-                if(Plateau_de_jeu.barques.get(numero_barque).getValue(r,0)==-1){
+                if(Plateau_de_jeu.barques.get(numero_barque).getValue(r,0)!=-1){
                     joueur=Plateau_de_jeu.barques.get(numero_barque).getValue(r,0);
                     explorateur=Plateau_de_jeu.barques.get(numero_barque).getValue(r,1);
                     Plateau_de_jeu.joueurs[joueur].explorateurs.get(explorateur).setPosition(position_arrivee);

@@ -1,5 +1,10 @@
 package Model;
 
+import Controller.Tour;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Explorateur extends Piece {
     private int statut; // 0: sur terre, 1: nageur, 2: sur barque, 3: arrivé, 4: mort
     private int deplacement; // Nombre de déplacements
@@ -64,6 +69,41 @@ public class Explorateur extends Piece {
             }
         }
         return true;
+    }
+
+    public static void init_pos_explorateurs(PlateauJeu Plateau_de_jeu) throws InterruptedException {
+        List<Position> listes_tuiles_libres = Tuile.init_position_tuiles();
+        Position position;
+        int indice_tuile;
+        for(int i=0; i<10; i++){
+            for(int k=0; k<4;k++){
+                do{
+                    indice_tuile=-1;
+                    position= Tour.choix_case();
+                    for(int p=0; p<listes_tuiles_libres.size(); p++){
+                        if(listes_tuiles_libres.get(p).getX() == position.getX() && listes_tuiles_libres.get(p).getY() == position.getY()){
+                            indice_tuile=p;
+                            System.out.println(k+" "+i);
+                        }
+                    }
+                    System.out.println(indice_tuile);
+                }while(indice_tuile==-1);
+                listes_tuiles_libres.remove(indice_tuile);
+                Plateau_de_jeu.joueurs[k].explorateurs.get(i).setPosition(position);
+            }
+        }
+    }
+
+    public static int nbExplorateurSurLaCase(PlateauJeu Plateau_de_jeu, Position position){
+        int nb_explorateur=0;
+        for(int i=0; i<Plateau_de_jeu.joueurs.length;i++){
+            for(int k=0; k<Plateau_de_jeu.joueurs[i].explorateurs.size();k++){
+                if(Position.isPositionsEquals(position,Plateau_de_jeu.joueurs[i].explorateurs.get(i).getPosition())){
+                    nb_explorateur++;
+                }
+            }
+        }
+        return nb_explorateur;
     }
 
 }
