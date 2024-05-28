@@ -273,22 +273,20 @@ public class HexagonalGrid extends JFrame {
 
         private void drawTemporaryMessage(Graphics g) {
             if (temporaryMessage != null) {
-                g.setColor(Color.YELLOW);
-                g.setFont(new Font("Arial", Font.BOLD, 20));
+                g.setFont(new Font("Serif", Font.BOLD, 50));
+                g.setColor(Color.RED);
 
                 FontMetrics fm = g.getFontMetrics();
                 int messageWidth = fm.stringWidth(temporaryMessage);
                 int messageHeight = fm.getHeight();
 
                 int x = (getWidth() - messageWidth) / 2;
-                int y = (getHeight() - messageHeight) / 2;
+                int y = (getHeight() - messageHeight) / 2 + fm.getAscent();
 
-                g.setColor(Color.BLACK);
-                g.fillRect(x - 10, y - fm.getAscent() - 10, messageWidth + 20, messageHeight + 20);
-                g.setColor(Color.YELLOW);
                 g.drawString(temporaryMessage, x, y);
             }
         }
+
     }
 
     public static void main(String[] args) {
