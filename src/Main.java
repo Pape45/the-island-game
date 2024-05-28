@@ -16,7 +16,10 @@ public class Main {
             filtre5.updateTourAndPlayer(numeroTour, joueur);
             filtre6.showTemporaryMessage("Message temp 1", 2000);
 
+            hexagonalGrid.addExplorerImage(0, 10, 10);
+            hexagonalGrid.addExplorerImage(1, 40, 10);
+            hexagonalGrid.addExplorerImage(2, 70, 10);
+            hexagonalGrid.addExplorerImage(3, 100, 10);
         });
     }
 }
-

@@ -19,12 +19,40 @@ public class HexagonalGrid extends JFrame {
     private Hexagon hoveredHexagon = null;
     private static final int NEW_IMAGE_WIDTH = 720;
     private static final int NEW_IMAGE_HEIGHT = 620;
+    private static final int EXTRA_WIDTH = 200;
     private static final int[] indiceMaxLigne = {6, 9, 10, 9, 10, 11, 10, 11, 10, 9, 10, 9, 6};
     private ArrayList<ThickBorderInfo> thickBorders = new ArrayList<>();
     private int numeroTour;
     private String nomJoueur;
     private String temporaryMessage;
     private Timer messageTimer;
+    private BufferedImage[] explorerImages; // Array to store explorer images
+    private JPanel explorerPanel; // New panel for displaying explorer images
+    private static final int EXPLORER_IMAGE_SIZE = 30;
+    private static final int EXTRA_PANEL_WIDTH = 150;
+
+
+    private static class ExplorerImageInfo {
+        int number;
+        int posX;
+        int posY;
+
+        ExplorerImageInfo(int number, int posX, int posY) {
+            this.number = number;
+            this.posX = posX;
+            this.posY = posY;
+        }
+    }
+
+    private ArrayList<ExplorerImageInfo> explorerImageInfos = new ArrayList<>();
+
+    public void addExplorerImage(int number, int posX, int posY) {
+        if (number < 0 || number >= explorerImages.length) {
+            throw new IllegalArgumentException("Invalid explorer number: " + number);
+        }
+        explorerImageInfos.add(new ExplorerImageInfo(number, posX, posY));
+        explorerPanel.repaint();
+    }
 
 
     class ThickBorderInfo {
@@ -51,8 +79,36 @@ public class HexagonalGrid extends JFrame {
         imagePanel.setBackground(new Color(245, 245, 220)); // Beige clair
 
 
+        explorerImages = new BufferedImage[4];
         try {
-            // Key change: Construct the path relative to the class location
+            explorerImages[0] = ImageIO.read(HexagonalGrid.class.getResource("Explorateur_Bleu.png"));
+            explorerImages[1] = ImageIO.read(HexagonalGrid.class.getResource("Explorateur_Jaune.png"));
+            explorerImages[2] = ImageIO.read(HexagonalGrid.class.getResource("Explorateur_Rouge.png"));
+            explorerImages[3] = ImageIO.read(HexagonalGrid.class.getResource("Explorateur_Vert.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // Adjust frame size to include extra panel
+        setSize(750 + EXTRA_PANEL_WIDTH, 650);
+
+        explorerPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                for (ExplorerImageInfo info : explorerImageInfos) {
+                    if (info != null && explorerImages[info.number] != null) {
+                        g.drawImage(explorerImages[info.number], info.posX, info.posY, EXPLORER_IMAGE_SIZE, EXPLORER_IMAGE_SIZE, null);
+                    }
+                }
+            }
+        };
+        explorerPanel.setPreferredSize(new Dimension(EXTRA_PANEL_WIDTH, NEW_IMAGE_HEIGHT));
+        explorerPanel.setBackground(new Color(245, 245, 220)); // Set background color to beige
+        add(explorerPanel, BorderLayout.EAST);
+
+
+        try {
             String imagePath = "theisland.jpg";
             URL imageUrl = HexagonalGrid.class.getResource(imagePath);
 
