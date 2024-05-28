@@ -56,6 +56,14 @@ public class Explorateur extends Piece {
         return -1;
     }
 
+    public static void init_deplacements_explorateurs(PlateauJeu Plateau_de_jeu) {
+        for(int i=0; i<Plateau_de_jeu.joueurs.length; i++){
+            for(int k=0; k<Plateau_de_jeu.joueurs[i].explorateurs.size(); k++){
+                Plateau_de_jeu.joueurs[i].explorateurs.get(i).setdepacement(0);
+            }
+        }
+    }
+
     public boolean isInWater(PlateauJeu Plateau_de_jeu){
         Position position_exploreur= this.getPosition();
         for(int i=0; i<Plateau_de_jeu.barques.size();i++){
