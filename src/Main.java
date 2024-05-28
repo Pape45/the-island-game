@@ -15,6 +15,7 @@ public class Main {
             Joueur joueur = jeu.getJoueurs()[0];
             filtre5.updateTourAndPlayer(numeroTour, joueur);
             filtre6.showTemporaryMessage("Message temp 1", 2000);
+
         });
     }
 }

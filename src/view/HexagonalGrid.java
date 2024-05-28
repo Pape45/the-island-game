@@ -37,14 +37,19 @@ public class HexagonalGrid extends JFrame {
         }
     }
 
+
     public HexagonalGrid() {
 
         setTitle("Hexagonal Grid on Image");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(750, 650);
 
+        getContentPane().setBackground(new Color(245, 245, 220));
+
         hexagons = new ArrayList<>();
         imagePanel = new ImagePanel();
+        imagePanel.setBackground(new Color(245, 245, 220)); // Beige clair
+
 
         try {
             // Key change: Construct the path relative to the class location
@@ -181,6 +186,7 @@ public class HexagonalGrid extends JFrame {
         }
     }
 
+
     private void handleMouseMove(MouseEvent e) {
         Point movedPoint = e.getPoint();
         boolean found = false;
@@ -264,6 +270,7 @@ public class HexagonalGrid extends JFrame {
             g.drawString(joueurText, x, y + height + 2 * padding + fm.getAscent());
         }
 
+
         private void drawSettingsIcon(Graphics g) {
             if (settingsIcon != null) {
                 int iconWidth = 30;
@@ -273,8 +280,6 @@ public class HexagonalGrid extends JFrame {
                 g.drawImage(settingsIcon, x, y, iconWidth, iconHeight, this);
             }
         }
-
-
 
         private void drawTemporaryMessage(Graphics g) {
             if (temporaryMessage != null) {
@@ -291,9 +296,6 @@ public class HexagonalGrid extends JFrame {
                 g.drawString(temporaryMessage, x, y);
             }
         }
-
-
-
     }
 
     public static void main(String[] args) {
