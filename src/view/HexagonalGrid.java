@@ -17,8 +17,8 @@ public class HexagonalGrid extends JFrame {
     private ArrayList<Hexagon> hexagons;
     private static final int HEX_SIZE = 30;
     private Hexagon hoveredHexagon = null;
-    private static final int NEW_IMAGE_WIDTH = 720; // Nouvelle largeur de l'image
-    private static final int NEW_IMAGE_HEIGHT = 620; // Nouvelle hauteur de l'image
+    private static final int NEW_IMAGE_WIDTH = 720;
+    private static final int NEW_IMAGE_HEIGHT = 620;
     private static final int[] indiceMaxLigne = {6, 9, 10, 9, 10, 11, 10, 11, 10, 9, 10, 9, 6};
     private ArrayList<ThickBorderInfo> thickBorders = new ArrayList<>();
     private int numeroTour;
@@ -280,7 +280,6 @@ public class HexagonalGrid extends JFrame {
                 int messageWidth = fm.stringWidth(temporaryMessage);
                 int messageHeight = fm.getHeight();
 
-                // Coordonnées pour placer le message au milieu de l'image
                 int x = (NEW_IMAGE_WIDTH - messageWidth) / 2;
                 int y = (NEW_IMAGE_HEIGHT - messageHeight) / 2 + fm.getAscent();
 
