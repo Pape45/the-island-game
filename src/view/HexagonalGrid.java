@@ -280,12 +280,15 @@ public class HexagonalGrid extends JFrame {
                 int messageWidth = fm.stringWidth(temporaryMessage);
                 int messageHeight = fm.getHeight();
 
-                int x = (getWidth() - messageWidth) / 2;
-                int y = (getHeight() - messageHeight) / 2 + fm.getAscent();
+                // Coordonnées pour placer le message au milieu de l'image
+                int x = (NEW_IMAGE_WIDTH - messageWidth) / 2;
+                int y = (NEW_IMAGE_HEIGHT - messageHeight) / 2 + fm.getAscent();
 
                 g.drawString(temporaryMessage, x, y);
             }
         }
+
+
 
     }
 
