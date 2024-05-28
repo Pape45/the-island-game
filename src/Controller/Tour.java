@@ -146,6 +146,7 @@ public class Tour {
             Position position_depart;
             Position position_arrivee;
             List<Position> voisins;
+            int good;
             int numero_barque=-1;
 
             do {
@@ -167,6 +168,22 @@ public class Tour {
                 }
             } while (numero_explorateur == -1 || Plateau_de_jeu.joueurs[Plateau_de_jeu.tour%4].explorateurs.get(numero_explorateur).getStatut()==3);
             System.out.println("Explorateur sélectionné");
+
+            //L explorateur ne peux pas se déplacer sur la terre une fois qu'il est dans mer
+            if (Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getStatut() == 1) {
+
+                do {
+                    good = 1;
+                    position_arrivee = choix_case();
+                    voisins = Position.getNeighbors(Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getPosition());
+
+                    if (!Position.isPositionContains(voisins,position_arrivee) || !Tuile.estCaseTuile(Plateau_de_jeu ,position_arrivee)) {
+                        good=-1;
+                    }
+                } while (good ==-1);
+
+            }
+
             do {
                 position_arrivee = choix_case();
                 voisins = Position.getNeighbors(Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getPosition());
