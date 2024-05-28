@@ -109,4 +109,35 @@ public class Explorateur extends Piece {
         return nb_explorateur;
     }
 
+    public static boolean CaseSauvetageAtteinte(PlateauJeu Plateau_de_jeu, int numero_explorateur){
+        Position position=Plateau_de_jeu.joueurs[Plateau_de_jeu.tour%4].explorateurs.get(numero_explorateur).getPosition();
+        if(position.getX()==-9 && position.getY()== 1){
+            return true;
+        }
+        if(position.getX()==9 && position.getY()== 1){
+            return true;
+        }
+        if(position.getX()==-10 && position.getY()== 2){
+            return true;
+        }
+        if(position.getX()==10 && position.getY()== 2){
+            return true;
+        }
+        if(position.getX()==-9 && position.getY()== 11){
+            return true;
+        }
+        if(position.getX()==9 && position.getY()== 11){
+            return true;
+        }
+        if(position.getX()==-10 && position.getY()== 10){
+            return true;
+        }
+        if(position.getX()==10 && position.getY()== 10){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
 }

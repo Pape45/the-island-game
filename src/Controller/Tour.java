@@ -165,15 +165,20 @@ public class Tour {
                         }
                     }
                 }
-            } while (numero_explorateur == -1);
+            } while (numero_explorateur == -1 || Plateau_de_jeu.joueurs[Plateau_de_jeu.tour%4].explorateurs.get(numero_explorateur).getStatut()==3);
             System.out.println("Explorateur sélectionné");
             do {
                 position_arrivee = choix_case();
                 voisins = Position.getNeighbors(Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getPosition());
             } while (!Position.isPositionContains(voisins,position_arrivee) && Explorateur.nbExplorateurSurLaCase(Plateau_de_jeu,position_arrivee)<2);
+
             System.out.println("Position arrivée sélectionnée");
             int type_explorateur = Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getStatut();
             Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).setPosition(position_arrivee);
+
+            if(Explorateur.CaseSauvetageAtteinte(Plateau_de_jeu,numero_explorateur)){
+                Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).setStatut(3);
+            }
 
             if(numero_barque!=-1){
                 int numero_joueur;
