@@ -328,7 +328,7 @@ public class Tuile {
             }
         }
         for (int k = 0; k < Plateau_de_jeu.baleines.size(); k++) {
-            if (Position.isPositionsEquals(position, Plateau_de_jeu.requins.get(k).getPosition())) {
+            if (Position.isPositionsEquals(position, Plateau_de_jeu.baleines.get(k).getPosition())) {
                 return false;
             }
         }
@@ -388,8 +388,7 @@ public class Tuile {
                     numero_barque=i;
                 }
             }
-
-        } while (numero_barque== -1);
+        } while (!Barque.canMoveBarque(Plateau_de_jeu,numero_barque));
 
         int good;
         for(int k=0;k<3;k++) {
