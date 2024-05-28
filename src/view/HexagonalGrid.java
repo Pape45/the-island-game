@@ -26,6 +26,7 @@ public class HexagonalGrid extends JFrame {
     private String temporaryMessage;
     private Timer messageTimer;
 
+
     class ThickBorderInfo {
         Point position;
         int[] faces;
@@ -37,6 +38,7 @@ public class HexagonalGrid extends JFrame {
     }
 
     public HexagonalGrid() {
+
         setTitle("Hexagonal Grid on Image");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(750, 650);
@@ -111,6 +113,7 @@ public class HexagonalGrid extends JFrame {
 
         createHexagonalGrid();
     }
+
 
     private BufferedImage resizeImage(BufferedImage originalImage, int width, int height) {
         BufferedImage resizedImage = new BufferedImage(width, height, originalImage.getType());
@@ -231,6 +234,7 @@ public class HexagonalGrid extends JFrame {
             drawTemporaryMessage(g);
         }
 
+
         private void drawTourAndPlayerInfo(Graphics g) {
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 12));
@@ -264,12 +268,13 @@ public class HexagonalGrid extends JFrame {
             if (settingsIcon != null) {
                 int iconWidth = 30;
                 int iconHeight = 30;
-                Image scaledIcon = settingsIcon.getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
-                int x = getWidth() - iconWidth - 20;
-                int y = 10;
-                g.drawImage(scaledIcon, x, y, this);
+                int x = 680;
+                int y = 15;
+                g.drawImage(settingsIcon, x, y, iconWidth, iconHeight, this);
             }
         }
+
+
 
         private void drawTemporaryMessage(Graphics g) {
             if (temporaryMessage != null) {

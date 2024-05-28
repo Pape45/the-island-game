@@ -17,13 +17,13 @@ public class Filtre6 {
             messageTimer.stop();
         }
 
+        // Création et démarrage du nouveau timer
         messageTimer = new Timer(durationMs, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 hexagonalGrid.showTemporaryMessage(message, durationMs);
             }
         });
-
         messageTimer.setRepeats(false);
         messageTimer.start();
     }
