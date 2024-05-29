@@ -4,7 +4,13 @@ import Model.Joueur;
 
 public class Filtre5 {
 
-    public void filtre_5(HexagonalGrid hexagonalGrid, int numeroTour, Joueur joueur) {
+    private HexagonalGrid hexagonalGrid; // Stockage de la référence
+
+    public Filtre5(HexagonalGrid hexagonalGrid) {
+        this.hexagonalGrid = hexagonalGrid;
+    }
+
+    public void updateTourAndPlayer(int numeroTour, Joueur joueur) {
         hexagonalGrid.updateTourAndPlayer(numeroTour, joueur.getNomJoueur());
     }
 }
