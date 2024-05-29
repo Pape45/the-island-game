@@ -58,15 +58,13 @@ public class Barque extends Piece {
 
     public static void init_barques(PlateauJeu Plateau_de_jeu) throws InterruptedException {
         Position position_barque;
-        for(int i=0; i<2; i++){
-            for(int k=0; k<4;k++){
-                do{
-                    position_barque= Tour.choix_case();
-                }while(!Tuile.caseIsEmpty(Plateau_de_jeu,position_barque) && !adjacentTerre(Plateau_de_jeu,position_barque));
-                int indice_barque=Plateau_de_jeu.barques.size();
-                Plateau_de_jeu.barques.add(new Barque(position_barque));
-                Plateau_de_jeu.barques.get(indice_barque).setPosition(position_barque);
-            }
+        for(int i=0; i<8; i++){
+            do{
+                position_barque= Tour.choix_case();
+            }while(!Tuile.caseIsEmpty(Plateau_de_jeu,position_barque) && !adjacentTerre(Plateau_de_jeu,position_barque));
+            int indice_barque=Plateau_de_jeu.barques.size();
+            Plateau_de_jeu.barques.add(new Barque(position_barque));
+            Plateau_de_jeu.barques.get(indice_barque).setPosition(position_barque);
         }
     }
 }
