@@ -240,10 +240,10 @@ public class Tour {
 
     public static void retirerTuile(PlateauJeu Plateau_de_jeu) throws InterruptedException {
         int tuile=-1;
+        Position position_tuile = Tour.choix_case();
+        int[] nombreTuiles = Tuile.nombreTuile(Plateau_de_jeu);
         do {
             System.out.println("Choisissez une tuile");
-            Position position_tuile = Tour.choix_case();
-            int[] nombreTuiles = Tuile.nombreTuile(Plateau_de_jeu);
             for(int i=0; i<Plateau_de_jeu.tuiles.size(); i++) {
                 if (Position.isPositionsEquals(Plateau_de_jeu.tuiles.get(i).getPosition(), position_tuile)){
                     if(nombreTuiles[0]!=0 && Plateau_de_jeu.tuiles.get(i).typeTuile==0 && Tuile.adjacentMer(Plateau_de_jeu,position_tuile)) {
@@ -259,7 +259,24 @@ public class Tour {
             }
         }while (tuile==-1);
         System.out.println("Tuile retirée");
-        Plateau_de_jeu.joueurs[Plateau_de_jeu.tour%4].tuilesEnMain.add(Plateau_de_jeu.tuiles.get(tuile));
+        if(Plateau_de_jeu.tuiles.get(tuile).typeTuile==1){
+            Tuile.newRequinAction(Plateau_de_jeu,position_tuile);
+        }
+        else if (Plateau_de_jeu.tuiles.get(tuile).typeTuile==2) {
+            Tuile.newBaleineAction(Plateau_de_jeu,position_tuile);
+        }
+        else if (Plateau_de_jeu.tuiles.get(tuile).typeTuile==3) {
+            Tuile.newBarqueAction(Plateau_de_jeu,position_tuile);
+        }
+        else if (Plateau_de_jeu.tuiles.get(tuile).typeTuile==4) {
+            Tuile.tourbillonAction(Plateau_de_jeu,position_tuile);
+        }
+        else if (Plateau_de_jeu.tuiles.get(tuile).typeTuile==5) {
+            Tuile.volcanAction(Plateau_de_jeu);
+        }
+        else{
+            Plateau_de_jeu.joueurs[Plateau_de_jeu.tour%4].tuilesEnMain.add(Plateau_de_jeu.tuiles.get(tuile));
+        }
         Plateau_de_jeu.tuiles.remove(tuile);
     }
 
