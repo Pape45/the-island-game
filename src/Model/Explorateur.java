@@ -38,7 +38,7 @@ public class Explorateur extends Piece {
     @Override
     public void setPosition(Position position) {
         this.position = position;
-        this.deplacement=this.deplacement+1;
+        this.setdepacement(1);
     }
 
     public int getTresor() {
