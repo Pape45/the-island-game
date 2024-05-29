@@ -33,7 +33,7 @@ public class Partie {
         Barque.init_barques(plateauDeJeu);
         isInit=true;
         // Start the game loop
-        while (true) {
+        while (plateauDeJeu.getState_of_game()==0) {
             try {
                 // Execute a turn
                 tourController.tour(plateauDeJeu);

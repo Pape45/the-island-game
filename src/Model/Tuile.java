@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import Controller.*;
 import view.CombinedGrid3;
@@ -49,7 +50,7 @@ public class Tuile {
 
     public static boolean estCaseTuile(PlateauJeu Plateau_de_jeu, Position position) {
         for (Tuile tuile : Plateau_de_jeu.tuiles) {
-            if (tuile.getPosition().equals(position)) {
+            if (Position.isPositionsEquals(tuile.getPosition(),position)) {
                 return true;
             }
         }
@@ -159,11 +160,13 @@ public class Tuile {
     public static void newRequinAction(PlateauJeu Plateau_de_jeu, Position position_tuile){
         int indice_requin=Plateau_de_jeu.requins.size();
         Plateau_de_jeu.requins.add(new Requin(position_tuile));
-        Requin.MangerNageur(Plateau_de_jeu, indice_requin);
+        int manger=Requin.MangerNageur(Plateau_de_jeu, indice_requin);
+
     }
 
     public static void newBaleineAction(PlateauJeu Plateau_de_jeu, Position position_tuile){
         Plateau_de_jeu.baleines.add(new Baleine(position_tuile));
+
     }
 
     public static void newBarqueAction(PlateauJeu Plateau_de_jeu, Position position_tuile){
@@ -196,38 +199,14 @@ public class Tuile {
 
     public static void tourbillonAction(PlateauJeu Plateau_de_jeu, Position position_tuile){
         List<Position> voisins_tourbillon= Position.getNeighbors(position_tuile);
-        for(int i=0; i<voisins_tourbillon.size(); i++){
-            for(int j=0; j<Plateau_de_jeu.tuiles.size(); j++){
-                if(!Position.isPositionsEquals(voisins_tourbillon.get(i),Plateau_de_jeu.tuiles.get(j).getPosition())){
-                    for (int k = 0; k < Plateau_de_jeu.requins.size(); k++) {
-                        if (Position.isPositionsEquals(voisins_tourbillon.get(i),Plateau_de_jeu.requins.get(k).getPosition())){
-                            Plateau_de_jeu.requins.remove(k);
-                        }
-                    }
-                    for (int k = 0; k < Plateau_de_jeu.baleines.size(); k++) {
-                        if (Position.isPositionsEquals(voisins_tourbillon.get(i),Plateau_de_jeu.baleines.get(k).getPosition())){
-                            Plateau_de_jeu.baleines.remove(k);
-                        }
-                    }
-                    for (int k = 0; k < Plateau_de_jeu.serpentDeMer.size(); k++) {
-                        if (Position.isPositionsEquals(voisins_tourbillon.get(i),Plateau_de_jeu.serpentDeMer.get(k).getPosition())){
-                            Plateau_de_jeu.serpentDeMer.remove(k);
-                        }
-                    }
-                    for (int k = 0; k < Plateau_de_jeu.joueurs.length; k++) {
-                        for (int l = 0; l < Plateau_de_jeu.joueurs[k].explorateurs.size(); l++) {
-                            if(Position.isPositionsEquals(voisins_tourbillon.get(i),Plateau_de_jeu.joueurs[k].explorateurs.get(l).getPosition())) {
-                                Plateau_de_jeu.joueurs[k].explorateurs.remove(l);
-                            }
-                        }
-                    }
-                    for (int k = 0; k < Plateau_de_jeu.barques.size(); k++) {
-                        if (Position.isPositionsEquals(voisins_tourbillon.get(i),Plateau_de_jeu.barques.get(k).getPosition())) {
-                            Plateau_de_jeu.barques.remove(k);
-                        }
-                    }
-                }
+        for (Position voisin : voisins_tourbillon) {
+            Plateau_de_jeu.requins.removeIf(requin -> Position.isPositionsEquals(voisin, requin.getPosition()));
+            Plateau_de_jeu.baleines.removeIf(baleine -> Position.isPositionsEquals(voisin, baleine.getPosition()));
+            Plateau_de_jeu.serpentDeMer.removeIf(serpentDeMer -> Position.isPositionsEquals(voisin, serpentDeMer.getPosition()));
+            for (Joueur joueur : Plateau_de_jeu.joueurs) {
+                joueur.explorateurs.removeIf(explorateur -> Position.isPositionsEquals(voisin, explorateur.getPosition()));
             }
+            Plateau_de_jeu.barques.removeIf(barque -> Position.isPositionsEquals(voisin, barque.getPosition()));
         }
     }
 
@@ -253,6 +232,13 @@ public class Tuile {
 
         Plateau_de_jeu.requins.get(numero_requin).setPosition(position_arrivee);
         Requin.MangerNageur(Plateau_de_jeu, numero_requin);
+        for (int i= 0; i < Plateau_de_jeu.joueurs.length; i++) {
+            for (int k = 0; k < Plateau_de_jeu.joueurs[i].explorateurs.size(); k++) {
+                if (Position.isPositionsEquals(position_depart, Plateau_de_jeu.joueurs[i].explorateurs.get(k).getPosition())) {
+                    Plateau_de_jeu.joueurs[i].explorateurs.get(k).setStatut(1);
+                }
+            }
+        }
     }
 
     public static void deplacerBaleineAction(PlateauJeu Plateau_de_jeu) throws InterruptedException {
@@ -276,6 +262,13 @@ public class Tuile {
 
         Plateau_de_jeu.baleines.get(numero_baleine).setPosition(position_arrivee);
         Baleine.RetournerBarque(Plateau_de_jeu, numero_baleine);
+        for (int i= 0; i < Plateau_de_jeu.joueurs.length; i++) {
+            for (int k = 0; k < Plateau_de_jeu.joueurs[i].explorateurs.size(); k++) {
+                if (Position.isPositionsEquals(position_depart, Plateau_de_jeu.joueurs[i].explorateurs.get(k).getPosition())) {
+                    Plateau_de_jeu.joueurs[i].explorateurs.get(k).setStatut(1);
+                }
+            }
+        }
     }
 
     public static void deplacerSerpentDeMerAction(PlateauJeu Plateau_de_jeu) throws InterruptedException {

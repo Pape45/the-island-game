@@ -1,22 +1,27 @@
 package Model;
 
+import java.util.Iterator;
+
 public class SerpentDeMer extends Piece {
 
     public static void RetournerBarqueMangerNageur(PlateauJeu Plateau_de_jeu, int indice_serpent_de_mer) {
         Position pos_serpent_de_mer = Plateau_de_jeu.serpentDeMer.get(indice_serpent_de_mer).getPosition();
 
-        for (int j = 0; j < Plateau_de_jeu.barques.size(); j++) {
-            Position pos_barque = Plateau_de_jeu.barques.get(j).getPosition();
-            if (pos_serpent_de_mer.equals(pos_barque)) {
-                Plateau_de_jeu.barques.remove(j);
+        for (Iterator<Barque> it = Plateau_de_jeu.barques.iterator(); it.hasNext(); ) {
+            Barque barque = it.next();
+            Position pos_barque = barque.getPosition();
+            if (Position.isPositionsEquals(pos_serpent_de_mer,pos_barque)) {
+                it.remove();
             }
         }
 
-        for (int j = 0; j < Plateau_de_jeu.joueurs.length-1; j++) {
-            for (int k = 0; k < Plateau_de_jeu.joueurs[j].explorateurs.size(); k++) {
-                Position pos_explorateur = Plateau_de_jeu.joueurs[j].explorateurs.get(k).getPosition();
-                if(Position.isPositionsEquals(pos_serpent_de_mer,pos_explorateur)  && Plateau_de_jeu.joueurs[j].explorateurs.get(k).getStatut()==1) {
-                    Plateau_de_jeu.joueurs[j].explorateurs.remove(k);
+        for (int j = 0; j < Plateau_de_jeu.joueurs.length; j++) {
+            Iterator<Explorateur> iterator = Plateau_de_jeu.joueurs[j].explorateurs.iterator();
+            while (iterator.hasNext()) {
+                Explorateur explorateur = iterator.next();
+                Position pos_explorateur = explorateur.getPosition();
+                if (Position.isPositionsEquals(pos_serpent_de_mer, pos_explorateur) && explorateur.getStatut() == 1) {
+                    iterator.remove();
                 }
             }
         }

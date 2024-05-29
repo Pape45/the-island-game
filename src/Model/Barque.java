@@ -58,6 +58,7 @@ public class Barque extends Piece {
     }
 
     public static void init_barques(PlateauJeu Plateau_de_jeu) throws InterruptedException {
+        System.out.println("Posez les barques");
         Position position_barque;
         for(int i=0; i<8; i++){
             do{
@@ -66,12 +67,14 @@ public class Barque extends Piece {
             int indice_barque=Plateau_de_jeu.barques.size();
             Plateau_de_jeu.barques.add(new Barque(position_barque));
             Plateau_de_jeu.barques.get(indice_barque).setPosition(position_barque);
+            System.out.println(Plateau_de_jeu.barques.size());
             for(int j=0;j<3;j++){
                 for(int k=0;k<2;k++){
                     Plateau_de_jeu.barques.get(indice_barque).setValue(j,k,-1);
                 }
             }
         }
+        System.out.println("Pose des barques terminée");
     }
 }
     
