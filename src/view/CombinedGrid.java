@@ -10,30 +10,44 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
-public class HexagonalGrid extends JFrame {
-    private BufferedImage image;
-    private BufferedImage resizedImage;
-    private JPanel imagePanel;
-    private ArrayList<Hexagon> hexagons;
+public class CombinedGrid extends JFrame {
+    private BufferedImage hexImage;
+    private BufferedImage resizedHexImage;
+    private BufferedImage imageForet;
+    private BufferedImage resizedImageForet;
+    private BufferedImage imageMontagne;
+    private BufferedImage resizedImageMontagne;
+    private BufferedImage imagePlage;
+    private BufferedImage resizedImagePlage;
     private static final int HEX_SIZE = 30;
-    private Hexagon hoveredHexagon = null;
     private static final int NEW_IMAGE_WIDTH = 720; // Nouvelle largeur de l'image
     private static final int NEW_IMAGE_HEIGHT = 620; // Nouvelle hauteur de l'image
     private static final int[] indiceMaxLigne = {6, 9, 10, 9, 10, 11, 10, 11, 10, 9, 10, 9, 6};
+    private ArrayList<Hexagon> hexagons;
+    private Hexagon hoveredHexagon = null;
     private Position clickedPosition = null; // Position clicked by the user
+    private List<Tuile> tuiles;
 
-    public HexagonalGrid() {
-        setTitle("Hexagonal Grid Game");
+    public CombinedGrid(PlateauJeu plateauDeJeu) {
+        setTitle("Combined Grid Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
         hexagons = new ArrayList<>();
-        imagePanel = new ImagePanel();
+        tuiles = plateauDeJeu.tuiles;
 
+        JPanel imagePanel = new ImagePanel();
         try {
-            image = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\theisland.png"));
-            resizedImage = resizeImage(image, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
+            hexImage = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\theisland.png"));
+            resizedHexImage = resizeImage(hexImage, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
+            imageForet = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\tileForet.png"));
+            resizedImageForet = resizeImage(imageForet, 35, 35);
+            imageMontagne = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\tileMontagne.png"));
+            resizedImageMontagne = resizeImage(imageMontagne, 35, 35);
+            imagePlage = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\tilePlage.png"));
+            resizedImagePlage = resizeImage(imagePlage, 35, 35);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -44,7 +58,6 @@ public class HexagonalGrid extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 choix_case(e);
             }
-            
         });
 
         imagePanel.addMouseMotionListener(new MouseMotionAdapter() {
@@ -191,24 +204,41 @@ public class HexagonalGrid extends JFrame {
         if (!found) {
             hoveredHexagon = null;
         }
-        imagePanel.repaint();
+        repaint();
     }
 
     private class ImagePanel extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            g.drawImage(resizedImage, 0, 0, null);
+            g.drawImage(resizedHexImage, 0, 0, null);
             drawHexagons(g);
+            drawTiles(g);
+        }
+
+        private void drawTiles(Graphics g) {
+            // Calculate the offsets to center the tiles
+
+            for (Tuile tuile : tuiles) {
+                int x = (int)(tuile.position.getX() * 25.5) +343;
+                int y = tuile.position.getY() * 45+23 ;
+                switch (tuile.typeTuile) {
+                    case 0:
+                        g.drawImage(resizedImagePlage, x, y, null);
+                        break;
+                    case 1:
+                        g.drawImage(resizedImageForet, x, y, null);
+                        break;
+                    default:
+                        g.drawImage(resizedImageMontagne, x, y, null);
+                        break;
+                }
+            }
         }
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new HexagonalGrid().setVisible(true);
-            }
-        });
+        PlateauJeu plateauDeJeu = new PlateauJeu();
+        SwingUtilities.invokeLater(() -> new CombinedGrid(plateauDeJeu).setVisible(true));
     }
 }
