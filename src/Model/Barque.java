@@ -11,10 +11,10 @@ public class Barque extends Piece {
     private static final int BARQUE_COLS = 2;
     //numéro joueur
     //numéro explorateur
-    private static int[][] barque;
+    private final int[][] barque;
 
     public Barque(Position position) {
-        barque = new int[BARQUE_ROWS][BARQUE_COLS];
+        this.barque = new int[BARQUE_ROWS][BARQUE_COLS];
         this.position = position;
     }
 
@@ -26,9 +26,10 @@ public class Barque extends Piece {
     public static boolean canMoveBarque(PlateauJeu Plateau_de_jeu, int numero_barque) {
         int[] nb_explorateur = new int[4];
         int joueur;
-        for(int row=0; row<BARQUE_ROWS; row++) {
-            joueur=barque[row][0];
-            nb_explorateur[joueur]++;
+        for(int row=0; row<3; row++) {
+            joueur=Plateau_de_jeu.barques.get(numero_barque).getValue(row,0);
+            if(joueur!=-1)
+                nb_explorateur[joueur]++;
         }
         int max=0;
         for(int i=0; i<nb_explorateur.length; i++){

@@ -13,7 +13,6 @@ public class Baleine extends Piece {
             Position pos_barque = barque.getPosition();
             if (Position.isPositionsEquals(pos_baleine,pos_barque)) {
                 it.remove();
-                System.out.println(Plateau_de_jeu.barques.size());
                 for (int k = 0; k < Plateau_de_jeu.joueurs.length; k++) {
                     for (Explorateur explorateur : Plateau_de_jeu.joueurs[k].explorateurs) {
                         if (Position.isPositionsEquals(explorateur.getPosition(), pos_barque)) {

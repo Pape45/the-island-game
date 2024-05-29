@@ -94,7 +94,6 @@ public class Explorateur extends Piece {
                     for(int p=0; p<listes_tuiles_libres.size(); p++){
                         if(listes_tuiles_libres.get(p).getX() == position.getX() && listes_tuiles_libres.get(p).getY() == position.getY()){
                             indice_tuile=p;
-                            System.out.println(k+" "+i);
                         }
                     }
                 }while(indice_tuile==-1);

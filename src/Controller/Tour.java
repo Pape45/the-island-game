@@ -164,7 +164,6 @@ public class Tour {
                     }
                     if (Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getStatut() == 2) {
                         for (int i = 0; i < Plateau_de_jeu.barques.size(); i++) {
-                            System.out.println(Barque.canMoveBarque(Plateau_de_jeu, i));
                             if (Position.isPositionsEquals(position_depart,Plateau_de_jeu.barques.get(i).getPosition()) && Barque.canMoveBarque(Plateau_de_jeu, i)) {
                                 numero_barque=i;
                                 break;
@@ -182,7 +181,7 @@ public class Tour {
             do {
                 position_arrivee = choix_case();
                 voisins = Position.getNeighbors(Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getPosition());
-            } while (!Position.isPositionContains(voisins,position_arrivee) || Explorateur.nbExplorateurSurLaCase(Plateau_de_jeu,position_arrivee)>2 || Joueur.AlreadyMyExplorateurOnCase(Plateau_de_jeu,position_arrivee) || (Tuile.estCaseTuile(Plateau_de_jeu ,position_arrivee) && Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getStatut()==1));
+            } while (!Position.isPositionContains(voisins,position_arrivee) || Explorateur.nbExplorateurSurLaCase(Plateau_de_jeu,position_arrivee)>2 || Joueur.AlreadyMyExplorateurOnCase(Plateau_de_jeu,position_arrivee) || ((Tuile.estCaseTuile(Plateau_de_jeu ,position_arrivee) && Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getStatut()==1)));
 
             System.out.println("Position arrivée sélectionnée");
             Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).setPosition(position_arrivee);
@@ -216,16 +215,21 @@ public class Tour {
                 Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).setStatut(1);
             }
 
+            boolean shouldBreak=false;
             for(int i=0; i<Plateau_de_jeu.barques.size();i++){
-                if(type_explorateur!=2 &&Position.isPositionsEquals( Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getPosition(), Plateau_de_jeu.barques.get(i).getPosition())){
+                if(type_explorateur!=2 && Position.isPositionsEquals( Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getPosition(), Plateau_de_jeu.barques.get(i).getPosition())){
                     Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).setStatut(2);
                     for(int r=0; r<3; r++){
                         if(Plateau_de_jeu.barques.get(i).getValue(r,0)==-1){
                             Plateau_de_jeu.barques.get(i).setValue(r,0,Plateau_de_jeu.tour % 4);
                             Plateau_de_jeu.barques.get(i).setValue(r,1,numero_explorateur);
+                            shouldBreak=true;
+                            break;
                         }
                     }
                 }
+                if(shouldBreak)
+                    break;
             }
         }
     }
@@ -271,7 +275,7 @@ public class Tour {
             Plateau_de_jeu.joueurs[Plateau_de_jeu.tour%4].tuilesEnMain.add(Plateau_de_jeu.tuiles.get(tuile));
         }
         Plateau_de_jeu.tuiles.remove(tuile);
-        
+
         for (int i= 0; i < Plateau_de_jeu.joueurs.length; i++) {
             for (int k = 0; k < Plateau_de_jeu.joueurs[i].explorateurs.size(); k++) {
                 if (Position.isPositionsEquals(position_tuile, Plateau_de_jeu.joueurs[i].explorateurs.get(k).getPosition())) {

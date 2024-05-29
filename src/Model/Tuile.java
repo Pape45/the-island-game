@@ -160,13 +160,11 @@ public class Tuile {
     public static void newRequinAction(PlateauJeu Plateau_de_jeu, Position position_tuile){
         int indice_requin=Plateau_de_jeu.requins.size();
         Plateau_de_jeu.requins.add(new Requin(position_tuile));
-        int manger=Requin.MangerNageur(Plateau_de_jeu, indice_requin);
-
+        Requin.MangerNageur(Plateau_de_jeu, indice_requin);
     }
 
     public static void newBaleineAction(PlateauJeu Plateau_de_jeu, Position position_tuile){
         Plateau_de_jeu.baleines.add(new Baleine(position_tuile));
-
     }
 
     public static void newBarqueAction(PlateauJeu Plateau_de_jeu, Position position_tuile){

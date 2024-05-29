@@ -202,17 +202,6 @@ public class PlateauJeu {
         serpentDeMer.add(new SerpentDeMer(new Position(9, 11)));
         serpentDeMer.add(new SerpentDeMer(new Position(0, 6)));
 
-        requins.add(new Requin(new Position(-7, 1)));
-        requins.add(new Requin(new Position(8, 2)));
-        requins.add(new Requin(new Position(-8, 10)));
-        requins.add(new Requin(new Position(7, 11)));
-
-        baleines.add(new Baleine(new Position(-5, 1)));
-        baleines.add(new Baleine(new Position(6, 2)));
-        baleines.add(new Baleine(new Position(-6, 10)));
-        baleines.add(new Baleine(new Position(-7, 11)));
-        baleines.add(new Baleine(new Position(0, 0)));
-
     }
 
     public void setState_of_game(int state_of_game){

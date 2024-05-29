@@ -12,6 +12,13 @@ public class SerpentDeMer extends Piece {
             Position pos_barque = barque.getPosition();
             if (Position.isPositionsEquals(pos_serpent_de_mer,pos_barque)) {
                 it.remove();
+                for (int k = 0; k < Plateau_de_jeu.joueurs.length; k++) {
+                    for (Explorateur explorateur : Plateau_de_jeu.joueurs[k].explorateurs) {
+                        if (Position.isPositionsEquals(explorateur.getPosition(), pos_barque)) {
+                            explorateur.setStatut(1);
+                        }
+                    }
+                }
             }
         }
 
