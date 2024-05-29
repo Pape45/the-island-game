@@ -48,4 +48,18 @@ public class Joueur {
         return tresors;
     }
 
+    public static boolean AlreadyMyExplorateurOnCase(PlateauJeu Plateau_de_jeu, Position position){
+        for(int i=0; i<Plateau_de_jeu.joueurs[Plateau_de_jeu.tour%4].explorateurs.size(); i++){
+            if(Position.isPositionsEquals(Plateau_de_jeu.joueurs[Plateau_de_jeu.tour%4].explorateurs.get(i).getPosition(),position)){
+                for(int k=0; k<Plateau_de_jeu.barques.size();k++){
+                    if(Position.isPositionsEquals(position, Plateau_de_jeu.barques.get(k).getPosition())){
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
