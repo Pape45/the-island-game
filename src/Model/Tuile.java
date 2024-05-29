@@ -201,17 +201,17 @@ public class Tuile {
             for(int j=0; j<Plateau_de_jeu.tuiles.size(); j++){
                 if(!Position.isPositionsEquals(voisins_tourbillon.get(i),Plateau_de_jeu.tuiles.get(j).getPosition())){
                     for (int k = 0; k < Plateau_de_jeu.requins.size(); k++) {
-                        if (Position.isPositionsEquals(voisins_tourbillon.get(i),Plateau_de_jeu.requins.get(k).getPosition())) {
+                        if (Position.isPositionsEquals(voisins_tourbillon.get(i),Plateau_de_jeu.requins.get(k).getPosition())){
                             Plateau_de_jeu.requins.remove(k);
                         }
                     }
                     for (int k = 0; k < Plateau_de_jeu.baleines.size(); k++) {
-                        if (Position.isPositionsEquals(voisins_tourbillon.get(i),Plateau_de_jeu.baleines.get(k).getPosition())) {
+                        if (Position.isPositionsEquals(voisins_tourbillon.get(i),Plateau_de_jeu.baleines.get(k).getPosition())){
                             Plateau_de_jeu.baleines.remove(k);
                         }
                     }
                     for (int k = 0; k < Plateau_de_jeu.serpentDeMer.size(); k++) {
-                        if (Position.isPositionsEquals(voisins_tourbillon.get(i),Plateau_de_jeu.serpentDeMer.get(k).getPosition())) {
+                        if (Position.isPositionsEquals(voisins_tourbillon.get(i),Plateau_de_jeu.serpentDeMer.get(k).getPosition())){
                             Plateau_de_jeu.serpentDeMer.remove(k);
                         }
                     }

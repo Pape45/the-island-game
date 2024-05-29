@@ -259,19 +259,19 @@ public class Tour {
             }
         }while (tuile==-1);
         System.out.println("Tuile retirée");
-        if(Plateau_de_jeu.tuiles.get(tuile).typeTuile==1){
+        if(Plateau_de_jeu.tuiles.get(tuile).getFaceCachee()==1){
             Tuile.newRequinAction(Plateau_de_jeu,position_tuile);
         }
-        else if (Plateau_de_jeu.tuiles.get(tuile).typeTuile==2) {
+        else if (Plateau_de_jeu.tuiles.get(tuile).getFaceCachee()==2) {
             Tuile.newBaleineAction(Plateau_de_jeu,position_tuile);
         }
-        else if (Plateau_de_jeu.tuiles.get(tuile).typeTuile==3) {
+        else if (Plateau_de_jeu.tuiles.get(tuile).getFaceCachee()==3) {
             Tuile.newBarqueAction(Plateau_de_jeu,position_tuile);
         }
-        else if (Plateau_de_jeu.tuiles.get(tuile).typeTuile==4) {
+        else if (Plateau_de_jeu.tuiles.get(tuile).getFaceCachee()==4) {
             Tuile.tourbillonAction(Plateau_de_jeu,position_tuile);
         }
-        else if (Plateau_de_jeu.tuiles.get(tuile).typeTuile==5) {
+        else if (Plateau_de_jeu.tuiles.get(tuile).getFaceCachee()==5) {
             Tuile.volcanAction(Plateau_de_jeu);
         }
         else{

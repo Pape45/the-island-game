@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Barque;
 import Model.Explorateur;
 import Model.PlateauJeu;
 import view.HexagonalGrid;
@@ -21,7 +22,7 @@ public class Partie {
         Tour tourController = new Tour(hexagonalGrid);
 
         Explorateur.init_pos_explorateurs(plateauDeJeu);
-
+        Barque.init_barques(plateauDeJeu);
         // Start the game loop
         while (true) {
             try {

@@ -1,5 +1,9 @@
 package Model;
 
+import Controller.Tour;
+
+import java.util.List;
+
 public class Barque extends Piece {
     private static final int BARQUE_ROWS = 3;
     //3 places pour explorateur
@@ -36,6 +40,33 @@ public class Barque extends Piece {
         }
         else{
             return false;
+        }
+    }
+
+    public static boolean adjacentTerre(PlateauJeu Plateau_de_jeu, Position position) {
+        List<Position> voisins= Position.getNeighbors(position);
+        int tuile_voisines=0;
+        for(int i=0; i< voisins.size(); i++){
+            for(int j=0; j<Plateau_de_jeu.tuiles.size(); j++){
+                if(Position.isPositionContains(voisins, position)){
+                    tuile_voisines++;
+                }
+            }
+        }
+        return tuile_voisines != 0;
+    }
+
+    public static void init_barques(PlateauJeu Plateau_de_jeu) throws InterruptedException {
+        Position position_barque;
+        for(int i=0; i<2; i++){
+            for(int k=0; k<4;k++){
+                do{
+                    position_barque= Tour.choix_case();
+                }while(!Tuile.caseIsEmpty(Plateau_de_jeu,position_barque) && !adjacentTerre(Plateau_de_jeu,position_barque));
+                int indice_barque=Plateau_de_jeu.barques.size();
+                Plateau_de_jeu.barques.add(new Barque(position_barque));
+                Plateau_de_jeu.barques.get(indice_barque).setPosition(position_barque);
+            }
         }
     }
 }
