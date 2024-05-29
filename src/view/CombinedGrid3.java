@@ -13,8 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.net.URL;
 import javax.swing.plaf.basic.BasicButtonUI;
-
-
+import Controller.Partie;
 
 public class CombinedGrid3 extends JFrame {
     private ImagePanel imagePanel;
@@ -33,7 +32,7 @@ public class CombinedGrid3 extends JFrame {
     private static final int[] indiceMaxLigne = {6, 9, 10, 9, 10, 11, 10, 11, 10, 9, 10, 9, 6};
     private ArrayList<Hexagon> hexagons;
     private Hexagon hoveredHexagon = null;
-    private Position clickedPosition = null; // Position clicked by the user
+    private static Position clickedPosition = null; // Position clicked by the user
     private List<Tuile> tuiles;
 
 
@@ -69,30 +68,66 @@ public class CombinedGrid3 extends JFrame {
 
         JPanel imagePanel = new ImagePanel(plateauDeJeu);
         try {
-            hexImage = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\theisland.png"));
+            String imagePath="theisland.png";
+            URL imageUrl = CombinedGrid3.class.getResource(imagePath);
+            hexImage = ImageIO.read(imageUrl);
             resizedHexImage = resizeImage(hexImage, NEW_BACK_WIDTH, NEW_BACK_HEIGHT);
-            imageForet = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\TuileForet.png"));
+
+            imagePath="image/TuileForet.png";
+            imageUrl = CombinedGrid3.class.getResource(imagePath);
+            imageForet = ImageIO.read(imageUrl);
             resizedImageForet = resizeImage(imageForet, 48, 56);
-            imageMontagne = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\Tuile_Montagne.png"));
+
+            imagePath="image/Tuile_Montagne.png";
+            imageUrl = CombinedGrid3.class.getResource(imagePath);
+            imageMontagne = ImageIO.read(imageUrl);
             resizedImageMontagne = resizeImage(imageMontagne, 48, 57);
-            imagePlage = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\Tuile_Plage.png"));
+
+            imagePath="image/Tuile_Plage.png";
+            imageUrl = CombinedGrid3.class.getResource(imagePath);
+            imagePlage = ImageIO.read(imageUrl);
             resizedImagePlage = resizeImage(imagePlage, 48, 57);
-            imageExplorateurbleu = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\Explorateur_Bleu.png"));
+
+            imagePath="image/Explorateur_Bleu.png";
+            imageUrl = CombinedGrid3.class.getResource(imagePath);
+            imageExplorateurbleu = ImageIO.read(imageUrl);
             resizedImageExplorateurbleu = resizeImage(imageExplorateurbleu, NEW_IMAGE_WIDTH+2, NEW_IMAGE_HEIGHT+4);
-            imageExplorateurrouge = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\Explorateur_Rouge.png"));
+
+            imagePath="image/Explorateur_Rouge.png";
+            imageUrl = CombinedGrid3.class.getResource(imagePath);
+            imageExplorateurrouge = ImageIO.read(imageUrl);
             resizedImageExplorateurrouge = resizeImage(imageExplorateurrouge, NEW_IMAGE_WIDTH-6, NEW_IMAGE_HEIGHT-5);
-            imageExplorateurjaune = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\Explorateur_Jaune.png"));
+
+            imagePath="image/Explorateur_Jaune.png";
+            imageUrl = CombinedGrid3.class.getResource(imagePath);
+            imageExplorateurjaune = ImageIO.read(imageUrl);
             resizedImageExplorateurjaune = resizeImage(imageExplorateurjaune, NEW_IMAGE_WIDTH-3, NEW_IMAGE_HEIGHT+3);
-            imageExplorateurvert = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\Explorateur_Vert.png"));
+
+            imagePath="image/Explorateur_Vert.png";
+            imageUrl = CombinedGrid3.class.getResource(imagePath);
+            imageExplorateurvert = ImageIO.read(imageUrl);
             resizedImageExplorateurvert = resizeImage(imageExplorateurvert, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
-            imageRequin = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\Requin.png"));
+
+            imagePath="image/Requin.png";
+            imageUrl = CombinedGrid3.class.getResource(imagePath);
+            imageRequin = ImageIO.read(imageUrl);
             resizedImageRequin = resizeImage(imageRequin, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
-            imageSerpentdemer = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\Serpent_de_mer.png"));
+
+            imagePath="image/Serpent_de_mer.png";
+            imageUrl = CombinedGrid3.class.getResource(imagePath);
+            imageSerpentdemer = ImageIO.read(imageUrl);
             resizedImageSerpentdemer = resizeImage(imageSerpentdemer, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
-            imageBaleine = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\Baleine.png"));
+
+            imagePath="image/Baleine.png";
+            imageUrl = CombinedGrid3.class.getResource(imagePath);
+            imageBaleine = ImageIO.read(imageUrl);
             resizedImageBaleine = resizeImage(imageBaleine, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
-            imageBarque = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\Barque.png"));
+
+            imagePath="image/Barque.png";
+            imageUrl = CombinedGrid3.class.getResource(imagePath);
+            imageBarque = ImageIO.read(imageUrl);
             resizedImageBarque = resizeImage(imageBarque, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -351,6 +386,7 @@ public class CombinedGrid3 extends JFrame {
             this.joueurs = plateauDeJeu.joueurs;
             this.tour =plateauDeJeu.tour;
         }
+
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -377,21 +413,20 @@ public class CombinedGrid3 extends JFrame {
                 g.drawImage(resizedImageBaleine, x, y, null);
             }
 
-            // Draw Barque
             for (Barque barque : barque) {
-                int x = (int)(barque.position.getX() * 25.5 + 343);
-                int y = barque.position.getY() * 45+23;
+                int x = (int) (barque.position.getX() * 25.5 + 343);
+                int y = barque.position.getY() * 45 + 23;
                 g.drawImage(resizedImageBarque, x, y, null);
             }
 
-            // Draw Explorateurs
             for (int i = 0; i < joueurs.length; i++) {
                 Joueur joueur = joueurs[i];
                 BufferedImage explorerImage = getExplorerImageByIndex(i);
-                for (Explorateur explorateur : joueur.explorateurs) {
-                    int x = (int)(explorateur.position.getX() * 25.5 + 338+ 4*i);
-                    int y = explorateur.position.getY() * 45+23;
-                    g.drawImage(explorerImage, x, y, null);
+                for (int k=0; k<joueur.explorateurs.size();k++) {
+                    int x = (int) (joueur.explorateurs.get(k).getPosition().getX() * 25.5 + 338 + 4 * i);
+                    int y = joueur.explorateurs.get(k).getPosition().getY() * 45 + 23;
+                    if(joueur.explorateurs.get(k).getPosition().getY()!=-1)
+                        g.drawImage(explorerImage, x, y, null);
                 }
             }
             drawTourAndPlayerInfo(g);
@@ -462,7 +497,7 @@ public class CombinedGrid3 extends JFrame {
     }
 
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         PlateauJeu plateauDeJeu = new PlateauJeu();
         SwingUtilities.invokeLater(() -> {
             CombinedGrid3 frame = new CombinedGrid3(plateauDeJeu);
@@ -472,5 +507,5 @@ public class CombinedGrid3 extends JFrame {
             plateauDeJeu.serpentDeMer.get(2).position.setY(0);
             frame.refreshImagePanel();
         });
-    }
+    }*/
 }

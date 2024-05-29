@@ -47,7 +47,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class FiltreTuile {
+/*public class FiltreTuile {
     private static BufferedImage imageforet;
     private static BufferedImage resizedImageforet;
     private static BufferedImage imagemontagne;
@@ -92,8 +92,8 @@ public class FiltreTuile {
         }
 
         @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
+        protected void paintComponent(Graphics g,PlateauJeu Plateau_de_jeu) {
+            super.paintComponent(g,Plateau_de_jeu);
 
             // Draw each image at the position specified by each Tuile
             for (Tuile tuile : tuiles) {
@@ -125,4 +125,4 @@ public class FiltreTuile {
             e.printStackTrace();
         }
     }
-}
+}*/

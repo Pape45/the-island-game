@@ -38,24 +38,31 @@ public class Position {
         int nbLigne=13;
         int[] indiceMaxLigne= {6,9,10,9,10,11,10,11,10,9,10,9,6};
 
-        if(abs(pos_x-2) < indiceMaxLigne[pos_y])
+        if(abs(pos_x-2) <= indiceMaxLigne[pos_y])
             neighbors.add(new Position(pos_x-2, pos_y));  //voisin de gauche
 
-        if(abs(pos_x+2) < indiceMaxLigne[pos_y])
+        if(abs(pos_x+2) <= indiceMaxLigne[pos_y])
             neighbors.add(new Position(pos_x+2, pos_y));   //voisin de droite
 
-        if(abs(pos_x-1) < indiceMaxLigne[pos_y-1] && pos_y-1>=0)
-            neighbors.add(new Position(pos_x-1, pos_y-1));  //voisin en haut à gauche
+        if(pos_y-1>=0) {
+            if (abs(pos_x - 1) <= indiceMaxLigne[pos_y - 1])
+                neighbors.add(new Position(pos_x - 1, pos_y - 1));  //voisin en haut à gauche
+        }
 
-        if(abs(pos_x+1) < indiceMaxLigne[pos_y-1] && pos_y-1>=0)
-            neighbors.add(new Position(pos_x+1, pos_y-1));   //voisin en haut à droite
+        if(pos_y-1>0) {
+            if (abs(pos_x + 1) <= indiceMaxLigne[pos_y - 1])
+                neighbors.add(new Position(pos_x + 1, pos_y - 1));   //voisin en haut à droite
+        }
 
-        if(abs(pos_x-1) < indiceMaxLigne[pos_y+1] && pos_y+1<= nbLigne)   //voisin en bas à gauche
-            neighbors.add(new Position(pos_x-1, pos_y+1));
+        if(pos_y+1 < 13) {
+            if (abs(pos_x - 1) <= indiceMaxLigne[pos_y + 1])   //voisin en bas à gauche
+                neighbors.add(new Position(pos_x - 1, pos_y + 1));
+        }
 
-        if(abs(pos_x+1) < indiceMaxLigne[pos_y+1] && pos_y+1<= nbLigne)   //voisin en bas à droite
-            neighbors.add(new Position(pos_x+1, pos_y+1));
-
+        if(pos_y+1 < 13) {
+            if (abs(pos_x + 1) <= indiceMaxLigne[pos_y + 1])   //voisin en bas à droite
+                neighbors.add(new Position(pos_x + 1, pos_y + 1));
+        }
         return neighbors;
     }
 
@@ -63,9 +70,9 @@ public class Position {
         return position1.getX() == position2.getX() && position1.getY() == position2.getY();
     }
 
-    public static boolean isPositionContains(List<Position> voisins, Position position) {
-        for(int i=0; i<voisins.size(); i++){
-            if(voisins.get(i).getX() == position.getX() && voisins.get(i).getY() == position.getY()){
+    public static boolean isPositionContains(List<Position> positions, Position position) {
+        for(int i=0; i<positions.size(); i++){
+            if(positions.get(i).getX() == position.getX() && positions.get(i).getY() == position.getY()){
                 return true;
             }
         }

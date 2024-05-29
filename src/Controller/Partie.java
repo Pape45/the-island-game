@@ -1,26 +1,39 @@
 package Controller;
 
+import Model.Barque;
+import Model.Explorateur;
 import Model.PlateauJeu;
-import view.HexagonalGrid;
+import view.CombinedGrid3;
 
 public class Partie {
+
+    public static boolean isInit=false;
+
     public Partie() {
         // Constructor logic here, if needed
     }
-    public void start() {
+
+    public static boolean isPieceInit(){
+        return isInit;
+    }
+
+    public void start() throws InterruptedException {
         // Create and display the hexagonal grid
-        HexagonalGrid hexagonalGrid = new HexagonalGrid();
+        PlateauJeu plateauDeJeu = new PlateauJeu();
+        CombinedGrid3 hexagonalGrid = new CombinedGrid3(plateauDeJeu);
 
         // Initialize the game board
-        PlateauJeu plateauDeJeu = new PlateauJeu();
+        hexagonalGrid.setVisible(true);
 
 
-        
         // Create the Tour controller instance
         Tour tourController = new Tour(hexagonalGrid);
 
+        Explorateur.init_pos_explorateurs(plateauDeJeu);
+        Barque.init_barques(plateauDeJeu);
+        isInit=true;
         // Start the game loop
-        while (true) {
+        while (plateauDeJeu.getState_of_game()==0) {
             try {
                 // Execute a turn
                 tourController.tour(plateauDeJeu);

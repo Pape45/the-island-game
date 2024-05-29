@@ -10,8 +10,8 @@ public class Piece {
 
     public void setPosition(Position position) {
 
-        this.position.setX(position.getX()) ;
-        this.position.setY(position.getY()) ;
+        this.position.setX(position.getX());
+        this.position.setY(position.getY());
     }
 
 
