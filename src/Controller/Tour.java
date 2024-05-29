@@ -182,7 +182,7 @@ public class Tour {
             do {
                 position_arrivee = choix_case();
                 voisins = Position.getNeighbors(Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getPosition());
-            } while (!Position.isPositionContains(voisins,position_arrivee) || Explorateur.nbExplorateurSurLaCase(Plateau_de_jeu,position_arrivee)>2 || Joueur.AlreadyMyExplorateurOnCase(Plateau_de_jeu,position_arrivee) || (Tuile.estCaseTuile(Plateau_de_jeu ,position_arrivee) && Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getStatut()==1));
+            } while (!Position.isPositionContains(voisins,position_arrivee) || Explorateur.nbExplorateurSurLaCase(Plateau_de_jeu,position_arrivee)>2 || Joueur.AlreadyMyExplorateurOnCase(Plateau_de_jeu,position_arrivee) || ((Tuile.estCaseTuile(Plateau_de_jeu ,position_arrivee) && Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).getStatut()==1)));
 
             System.out.println("Position arrivée sélectionnée");
             Plateau_de_jeu.joueurs[Plateau_de_jeu.tour % 4].explorateurs.get(numero_explorateur).setPosition(position_arrivee);
