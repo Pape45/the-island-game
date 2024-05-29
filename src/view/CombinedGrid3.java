@@ -72,11 +72,11 @@ public class CombinedGrid3 extends JFrame {
             hexImage = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\theisland.png"));
             resizedHexImage = resizeImage(hexImage, NEW_BACK_WIDTH, NEW_BACK_HEIGHT);
             imageForet = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\TuileForet.png"));
-            resizedImageForet = resizeImage(imageForet, 46, 55);
+            resizedImageForet = resizeImage(imageForet, 48, 56);
             imageMontagne = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\Tuile_Montagne.png"));
-            resizedImageMontagne = resizeImage(imageMontagne, 46, 55);
+            resizedImageMontagne = resizeImage(imageMontagne, 48, 57);
             imagePlage = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\Tuile_Plage.png"));
-            resizedImagePlage = resizeImage(imagePlage, 46, 55);
+            resizedImagePlage = resizeImage(imagePlage, 48, 57);
             imageExplorateurbleu = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\Explorateur_Bleu.png"));
             resizedImageExplorateurbleu = resizeImage(imageExplorateurbleu, NEW_IMAGE_WIDTH+2, NEW_IMAGE_HEIGHT+4);
             imageExplorateurrouge = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\Explorateur_Rouge.png"));
@@ -415,8 +415,8 @@ public class CombinedGrid3 extends JFrame {
             // Calculate the offsets to center the tiles
 
             for (Tuile tuile : tuiles) {
-                int x = (int)(tuile.position.getX() * 25.5) +337;
-                int y = tuile.position.getY() * 45+13 ;
+                int x = (int)(tuile.position.getX() * 25.5) +335;
+                int y = tuile.position.getY() * 45+12 ;
                 switch (tuile.typeTuile) {
                     case 0:
                         g.drawImage(resizedImagePlage, x, y, null);
