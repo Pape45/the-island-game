@@ -1,39 +1,203 @@
 package view;
 
-import Model.*;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
-import java.io.File;
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicButtonUI;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class HexagonalGrid extends JFrame {
     private BufferedImage image;
     private BufferedImage resizedImage;
+    private BufferedImage settingsIcon;
     private JPanel imagePanel;
     private ArrayList<Hexagon> hexagons;
     private static final int HEX_SIZE = 30;
     private Hexagon hoveredHexagon = null;
-    private static final int NEW_IMAGE_WIDTH = 720; // Nouvelle largeur de l'image
-    private static final int NEW_IMAGE_HEIGHT = 620; // Nouvelle hauteur de l'image
+    private static final int NEW_IMAGE_WIDTH = 720;
+    private static final int NEW_IMAGE_HEIGHT = 620;
+    private static final int EXTRA_WIDTH = 200;
     private static final int[] indiceMaxLigne = {6, 9, 10, 9, 10, 11, 10, 11, 10, 9, 10, 9, 6};
-    private Position clickedPosition = null; // Position clicked by the user
+    private ArrayList<ThickBorderInfo> thickBorders = new ArrayList<>();
+    private int numeroTour;
+    private String nomJoueur;
+    private String temporaryMessage;
+    private Timer messageTimer;
+    private BufferedImage[] explorerImages;
+    private JPanel explorerPanel;
+    private static final int EXPLORER_IMAGE_SIZE = 50;
+    private static final int EXTRA_PANEL_WIDTH = 200;
+
+
+    class CustomButton extends JButton {
+        private Color hoverBackgroundColor = new Color(245, 180, 180);
+        private Color pressedBackgroundColor = new Color(200, 100, 100);
+        private Color backgroundColor = new Color(255, 100, 100);
+        private Color borderColor = new Color(150, 50, 50);
+        private Color textColor = Color.WHITE;
+
+        public CustomButton(String text) {
+            super(text);
+            setContentAreaFilled(false);
+            setForeground(textColor);
+            setFocusPainted(false);
+            setBorderPainted(false);
+            setOpaque(false);
+
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    setBackground(hoverBackgroundColor);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    setBackground(backgroundColor);
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    setBackground(pressedBackgroundColor);
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    setBackground(hoverBackgroundColor);
+                }
+            });
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            if (getModel().isPressed()) {
+                g.setColor(pressedBackgroundColor);
+            } else if (getModel().isRollover()) {
+                g.setColor(hoverBackgroundColor);
+            } else {
+                g.setColor(backgroundColor);
+            }
+            g.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
+
+            super.paintComponent(g);
+        }
+
+        @Override
+        protected void paintBorder(Graphics g) {
+            g.setColor(borderColor);
+            g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
+        }
+    }
+
+
+    private static class ExplorerImageInfo {
+        int number;
+        int posX;
+        int posY;
+        int treasureNumber; // New field for treasure number
+
+        ExplorerImageInfo(int number, int posX, int posY, int treasureNumber) {
+            this.number = number;
+            this.posX = posX;
+            this.posY = posY;
+            this.treasureNumber = treasureNumber;
+        }
+    }
+
+
+    private ArrayList<ExplorerImageInfo> explorerImageInfos = new ArrayList<>();
+
+    public void addExplorerImage(int number, int posX, int posY, int treasureNumber) {
+        if (number < 0 || number >= explorerImages.length) {
+            throw new IllegalArgumentException("Invalid explorer number: " + number);
+        }
+        explorerImageInfos.add(new ExplorerImageInfo(number, posX, posY, treasureNumber));
+        explorerPanel.repaint();
+    }
+
+
+
+    class ThickBorderInfo {
+        Point position;
+        int[] faces;
+
+        public ThickBorderInfo(int x, int y, int... faces) {
+            this.position = new Point(x, y);
+            this.faces = faces;
+        }
+    }
+
 
     public HexagonalGrid() {
-        setTitle("Hexagonal Grid Game");
+
+        setTitle("Hexagonal Grid on Image");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
+        setSize(750, 650);
+
+        getContentPane().setBackground(new Color(245, 245, 220));
 
         hexagons = new ArrayList<>();
         imagePanel = new ImagePanel();
+        imagePanel.setBackground(new Color(245, 245, 220)); // Beige clair
+
+
+        explorerImages = new BufferedImage[4];
+        try {
+            explorerImages[0] = ImageIO.read(HexagonalGrid.class.getResource("Explorateur_Bleu.png"));
+            explorerImages[1] = ImageIO.read(HexagonalGrid.class.getResource("Explorateur_Jaune.png"));
+            explorerImages[2] = ImageIO.read(HexagonalGrid.class.getResource("Explorateur_Rouge.png"));
+            explorerImages[3] = ImageIO.read(HexagonalGrid.class.getResource("Explorateur_Vert.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        setSize(750 + EXTRA_PANEL_WIDTH, 650 + 100); // Increase height for bottom panel
+
+        explorerPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                for (ExplorerImageInfo info : explorerImageInfos) {
+                    if (info != null && explorerImages[info.number] != null) {
+                        g.drawImage(explorerImages[info.number], info.posX, info.posY, EXPLORER_IMAGE_SIZE, EXPLORER_IMAGE_SIZE, null);
+                        // Draw the treasure number
+                        g.setColor(Color.WHITE); // Set the color to white
+                        g.setFont(new Font("Arial", Font.BOLD, 14));
+                        g.drawString(String.valueOf(info.treasureNumber), info.posX + EXPLORER_IMAGE_SIZE / 2 - 5, info.posY + EXPLORER_IMAGE_SIZE / 2 + 5);
+                    }
+                }
+            }
+        };
+
+
+        explorerPanel.setPreferredSize(new Dimension(EXTRA_PANEL_WIDTH, NEW_IMAGE_HEIGHT));
+        explorerPanel.setBackground(new Color(245, 245, 220)); // Set background color to beige
+        add(explorerPanel, BorderLayout.EAST);
+
 
         try {
-            image = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\theisland.png"));
-            resizedImage = resizeImage(image, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
+            String imagePath = "theisland.jpg";
+            URL imageUrl = HexagonalGrid.class.getResource(imagePath);
+
+            if (imageUrl != null) {
+                image = ImageIO.read(imageUrl);
+                resizedImage = resizeImage(image, NEW_IMAGE_WIDTH, NEW_IMAGE_HEIGHT);
+            } else {
+                System.err.println("Image not found at: " + imagePath);
+            }
+
+            // Load settings icon
+            String iconPath = "settings.png";
+            URL iconUrl = HexagonalGrid.class.getResource(iconPath);
+
+            if (iconUrl != null) {
+                settingsIcon = ImageIO.read(iconUrl);
+            } else {
+                System.err.println("Settings icon not found at: " + iconPath);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,9 +206,8 @@ public class HexagonalGrid extends JFrame {
         imagePanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                choix_case(e);
+                handleMouseClick(e);
             }
-            
         });
 
         imagePanel.addMouseMotionListener(new MouseMotionAdapter() {
@@ -54,15 +217,92 @@ public class HexagonalGrid extends JFrame {
             }
         });
 
-        add(createPlayerPanel(), BorderLayout.NORTH);
-        add(new JScrollPane(imagePanel), BorderLayout.CENTER);
-        add(createControlPanel(), BorderLayout.EAST);
-        add(createInfoPanel(), BorderLayout.SOUTH);
+        add(new JScrollPane(imagePanel));
+
+        thickBorders.add(new ThickBorderInfo(283, 175, 1, 5, 6));
+        thickBorders.add(new ThickBorderInfo(334, 175, 1, 6));
+        thickBorders.add(new ThickBorderInfo(385, 175, 1, 6));
+        thickBorders.add(new ThickBorderInfo(436, 175, 1, 2, 6));
+        thickBorders.add(new ThickBorderInfo(258, 220, 5, 6));
+        thickBorders.add(new ThickBorderInfo(462, 220, 1, 2));
+        thickBorders.add(new ThickBorderInfo(181, 265, 1, 4, 5, 6));
+        thickBorders.add(new ThickBorderInfo(232, 265, 6));
+        thickBorders.add(new ThickBorderInfo(487, 265, 1));
+        thickBorders.add(new ThickBorderInfo(538, 265, 1, 2, 3, 6));
+        thickBorders.add(new ThickBorderInfo(207, 310, 5));
+        thickBorders.add(new ThickBorderInfo(513, 310, 2));
+        thickBorders.add(new ThickBorderInfo(181, 355, 3, 4, 5, 6));
+        thickBorders.add(new ThickBorderInfo(232, 355, 4));
+        thickBorders.add(new ThickBorderInfo(487, 355, 3));
+        thickBorders.add(new ThickBorderInfo(538, 355, 1, 2, 3, 4));
+        thickBorders.add(new ThickBorderInfo(258, 400, 4, 5));
+        thickBorders.add(new ThickBorderInfo(462, 400, 2, 3));
+        thickBorders.add(new ThickBorderInfo(283, 445, 3, 4, 5));
+        thickBorders.add(new ThickBorderInfo(334, 445, 3, 4));
+        thickBorders.add(new ThickBorderInfo(385, 445, 3, 4));
+        thickBorders.add(new ThickBorderInfo(436, 445, 2, 3, 4));
 
         createHexagonalGrid();
-        pack();
-        setLocationRelativeTo(null);
-        setVisible(true);
+        add(createBottomPanel(), BorderLayout.SOUTH);
+    }
+
+    private JPanel createBottomPanel() {
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(null);
+        bottomPanel.setBackground(new Color(245, 245, 220));
+
+        JButton quitButton = new JButton("Quitter");
+        quitButton.setFont(new Font("Roboto", Font.BOLD, 16));
+        quitButton.setForeground(Color.WHITE);
+
+        // Dégradé pour le fond du bouton
+        final Color[] startColor = {new Color(219, 68, 55)};
+        final Color[] endColor = {new Color(198, 40, 40)};
+        final GradientPaint[] gradient = {new GradientPaint(0, 0, startColor[0], 0, quitButton.getHeight(), endColor[0])};
+
+        quitButton.setContentAreaFilled(false);
+        quitButton.setFocusPainted(false);
+        quitButton.setBorder(BorderFactory.createEmptyBorder(3, 15, 3, 15));
+
+        quitButton.addActionListener(e -> System.exit(0));
+
+        quitButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                startColor[0] = new Color(239, 83, 80);
+                endColor[0] = new Color(229, 57, 53);
+                gradient[0] = new GradientPaint(0, 0, startColor[0], 0, quitButton.getHeight(), endColor[0]);
+                quitButton.repaint();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                startColor[0] = new Color(219, 68, 55);
+                endColor[0] = new Color(198, 40, 40);
+                gradient[0] = new GradientPaint(0, 0, startColor[0], 0, quitButton.getHeight(), endColor[0]);
+                quitButton.repaint();
+            }
+        });
+
+        quitButton.setPreferredSize(new Dimension(120, 40));
+        quitButton.setBounds(800, 30, 120, 40);
+
+        bottomPanel.add(quitButton);
+        bottomPanel.setPreferredSize(new Dimension(NEW_IMAGE_WIDTH + EXTRA_PANEL_WIDTH, 100));
+
+        quitButton.setUI(new BasicButtonUI() {
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setPaint(gradient[0]);
+                g2d.fillRect(0, 0, c.getWidth(), c.getHeight());
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                super.paint(g2d, c);
+                g2d.dispose();
+            }
+        });
+
+        return bottomPanel;
     }
 
     private BufferedImage resizeImage(BufferedImage originalImage, int width, int height) {
@@ -73,55 +313,8 @@ public class HexagonalGrid extends JFrame {
         return resizedImage;
     }
 
-    private JPanel createPlayerPanel() {
-        JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(getWidth(), 50));
-        panel.setBackground(Color.LIGHT_GRAY);
-
-        JLabel playerLabel = new JLabel("Joueur : 1", JLabel.CENTER);
-        playerLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        panel.add(playerLabel);
-
-        return panel;
-    }
-
-    private JPanel createControlPanel() {
-        JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(200, getHeight()));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(Color.DARK_GRAY);
-
-        JButton pieceButton = new JButton("Pion");
-        JButton saveButton = new JButton("Sauvegarder");
-
-        pieceButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        saveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        panel.add(Box.createVerticalStrut(20));
-        panel.add(pieceButton);
-        panel.add(Box.createVerticalStrut(20));
-        panel.add(saveButton);
-
-        return panel;
-    }
-
-    private JPanel createInfoPanel() {
-        JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(getWidth(), 100));
-        panel.setLayout(new BorderLayout());
-        panel.setBackground(Color.GRAY);
-
-        JButton listButton = new JButton("Liste tuiles en main");
-        JButton saveQuitButton = new JButton("Sauver et quitter");
-
-        panel.add(listButton, BorderLayout.CENTER);
-        panel.add(saveQuitButton, BorderLayout.EAST);
-
-        return panel;
-    }
-
     private void createHexagonalGrid() {
-        hexagons.clear(); // Clear any existing hexagons
+        hexagons.clear();
         int radius = HEX_SIZE;
         int horiz = (int) (Math.sqrt(3) * radius);
         int vert = 2 * radius;
@@ -130,14 +323,10 @@ public class HexagonalGrid extends JFrame {
         for (int row = 0; row < indiceMaxLigne.length; row++) {
             int numHexagons = indiceMaxLigne[row] + 1;
             int xOffset = (NEW_IMAGE_WIDTH - (numHexagons - 1) * horiz) / 2;
-            int startValue = -numHexagons + 1;
-            int increment = 2;
-
             for (int col = 0; col < numHexagons; col++) {
                 int x = xOffset + col * horiz;
                 int y = yOffset + row * vert * 3 / 4;
-                int value = startValue + col * increment;
-                hexagons.add(new Hexagon(new Point(x, y), radius, value));
+                hexagons.add(new Hexagon(new Point(x, y), radius));
             }
         }
     }
@@ -145,38 +334,43 @@ public class HexagonalGrid extends JFrame {
     private void drawHexagons(Graphics g) {
         for (Hexagon hex : hexagons) {
             if (hex == hoveredHexagon) {
-                g.setColor(Color.RED); // Couleur de survol
+                g.setColor(Color.RED);
             } else {
-                g.setColor(Color.BLACK); // Couleur par défaut
+                g.setColor(Color.BLACK);
             }
+
+            ((Graphics2D) g).setStroke(new BasicStroke(1));
             g.drawPolygon(hex.getHexagon());
+
+            for (ThickBorderInfo info : thickBorders) {
+                if (hex.getPosition().equals(info.position)) {
+                    drawThickBorder(g, hex, info.faces);
+                    break;
+                }
+            }
         }
     }
 
-    private synchronized void choix_case(MouseEvent e) {
+    private void drawThickBorder(Graphics g, Hexagon hex, int[] faces) {
+        Polygon polygon = hex.getHexagon();
+        ((Graphics2D) g).setStroke(new BasicStroke(3));
+        for (int face : faces) {
+            int i1 = (face + 4) % 6;
+            int i2 = (face + 5) % 6;
+            g.drawLine(polygon.xpoints[i1], polygon.ypoints[i1], polygon.xpoints[i2], polygon.ypoints[i2]);
+        }
+    }
+
+    private void handleMouseClick(MouseEvent e) {
         Point clickedPoint = e.getPoint();
-        Point position;
         for (Hexagon hex : hexagons) {
             if (hex.getHexagon().contains(clickedPoint)) {
-                position = hex.getPosition();
-
-                int newX = (int) ((position.getX()) / 25.5) - 14;
-                int newY = (int) ((position.getY() - 40) / 45);
-
-                clickedPosition = new Position(newX, newY);
-                notify(); // Notify waiting thread
+                System.out.println("Clicked on hexagon at: " + hex.getPosition());
                 break;
             }
         }
     }
 
-    public synchronized Position waitForClick() throws InterruptedException {
-        clickedPosition = null;
-        while (clickedPosition == null) {
-            wait();
-        }
-        return clickedPosition;
-    }
 
     private void handleMouseMove(MouseEvent e) {
         Point movedPoint = e.getPoint();
@@ -194,21 +388,99 @@ public class HexagonalGrid extends JFrame {
         imagePanel.repaint();
     }
 
+    public void updateTourAndPlayer(int numeroTour, String nomJoueur) {
+        this.numeroTour = numeroTour;
+        this.nomJoueur = nomJoueur;
+        imagePanel.repaint();
+    }
+
+    public void showTemporaryMessage(String message, int durationMs) {
+        temporaryMessage = message;
+        imagePanel.repaint();
+
+        if (messageTimer != null) {
+            messageTimer.stop();
+        }
+
+        messageTimer = new Timer(durationMs, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                temporaryMessage = null;
+                imagePanel.repaint();
+            }
+        });
+
+        messageTimer.setRepeats(false);
+        messageTimer.start();
+    }
+
     private class ImagePanel extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             g.drawImage(resizedImage, 0, 0, null);
             drawHexagons(g);
+            drawTourAndPlayerInfo(g);
+            drawSettingsIcon(g);
+            drawTemporaryMessage(g);
+        }
+
+
+        private void drawTourAndPlayerInfo(Graphics g) {
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.BOLD, 12));
+
+            // Les informations à afficher
+            String tourText = "Numéro du tour : " + numeroTour;
+            String joueurText = "Nom joueur : " + nomJoueur;
+
+            FontMetrics fm = g.getFontMetrics();
+            int tourWidth = fm.stringWidth(tourText);
+            int joueurWidth = fm.stringWidth(joueurText);
+            int height = fm.getHeight();
+
+            int padding = 5;
+            int width = Math.max(tourWidth, joueurWidth) + 2 * padding;
+            int totalHeight = 2 * height + 3 * padding;
+
+            int x = 10;
+            int y = 10;
+
+            g.setColor(Color.BLACK);
+            g.fillRect(x - padding / 2, y - padding / 2, width, totalHeight);
+            g.setColor(Color.WHITE);
+            g.drawRect(x - padding / 2, y - padding / 2, width, totalHeight);
+
+            g.drawString(tourText, x, y + fm.getAscent());
+            g.drawString(joueurText, x, y + height + 2 * padding + fm.getAscent());
+        }
+
+
+        private void drawSettingsIcon(Graphics g) {
+            if (settingsIcon != null) {
+                int iconWidth = 30;
+                int iconHeight = 30;
+                int x = 680;
+                int y = 15;
+                g.drawImage(settingsIcon, x, y, iconWidth, iconHeight, this);
+            }
+        }
+
+        private void drawTemporaryMessage(Graphics g) {
+            if (temporaryMessage != null) {
+                g.setFont(new Font("Serif", Font.BOLD, 50));
+                g.setColor(Color.RED);
+
+                FontMetrics fm = g.getFontMetrics();
+                int messageWidth = fm.stringWidth(temporaryMessage);
+                int messageHeight = fm.getHeight();
+
+                int x = (NEW_IMAGE_WIDTH - messageWidth) / 2;
+                int y = (NEW_IMAGE_HEIGHT - messageHeight) / 2 + fm.getAscent();
+
+                g.drawString(temporaryMessage, x, y);
+            }
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new HexagonalGrid().setVisible(true);
-            }
-        });
-    }
 }
