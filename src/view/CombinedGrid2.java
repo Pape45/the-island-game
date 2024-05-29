@@ -11,8 +11,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.net.URL;
+import javax.swing.plaf.basic.BasicButtonUI;
+
+
 
 public class CombinedGrid2 extends JFrame {
+    private ImagePanel imagePanel;
+    private PlateauJeu plateauDeJeu;
     private BufferedImage hexImage;
     private BufferedImage resizedHexImage;
     private BufferedImage imageForet;
@@ -39,6 +45,7 @@ public class CombinedGrid2 extends JFrame {
     private static BufferedImage resizedImageExplorateurvert;
     private static BufferedImage imageExplorateurjaune;
     private static BufferedImage resizedImageExplorateurjaune;
+    private ArrayList<ThickBorderInfo> thickBorders = new ArrayList<>();
     private static BufferedImage imageRequin;
     private static BufferedImage resizedImageRequin;
     private static BufferedImage imageSerpentdemer;
@@ -52,6 +59,7 @@ public class CombinedGrid2 extends JFrame {
     private static final int NEW_IMAGE_HEIGHT = 35; // New height of the image
 
     public CombinedGrid2(PlateauJeu plateauDeJeu) {
+        this.plateauDeJeu=plateauDeJeu;
         setTitle("Combined Grid Game");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -64,11 +72,11 @@ public class CombinedGrid2 extends JFrame {
             hexImage = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\theisland.png"));
             resizedHexImage = resizeImage(hexImage, NEW_BACK_WIDTH, NEW_BACK_HEIGHT);
             imageForet = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\TuileForet.png"));
-            resizedImageForet = resizeImage(imageForet, 46, 55);
+            resizedImageForet = resizeImage(imageForet, 48, 56);
             imageMontagne = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\Tuile_Montagne.png"));
-            resizedImageMontagne = resizeImage(imageMontagne, 46, 55);
+            resizedImageMontagne = resizeImage(imageMontagne, 48, 57);
             imagePlage = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\Tuile_Plage.png"));
-            resizedImagePlage = resizeImage(imagePlage, 46, 55);
+            resizedImagePlage = resizeImage(imagePlage, 48, 57);
             imageExplorateurbleu = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\Explorateur_Bleu.png"));
             resizedImageExplorateurbleu = resizeImage(imageExplorateurbleu, NEW_IMAGE_WIDTH+2, NEW_IMAGE_HEIGHT+4);
             imageExplorateurrouge = ImageIO.read(new File("C:\\Users\\ymell\\Documents\\GitHub\\the-island-game\\src\\view\\image\\Explorateur_Rouge.png"));
@@ -109,10 +117,73 @@ public class CombinedGrid2 extends JFrame {
         add(createControlPanel(), BorderLayout.EAST);
         add(createInfoPanel(), BorderLayout.SOUTH);
 
+
+
+        thickBorders.add(new ThickBorderInfo(283, 175, 1, 5, 6));
+        thickBorders.add(new ThickBorderInfo(334, 175, 1, 6));
+        thickBorders.add(new ThickBorderInfo(385, 175, 1, 6));
+        thickBorders.add(new ThickBorderInfo(436, 175, 1, 2, 6));
+        thickBorders.add(new ThickBorderInfo(258, 220, 5, 6));
+        thickBorders.add(new ThickBorderInfo(462, 220, 1, 2));
+        thickBorders.add(new ThickBorderInfo(181, 265, 1, 4, 5, 6));
+        thickBorders.add(new ThickBorderInfo(232, 265, 6));
+        thickBorders.add(new ThickBorderInfo(487, 265, 1));
+        thickBorders.add(new ThickBorderInfo(538, 265, 1, 2, 3, 6));
+        thickBorders.add(new ThickBorderInfo(207, 310, 5));
+        thickBorders.add(new ThickBorderInfo(513, 310, 2));
+        thickBorders.add(new ThickBorderInfo(181, 355, 3, 4, 5, 6));
+        thickBorders.add(new ThickBorderInfo(232, 355, 4));
+        thickBorders.add(new ThickBorderInfo(487, 355, 3));
+        thickBorders.add(new ThickBorderInfo(538, 355, 1, 2, 3, 4));
+        thickBorders.add(new ThickBorderInfo(258, 400, 4, 5));
+        thickBorders.add(new ThickBorderInfo(462, 400, 2, 3));
+        thickBorders.add(new ThickBorderInfo(283, 445, 3, 4, 5));
+        thickBorders.add(new ThickBorderInfo(334, 445, 3, 4));
+        thickBorders.add(new ThickBorderInfo(385, 445, 3, 4));
+        thickBorders.add(new ThickBorderInfo(436, 445, 2, 3, 4));
+
+
         createHexagonalGrid();
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+   
+    class ThickBorderInfo {
+        Point position;
+        int[] faces;
+
+        public ThickBorderInfo(int x, int y, int... faces) {
+            this.position = new Point(x, y);
+            this.faces = faces;
+        }
+    }
+
+    public void refreshImagePanel() {
+        // Remove the existing ImagePanel
+        remove(imagePanel);
+
+        // Create a new ImagePanel and add it to the frame
+        imagePanel = new ImagePanel(plateauDeJeu);
+        imagePanel.setPreferredSize(new Dimension(NEW_BACK_WIDTH, NEW_BACK_HEIGHT));
+        imagePanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                choix_case(e);
+            }
+        });
+
+        imagePanel.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                handleMouseMove(e);
+            }
+        });
+
+        // Add the new ImagePanel and revalidate the frame
+        add(new JScrollPane(imagePanel), BorderLayout.CENTER);
+        revalidate();
+        repaint();
     }
 
     private BufferedImage resizeImage(BufferedImage originalImage, int width, int height) {
@@ -122,6 +193,7 @@ public class CombinedGrid2 extends JFrame {
         g.dispose();
         return resizedImage;
     }
+
 
     private JPanel createPlayerPanel() {
         JPanel panel = new JPanel();
@@ -199,9 +271,28 @@ public class CombinedGrid2 extends JFrame {
             } else {
                 g.setColor(Color.BLACK); // Couleur par défaut
             }
+            ((Graphics2D) g).setStroke(new BasicStroke(1));
             g.drawPolygon(hex.getHexagon());
+
+            for (ThickBorderInfo info : thickBorders) {
+                if (hex.getPosition().equals(info.position)) {
+                    drawThickBorder(g, hex, info.faces);
+                    break;
+                }
+            }
         }
     }
+
+    private void drawThickBorder(Graphics g, Hexagon hex, int[] faces) {
+        Polygon polygon = hex.getHexagon();
+        ((Graphics2D) g).setStroke(new BasicStroke(3));
+        for (int face : faces) {
+            int i1 = (face + 4) % 6;
+            int i2 = (face + 5) % 6;
+            g.drawLine(polygon.xpoints[i1], polygon.ypoints[i1], polygon.xpoints[i2], polygon.ypoints[i2]);
+        }
+    }
+
 
     private synchronized void choix_case(MouseEvent e) {
         Point clickedPoint = e.getPoint();
@@ -250,6 +341,7 @@ public class CombinedGrid2 extends JFrame {
         private final List<Baleine> baleine;
         private final List<Barque> barque;
         private final Joueur[] joueurs;
+        private final int tour;
 
         public ImagePanel(PlateauJeu plateauDeJeu) {
             this.serpentDeMer = plateauDeJeu.serpentDeMer;
@@ -257,6 +349,7 @@ public class CombinedGrid2 extends JFrame {
             this.baleine = plateauDeJeu.baleines;
             this.barque = plateauDeJeu.barques;
             this.joueurs = plateauDeJeu.joueurs;
+            this.tour =plateauDeJeu.tour;
         }
         @Override
         protected void paintComponent(Graphics g) {
@@ -264,7 +357,7 @@ public class CombinedGrid2 extends JFrame {
             g.drawImage(resizedHexImage, 0, 0, null);
             drawHexagons(g);
             drawTiles(g);
-            for (SerpentDeMer serpent : serpentDeMer) {
+           /*  for (SerpentDeMer serpent : serpentDeMer) {
                 int x = (int)(serpent.position.getX() * 25.5 + 343);
                 int y = serpent.position.getY() *45+23 ;
                 g.drawImage(resizedImageSerpentdemer, x, y, null);
@@ -301,6 +394,7 @@ public class CombinedGrid2 extends JFrame {
                     g.drawImage(explorerImage, x, y, null);
                 }
             }
+            drawTourAndPlayerInfo(g);
         }
         private BufferedImage getExplorerImageByIndex(int index) {
             switch (index) {
@@ -314,15 +408,15 @@ public class CombinedGrid2 extends JFrame {
                     return resizedImageExplorateurvert;
                 default:
                     throw new IllegalArgumentException("Invalid player index");
-            }
+            }*/
         }
 
         private void drawTiles(Graphics g) {
             // Calculate the offsets to center the tiles
 
             for (Tuile tuile : tuiles) {
-                int x = (int)(tuile.position.getX() * 25.5) +337;
-                int y = tuile.position.getY() * 45+13 ;
+                int x = (int)(tuile.position.getX() * 25.5) +335;
+                int y = tuile.position.getY() * 45+12 ;
                 switch (tuile.typeTuile) {
                     case 0:
                         g.drawImage(resizedImagePlage, x, y, null);
@@ -336,11 +430,47 @@ public class CombinedGrid2 extends JFrame {
                 }
             }
         }
+
+        private void drawTourAndPlayerInfo(Graphics g) {
+            g.setColor(Color.WHITE);
+            g.setFont(new Font("Arial", Font.BOLD, 12));
+
+            // Les informations à afficher
+            String tourText = "Numéro du tour : " + tour;
+            String joueurText = "Nom joueur : " + tour;
+
+            FontMetrics fm = g.getFontMetrics();
+            int tourWidth = fm.stringWidth(tourText);
+            int joueurWidth = fm.stringWidth(joueurText);
+            int height = fm.getHeight();
+
+            int padding = 5;
+            int width = Math.max(tourWidth, joueurWidth) + 2 * padding;
+            int totalHeight = 2 * height + 3 * padding;
+
+            int x = 10;
+            int y = 10;
+
+            g.setColor(Color.BLACK);
+            g.fillRect(x - padding / 2, y - padding / 2, width, totalHeight);
+            g.setColor(Color.WHITE);
+            g.drawRect(x - padding / 2, y - padding / 2, width, totalHeight);
+
+            g.drawString(tourText, x, y + fm.getAscent());
+            g.drawString(joueurText, x, y + height + 2 * padding + fm.getAscent());
+        }
     }
 
 
     public static void main(String[] args) {
         PlateauJeu plateauDeJeu = new PlateauJeu();
-        SwingUtilities.invokeLater(() -> new CombinedGrid2(plateauDeJeu).setVisible(true));
+        SwingUtilities.invokeLater(() -> {
+            CombinedGrid2 frame = new CombinedGrid2(plateauDeJeu);
+            frame.setVisible(true);
+
+            plateauDeJeu.serpentDeMer.get(2).position.setX(6);
+            plateauDeJeu.serpentDeMer.get(2).position.setY(0);
+            frame.refreshImagePanel();
+        });
     }
 }
