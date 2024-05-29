@@ -1,6 +1,7 @@
 package Model;
 
 import Controller.Tour;
+import view.CombinedGrid3;
 
 import java.util.List;
 

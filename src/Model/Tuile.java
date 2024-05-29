@@ -3,6 +3,7 @@ package Model;
 import java.util.ArrayList;
 import java.util.List;
 import Controller.*;
+import view.CombinedGrid3;
 
 public class Tuile {
     public int faceCachee;// 1=ajout requin  2=ajout baleine  3=ajout barque  4=tourbillon  5=volcan  6=dauphin  7=déplacer barque  8=déplacer Serpent de mer  9=déplacer requin  10=déplacer baleine  11=tuer requin  12=tuer baleine
@@ -40,7 +41,7 @@ public class Tuile {
         int tuile_voisines=0;
         for(int i=0; i< voisins.size(); i++){
             for(int j=0; j<Plateau_de_jeu.tuiles.size(); j++){
-                if(Position.isPositionContains(voisins, position)){
+                if(Position.isPositionContains(voisins, Plateau_de_jeu.tuiles.get(j).getPosition())){
                     tuile_voisines++;
                 }
             }
@@ -239,7 +240,7 @@ public class Tuile {
         Position position_arrivee;
         do {
 
-            position_depart = Tour.choix_case();
+            position_depart = Tour.choix_case();;
             for (int i = 0; i < Plateau_de_jeu.requins.size(); i++) {
                 if (Position.isPositionsEquals(Plateau_de_jeu.requins.get(i).getPosition(), position_depart)) {
                     numero_requin = i;
@@ -263,7 +264,7 @@ public class Tuile {
         Position position_arrivee;
         do {
 
-            position_depart = Tour.choix_case();
+            position_depart =Tour.choix_case();
             for (int i = 0; i < Plateau_de_jeu.baleines.size(); i++) {
                 if (Position.isPositionsEquals(Plateau_de_jeu.baleines.get(i).getPosition(), position_depart)) {
                     numero_baleine = i;

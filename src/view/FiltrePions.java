@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class FiltrePions {
+/*public class FiltrePions {
     private static BufferedImage imageExplorateurbleu;
     private static BufferedImage resizedImageExplorateurbleu;
     private static BufferedImage imageExplorateurrouge;
@@ -85,7 +85,7 @@ public class FiltrePions {
 
         @Override
         protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
+            super.paintComponent(g,Plateau_de_jeu);
 
             // Draw SerpentDeMer
             for (SerpentDeMer serpent : serpentDeMer) {
@@ -153,4 +153,4 @@ public class FiltrePions {
             e.printStackTrace();
         }
     }
-}
+}*/

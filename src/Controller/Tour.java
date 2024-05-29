@@ -1,13 +1,13 @@
 package Controller;
 import Model.*;
-import view.HexagonalGrid;
+import view.*;
 
 import java.util.List;
 
 public class Tour {
-    private static HexagonalGrid hexagonalGrid;
+    private static CombinedGrid3 hexagonalGrid;
 
-    public Tour(HexagonalGrid hexagonalGrid) {
+    public Tour(CombinedGrid3 hexagonalGrid) {
         this.hexagonalGrid = hexagonalGrid;
     }
 
@@ -31,7 +31,7 @@ public class Tour {
             Position position_depart;
             Position position_arrivee;
             do {
-                position_depart = hexagonalGrid.waitForClick();
+                position_depart = choix_case();
                 //System.out.println("Position clicked: " + position_depart.getX());
                 for (int i = 0; i < Plateau_de_jeu.serpentDeMer.size(); i++) {
                     if (Position.isPositionsEquals(Plateau_de_jeu.serpentDeMer.get(i).getPosition(), position_depart)) {
@@ -242,8 +242,8 @@ public class Tour {
         int tuile=-1;
         Position position_tuile = Tour.choix_case();
         int[] nombreTuiles = Tuile.nombreTuile(Plateau_de_jeu);
+        System.out.println("Choisissez une tuile");
         do {
-            System.out.println("Choisissez une tuile");
             for(int i=0; i<Plateau_de_jeu.tuiles.size(); i++) {
                 if (Position.isPositionsEquals(Plateau_de_jeu.tuiles.get(i).getPosition(), position_tuile)){
                     if(nombreTuiles[0]!=0 && Plateau_de_jeu.tuiles.get(i).typeTuile==0 && Tuile.adjacentMer(Plateau_de_jeu,position_tuile)) {

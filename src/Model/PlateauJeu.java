@@ -214,57 +214,6 @@ public class PlateauJeu {
         baleines.add(new Baleine(new Position(-7, 11)));
         baleines.add(new Baleine(new Position(0, 0)));
 
-        barques.add(new Barque(new Position(3, 11)));
-        barques.add(new Barque(new Position(-3, 11)));
-        barques.add(new Barque(new Position(-5, 11)));
-        barques.add(new Barque(new Position(5, 11)));
-
-
-
-        joueurs[0].explorateurs.get(0).setPosition(new Position(4,6));
-        joueurs[0].explorateurs.get(1).setPosition(new Position(-1,3));
-        joueurs[0].explorateurs.get(2).setPosition(new Position(1,3));
-        joueurs[0].explorateurs.get(3).setPosition(new Position(3,3));
-        joueurs[0].explorateurs.get(4).setPosition(new Position(-4,4));
-        joueurs[0].explorateurs.get(5).setPosition(new Position(0,4));
-        joueurs[0].explorateurs.get(6).setPosition(new Position(-2,4));
-        joueurs[0].explorateurs.get(7).setPosition(new Position(4,4));
-        joueurs[0].explorateurs.get(8).setPosition(new Position(-7,5));
-        joueurs[0].explorateurs.get(9).setPosition(new Position(-5,5));
-
-        joueurs[1].explorateurs.get(0).setPosition(new Position(6,6));
-        joueurs[1].explorateurs.get(1).setPosition(new Position(-1,5));
-        joueurs[1].explorateurs.get(2).setPosition(new Position(3,5));
-        joueurs[1].explorateurs.get(3).setPosition(new Position(1,5));
-        joueurs[1].explorateurs.get(4).setPosition(new Position(5,5));
-        joueurs[1].explorateurs.get(5).setPosition(new Position(7,5));
-        joueurs[1].explorateurs.get(6).setPosition(new Position(-6,6));
-        joueurs[1].explorateurs.get(7).setPosition(new Position(-4,6));
-        joueurs[1].explorateurs.get(8).setPosition(new Position(-2,6));
-        joueurs[1].explorateurs.get(9).setPosition(new Position(2,6));
-
-        joueurs[2].explorateurs.get(0).setPosition(new Position(4,6));
-        joueurs[2].explorateurs.get(1).setPosition(new Position(6,6));
-        joueurs[2].explorateurs.get(2).setPosition(new Position(-7,7));
-        joueurs[2].explorateurs.get(3).setPosition(new Position(-5,7));
-        joueurs[2].explorateurs.get(4).setPosition(new Position(-3,7));
-        joueurs[2].explorateurs.get(5).setPosition(new Position(-1,7));
-        joueurs[2].explorateurs.get(6).setPosition(new Position(1,7));
-        joueurs[2].explorateurs.get(7).setPosition(new Position(3,7));
-        joueurs[2].explorateurs.get(8).setPosition(new Position(5,7));
-        joueurs[2].explorateurs.get(9).setPosition(new Position(7,7));
-
-        joueurs[3].explorateurs.get(0).setPosition(new Position(-7,7));
-        joueurs[3].explorateurs.get(1).setPosition(new Position(-2,8));
-        joueurs[3].explorateurs.get(2).setPosition(new Position(0,8));
-        joueurs[3].explorateurs.get(3).setPosition(new Position(2,8));
-        joueurs[3].explorateurs.get(4).setPosition(new Position(4,8));
-        joueurs[3].explorateurs.get(5).setPosition(new Position(-3,9));
-        joueurs[3].explorateurs.get(6).setPosition(new Position(-1,9));
-        joueurs[3].explorateurs.get(7).setPosition(new Position(1,9));
-        joueurs[3].explorateurs.get(8).setPosition(new Position(3,9));
-        joueurs[3].explorateurs.get(9).setPosition(new Position(2,4));
-
     }
 
     public void setState_of_game(int state_of_game){

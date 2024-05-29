@@ -1,6 +1,7 @@
 package Model;
 
 import Controller.Tour;
+import view.CombinedGrid3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,8 @@ public class Explorateur extends Piece {
     private int deplacement; // Nombre de déplacements
     private int tresor; // Points pour gagner
     
-    public Explorateur(int statut, int deplacement, int tresor) {
+    public Explorateur(Position position, int statut, int deplacement, int tresor) {
+        setPosition(position);
         setStatut(statut);
         setdepacement(deplacement);
         setTresor(tresor);
@@ -95,9 +97,9 @@ public class Explorateur extends Piece {
                             System.out.println(k+" "+i);
                         }
                     }
-                    System.out.println(indice_tuile);
                 }while(indice_tuile==-1);
                 listes_tuiles_libres.remove(indice_tuile);
+
                 Plateau_de_jeu.joueurs[k].explorateurs.get(i).setPosition(position);
                 System.out.println(listes_tuiles_libres.size());
             }
