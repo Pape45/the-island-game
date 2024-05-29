@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicButtonUI;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -30,6 +31,66 @@ public class HexagonalGrid extends JFrame {
     private JPanel explorerPanel;
     private static final int EXPLORER_IMAGE_SIZE = 50;
     private static final int EXTRA_PANEL_WIDTH = 200;
+
+
+    class CustomButton extends JButton {
+        private Color hoverBackgroundColor = new Color(245, 180, 180);
+        private Color pressedBackgroundColor = new Color(200, 100, 100);
+        private Color backgroundColor = new Color(255, 100, 100);
+        private Color borderColor = new Color(150, 50, 50);
+        private Color textColor = Color.WHITE;
+
+        public CustomButton(String text) {
+            super(text);
+            setContentAreaFilled(false);
+            setForeground(textColor);
+            setFocusPainted(false);
+            setBorderPainted(false);
+            setOpaque(false);
+
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    setBackground(hoverBackgroundColor);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    setBackground(backgroundColor);
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    setBackground(pressedBackgroundColor);
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    setBackground(hoverBackgroundColor);
+                }
+            });
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            if (getModel().isPressed()) {
+                g.setColor(pressedBackgroundColor);
+            } else if (getModel().isRollover()) {
+                g.setColor(hoverBackgroundColor);
+            } else {
+                g.setColor(backgroundColor);
+            }
+            g.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
+
+            super.paintComponent(g);
+        }
+
+        @Override
+        protected void paintBorder(Graphics g) {
+            g.setColor(borderColor);
+            g.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, 10, 10);
+        }
+    }
 
 
     private static class ExplorerImageInfo {
@@ -93,8 +154,7 @@ public class HexagonalGrid extends JFrame {
             e.printStackTrace();
         }
 
-        // Adjust frame size to include extra panel
-        setSize(750 + EXTRA_PANEL_WIDTH, 650);
+        setSize(750 + EXTRA_PANEL_WIDTH, 650 + 100); // Increase height for bottom panel
 
         explorerPanel = new JPanel() {
             @Override
@@ -183,8 +243,67 @@ public class HexagonalGrid extends JFrame {
         thickBorders.add(new ThickBorderInfo(436, 445, 2, 3, 4));
 
         createHexagonalGrid();
+        add(createBottomPanel(), BorderLayout.SOUTH);
     }
 
+    private JPanel createBottomPanel() {
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setLayout(null);
+        bottomPanel.setBackground(new Color(245, 245, 220));
+
+        JButton quitButton = new JButton("Quitter");
+        quitButton.setFont(new Font("Roboto", Font.BOLD, 16));
+        quitButton.setForeground(Color.WHITE);
+
+        // Dégradé pour le fond du bouton
+        final Color[] startColor = {new Color(219, 68, 55)};
+        final Color[] endColor = {new Color(198, 40, 40)};
+        final GradientPaint[] gradient = {new GradientPaint(0, 0, startColor[0], 0, quitButton.getHeight(), endColor[0])};
+
+        quitButton.setContentAreaFilled(false);
+        quitButton.setFocusPainted(false);
+        quitButton.setBorder(BorderFactory.createEmptyBorder(3, 15, 3, 15));
+
+        quitButton.addActionListener(e -> System.exit(0));
+
+        quitButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                startColor[0] = new Color(239, 83, 80);
+                endColor[0] = new Color(229, 57, 53);
+                gradient[0] = new GradientPaint(0, 0, startColor[0], 0, quitButton.getHeight(), endColor[0]);
+                quitButton.repaint();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                startColor[0] = new Color(219, 68, 55);
+                endColor[0] = new Color(198, 40, 40);
+                gradient[0] = new GradientPaint(0, 0, startColor[0], 0, quitButton.getHeight(), endColor[0]);
+                quitButton.repaint();
+            }
+        });
+
+        quitButton.setPreferredSize(new Dimension(120, 40));
+        quitButton.setBounds(800, 30, 120, 40);
+
+        bottomPanel.add(quitButton);
+        bottomPanel.setPreferredSize(new Dimension(NEW_IMAGE_WIDTH + EXTRA_PANEL_WIDTH, 100));
+
+        quitButton.setUI(new BasicButtonUI() {
+            @Override
+            public void paint(Graphics g, JComponent c) {
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setPaint(gradient[0]);
+                g2d.fillRect(0, 0, c.getWidth(), c.getHeight());
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                super.paint(g2d, c);
+                g2d.dispose();
+            }
+        });
+
+        return bottomPanel;
+    }
 
     private BufferedImage resizeImage(BufferedImage originalImage, int width, int height) {
         BufferedImage resizedImage = new BufferedImage(width, height, originalImage.getType());
@@ -364,10 +483,4 @@ public class HexagonalGrid extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            HexagonalGrid frame = new HexagonalGrid();
-            frame.setVisible(true);
-        });
-    }
 }
