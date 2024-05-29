@@ -23,7 +23,7 @@ public class Tour {
     }
 
     public void deplacerCreature(PlateauJeu Plateau_de_jeu) throws InterruptedException {
-        int resultat_de = 0; // de.lancer doit retourner un chiffre 0=serpent de mer 1=requin 2=baleine
+        int resultat_de = DeDeCreature.lancer(); // de.lancer doit retourner un chiffre 0=serpent de mer 1=requin 2=baleine
         int numero_creature = -1;
         int good;
         //SERPENT DE MER//
@@ -240,10 +240,10 @@ public class Tour {
 
     public static void retirerTuile(PlateauJeu Plateau_de_jeu) throws InterruptedException {
         int tuile=-1;
-        Position position_tuile = Tour.choix_case();
+        Position position_tuile;
         int[] nombreTuiles = Tuile.nombreTuile(Plateau_de_jeu);
-        System.out.println("Choisissez une tuile");
         do {
+            position_tuile = Tour.choix_case();
             for(int i=0; i<Plateau_de_jeu.tuiles.size(); i++) {
                 if (Position.isPositionsEquals(Plateau_de_jeu.tuiles.get(i).getPosition(), position_tuile)){
                     if(nombreTuiles[0]!=0 && Plateau_de_jeu.tuiles.get(i).typeTuile==0 && Tuile.adjacentMer(Plateau_de_jeu,position_tuile)) {

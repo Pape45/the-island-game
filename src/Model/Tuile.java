@@ -39,11 +39,9 @@ public class Tuile {
     public static boolean adjacentMer(PlateauJeu Plateau_de_jeu, Position position){
         List<Position> voisins= Position.getNeighbors(position);
         int tuile_voisines=0;
-        for(int i=0; i< voisins.size(); i++){
-            for(int j=0; j<Plateau_de_jeu.tuiles.size(); j++){
-                if(Position.isPositionContains(voisins, Plateau_de_jeu.tuiles.get(j).getPosition())){
-                    tuile_voisines++;
-                }
+        for(int j=0; j<Plateau_de_jeu.tuiles.size(); j++){
+            if(Position.isPositionContains(voisins, Plateau_de_jeu.tuiles.get(j).getPosition())){
+                tuile_voisines++;
             }
         }
         return tuile_voisines != 6;

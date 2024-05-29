@@ -206,7 +206,6 @@ public class PlateauJeu {
         requins.add(new Requin(new Position(8, 2)));
         requins.add(new Requin(new Position(-8, 10)));
         requins.add(new Requin(new Position(7, 11)));
-        requins.add(new Requin(new Position(2, 6)));
 
         baleines.add(new Baleine(new Position(-5, 1)));
         baleines.add(new Baleine(new Position(6, 2)));

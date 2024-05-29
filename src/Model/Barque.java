@@ -49,7 +49,7 @@ public class Barque extends Piece {
         int tuile_voisines=0;
         for(int i=0; i< voisins.size(); i++){
             for(int j=0; j<Plateau_de_jeu.tuiles.size(); j++){
-                if(Position.isPositionContains(voisins, position)){
+                if(Position.isPositionContains(voisins, Plateau_de_jeu.tuiles.get(j).getPosition())){
                     tuile_voisines++;
                 }
             }
@@ -62,10 +62,15 @@ public class Barque extends Piece {
         for(int i=0; i<8; i++){
             do{
                 position_barque= Tour.choix_case();
-            }while(!Tuile.caseIsEmpty(Plateau_de_jeu,position_barque) && !adjacentTerre(Plateau_de_jeu,position_barque));
+            }while(!Tuile.caseIsEmpty(Plateau_de_jeu,position_barque) || !adjacentTerre(Plateau_de_jeu,position_barque));
             int indice_barque=Plateau_de_jeu.barques.size();
             Plateau_de_jeu.barques.add(new Barque(position_barque));
             Plateau_de_jeu.barques.get(indice_barque).setPosition(position_barque);
+            for(int j=0;j<3;j++){
+                for(int k=0;k<2;k++){
+                    Plateau_de_jeu.barques.get(indice_barque).setValue(j,k,-1);
+                }
+            }
         }
     }
 }

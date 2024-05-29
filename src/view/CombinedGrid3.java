@@ -429,7 +429,6 @@ public class CombinedGrid3 extends JFrame {
                         g.drawImage(explorerImage, x, y, null);
                 }
             }
-
             drawTourAndPlayerInfo(g);
         }
         private BufferedImage getExplorerImageByIndex(int index) {
