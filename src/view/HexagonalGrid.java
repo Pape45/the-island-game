@@ -5,7 +5,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -21,14 +20,16 @@ public class HexagonalGrid extends JFrame {
     private ArrayList<Hexagon> hexagons;
     private static final int HEX_SIZE = 30;
     private Hexagon hoveredHexagon = null;
-    private static final int NEW_IMAGE_WIDTH = 720; // Nouvelle largeur de l'image
-    private static final int NEW_IMAGE_HEIGHT = 620; // Nouvelle hauteur de l'image
+    private static final int NEW_IMAGE_WIDTH = 720;
+    private static final int NEW_IMAGE_HEIGHT = 620;
     private static final int[] indiceMaxLigne = {6, 9, 10, 9, 10, 11, 10, 11, 10, 9, 10, 9, 6};
     private ArrayList<ThickBorderInfo> thickBorders = new ArrayList<>();
     private int numeroTour;
     private String nomJoueur;
     private String temporaryMessage;
     private Timer messageTimer;
+    private JButton showBoardButton;
+    private JPanel gamePanel;
 
     class ThickBorderInfo {
         Point position;
@@ -40,19 +41,18 @@ public class HexagonalGrid extends JFrame {
         }
     }
 
-
     public HexagonalGrid() {
-
         setTitle("Hexagonal Grid on Image");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(750, 650);
+        setSize(960, 750);
 
         hexagons = new ArrayList<>();
         imagePanel = new ImagePanel();
+        splashPanel = new SplashPanel();
+        mainPanel = new JPanel(new BorderLayout());
 
         try {
-            // Key change: Construct the path relative to the class location
-            String imagePath = "theisland.jpg";
+            String imagePath = "theisland.png";
             URL imageUrl = HexagonalGrid.class.getResource(imagePath);
 
             if (imageUrl != null) {
@@ -145,7 +145,28 @@ public class HexagonalGrid extends JFrame {
         thickBorders.add(new ThickBorderInfo(436, 445, 2, 3, 4));
     }
 
-        createHexagonalGrid();
+    private void createGamePanel() {
+        gamePanel = new JPanel(new BorderLayout());
+        gamePanel.add(new JScrollPane(imagePanel), BorderLayout.CENTER);
+
+        JPanel topRightPanel = new JPanel();
+        topRightPanel.setPreferredSize(new Dimension(200, 200));
+        topRightPanel.setBackground(Color.LIGHT_GRAY);
+
+        JPanel bottomRightPanel = new JPanel();
+        bottomRightPanel.setPreferredSize(new Dimension(200, 100));
+        bottomRightPanel.setBackground(Color.GRAY);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setPreferredSize(new Dimension(NEW_IMAGE_WIDTH, 100));
+        bottomPanel.setBackground(Color.DARK_GRAY);
+
+        gamePanel.add(topRightPanel, BorderLayout.EAST);
+        gamePanel.add(bottomRightPanel, BorderLayout.SOUTH);
+        gamePanel.add(bottomPanel, BorderLayout.SOUTH);
+
+        createHexagonalGrid(); // Création de la grille hexagonale
+        imagePanel.repaint(); // Redessiner le jeu
     }
 
     private BufferedImage resizeImage(BufferedImage originalImage, int width, int height) {
@@ -214,7 +235,6 @@ public class HexagonalGrid extends JFrame {
         }
     }
 
-
     private void handleMouseMove(MouseEvent e) {
         Point movedPoint = e.getPoint();
         boolean found = false;
@@ -268,7 +288,6 @@ public class HexagonalGrid extends JFrame {
             drawTemporaryMessage(g);
         }
 
-
         private void drawTourAndPlayerInfo(Graphics g) {
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 12));
@@ -298,29 +317,32 @@ public class HexagonalGrid extends JFrame {
             g.drawString(joueurText, x, y + height + 2 * padding + fm.getAscent());
         }
 
-
         private void drawSettingsIcon(Graphics g) {
             if (settingsIcon != null) {
                 int iconWidth = 30;
                 int iconHeight = 30;
-                int x = 680;
-                int y = 15;
-                g.drawImage(settingsIcon, x, y, iconWidth, iconHeight, this);
+                Image scaledIcon = settingsIcon.getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
+                int x = getWidth() - iconWidth - 20;
+                int y = 10;
+                g.drawImage(scaledIcon, x, y, this);
             }
         }
 
         private void drawTemporaryMessage(Graphics g) {
             if (temporaryMessage != null) {
-                g.setFont(new Font("Serif", Font.BOLD, 50));
-                g.setColor(Color.RED);
+                g.setColor(Color.YELLOW);
+                g.setFont(new Font("Arial", Font.BOLD, 20));
 
                 FontMetrics fm = g.getFontMetrics();
                 int messageWidth = fm.stringWidth(temporaryMessage);
                 int messageHeight = fm.getHeight();
 
-                int x = (NEW_IMAGE_WIDTH - messageWidth) / 2;
-                int y = (NEW_IMAGE_HEIGHT - messageHeight) / 2 + fm.getAscent();
+                int x = (getWidth() - messageWidth) / 2;
+                int y = (getHeight() - messageHeight) / 2;
 
+                g.setColor(Color.BLACK);
+                g.fillRect(x - 10, y - fm.getAscent() - 10, messageWidth + 20, messageHeight + 20);
+                g.setColor(Color.YELLOW);
                 g.drawString(temporaryMessage, x, y);
             }
         }
@@ -336,6 +358,12 @@ public class HexagonalGrid extends JFrame {
         }
     }
 
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            HexagonalGrid frame = new HexagonalGrid();
+            frame.setVisible(true);
+        });
+    }
 }
 
 // Classe Hexagon pour représenter les hexagones
